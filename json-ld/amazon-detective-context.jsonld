@@ -1,0 +1,86 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "detective": "https://docs.aws.amazon.com/detective/latest/APIReference/",
+    "aws": "https://aws.amazon.com/",
+    "iam": "https://docs.aws.amazon.com/IAM/latest/UserGuide/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "schema": "https://schema.org/",
+
+    "BehaviorGraph": {
+      "@id": "detective:API_CreateGraph.html",
+      "@context": {
+        "Arn": {
+          "@id": "aws:arn",
+          "@type": "@id"
+        },
+        "CreatedTime": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "MemberDetail": {
+      "@id": "detective:API_MemberDetail.html",
+      "@context": {
+        "AccountId": {
+          "@id": "schema:identifier",
+          "@type": "xsd:string"
+        },
+        "EmailAddress": {
+          "@id": "schema:email",
+          "@type": "xsd:string"
+        },
+        "GraphArn": {
+          "@id": "aws:arn",
+          "@type": "@id"
+        },
+        "Status": {
+          "@id": "detective:MemberStatus",
+          "@type": "xsd:string"
+        },
+        "InvitedTime": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "UpdatedTime": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Investigation": {
+      "@id": "detective:API_StartInvestigation.html",
+      "@context": {
+        "InvestigationId": {
+          "@id": "schema:identifier",
+          "@type": "xsd:string"
+        },
+        "EntityArn": {
+          "@id": "aws:arn",
+          "@type": "@id"
+        },
+        "ScopeStartTime": {
+          "@id": "schema:startDate",
+          "@type": "xsd:dateTime"
+        },
+        "ScopeEndTime": {
+          "@id": "schema:endDate",
+          "@type": "xsd:dateTime"
+        },
+        "Status": {
+          "@id": "detective:InvestigationStatus",
+          "@type": "xsd:string"
+        },
+        "CreatedTime": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    }
+  }
+}
