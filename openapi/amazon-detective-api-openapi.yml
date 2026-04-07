@@ -44,7 +44,7 @@ security:
 paths:
   /graph:
     post:
-      summary: Create Graph
+      summary: Amazon Detective Create Graph
       description: Creates a new behavior graph for the calling account and sets it as the administrator account.
       operationId: createGraph
       requestBody:
@@ -61,7 +61,7 @@ paths:
                 $ref: '#/components/schemas/CreateGraphResponse'
   /graphs/list:
     post:
-      summary: List Graphs
+      summary: Amazon Detective List Graphs
       description: Returns the list of behavior graphs that the calling account is an administrator account of.
       operationId: listGraphs
       requestBody:
@@ -78,7 +78,7 @@ paths:
                 $ref: '#/components/schemas/ListGraphsResponse'
   /graph/members/get:
     post:
-      summary: Get Members
+      summary: Amazon Detective Get Members
       description: Returns the membership details for specified member accounts of a behavior graph.
       operationId: getMembers
       requestBody:
@@ -96,7 +96,7 @@ paths:
                 $ref: '#/components/schemas/GetMembersResponse'
   /graph/members:
     post:
-      summary: Create Members
+      summary: Amazon Detective Create Members
       description: Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph.
       operationId: createMembers
       requestBody:
@@ -114,7 +114,7 @@ paths:
                 $ref: '#/components/schemas/CreateMembersResponse'
   /graph/members/list:
     post:
-      summary: List Members
+      summary: Amazon Detective List Members
       description: Retrieves the list of member accounts for a behavior graph.
       operationId: listMembers
       requestBody:
@@ -132,7 +132,7 @@ paths:
                 $ref: '#/components/schemas/ListMembersResponse'
   /investigations/startInvestigation:
     post:
-      summary: Start Investigation
+      summary: Amazon Detective Start Investigation
       description: Initiates an investigation on an entity in a behavior graph.
       operationId: startInvestigation
       requestBody:
@@ -150,7 +150,7 @@ paths:
                 $ref: '#/components/schemas/StartInvestigationResponse'
   /graph/datasources/get:
     post:
-      summary: List Datasource Packages
+      summary: Amazon Detective List Datasource Packages
       description: Lists data source packages for the behavior graph.
       operationId: listDatasourcePackages
       requestBody:
