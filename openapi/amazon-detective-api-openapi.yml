@@ -59,6 +59,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateGraphResponse'
+      tags:
+        - Graph
   /graphs/list:
     post:
       summary: Amazon Detective List Graphs
@@ -76,6 +78,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListGraphsResponse'
+      tags:
+        - Graphs
   /graph/members/get:
     post:
       summary: Amazon Detective Get Members
@@ -94,6 +98,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetMembersResponse'
+      tags:
+        - Graph
   /graph/members:
     post:
       summary: Amazon Detective Create Members
@@ -112,6 +118,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateMembersResponse'
+      tags:
+        - Graph
   /graph/members/list:
     post:
       summary: Amazon Detective List Members
@@ -130,6 +138,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListMembersResponse'
+      tags:
+        - Graph
   /investigations/startInvestigation:
     post:
       summary: Amazon Detective Start Investigation
@@ -148,6 +158,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StartInvestigationResponse'
+      tags:
+        - Investigations
   /graph/datasources/get:
     post:
       summary: Amazon Detective List Datasource Packages
@@ -162,6 +174,8 @@ paths:
       responses:
         '200':
           description: Successful response
+      tags:
+        - Graph
 components:
   securitySchemes:
     sigv4:
@@ -347,3 +361,7 @@ components:
           type: string
         Reason:
           type: string
+tags:
+  - name: Graph
+  - name: Graphs
+  - name: Investigations
