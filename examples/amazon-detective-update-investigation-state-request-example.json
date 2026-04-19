@@ -1,0 +1,5 @@
+{
+  "GraphArn": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+  "InvestigationId": "invest-abc123def456",
+  "State": "ARCHIVED"
+}

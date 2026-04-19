@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-timestamp-for-collection-structure.json",
+  "description": "Details on when data collection began for a source package.",
+  "type": "object",
+  "properties": {
+    "Timestamp": {
+      "type": "datetime",
+      "description": "The data and time when data collection began for a source package.",
+      "example": "2025-01-15T10:00:00Z"
+    }
+  },
+  "name": "TimestampForCollection"
+}

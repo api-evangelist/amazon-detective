@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-delete-members-response-schema.json",
+  "title": "DeleteMembersResponse",
+  "description": "Response from deleting member accounts",
+  "type": "object",
+  "properties": {
+    "AccountIds": {
+      "type": "array",
+      "description": "The list of AWS account identifiers of the member accounts that Detective successfully deleted.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "UnprocessedAccounts": {
+      "type": "array",
+      "description": "The list of member accounts that Detective was unable to delete.",
+      "items": {
+        "$ref": "#/components/schemas/UnprocessedAccount"
+      }
+    }
+  }
+}

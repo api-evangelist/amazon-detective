@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-tag-resource-request-structure.json",
+  "description": "Request to apply tags to a behavior graph",
+  "type": "object",
+  "properties": {
+    "Tags": {
+      "type": "object",
+      "description": "The tags to assign to the behavior graph.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "Tags"
+  ],
+  "name": "TagResourceRequest"
+}

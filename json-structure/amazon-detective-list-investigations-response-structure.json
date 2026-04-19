@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-list-investigations-response-structure.json",
+  "description": "Response from listing investigations",
+  "type": "object",
+  "properties": {
+    "InvestigationDetails": {
+      "type": "array",
+      "description": "Lists the summary of uncommon behavior or malicious activity which indicates a compromise.",
+      "items": {
+        "$ref": "#/components/schemas/InvestigationDetail"
+      }
+    },
+    "NextToken": {
+      "type": "string",
+      "description": "Lists investigations for a behavior graph based on the maximum number of investigations in a page."
+    }
+  },
+  "name": "ListInvestigationsResponse"
+}

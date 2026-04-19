@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-get-members-response-structure.json",
+  "description": "Response from getting member details",
+  "type": "object",
+  "properties": {
+    "MemberDetails": {
+      "type": "array",
+      "description": "The member account details that Detective retrieved.",
+      "items": {
+        "$ref": "#/components/schemas/MemberDetail"
+      }
+    },
+    "UnprocessedAccounts": {
+      "type": "array",
+      "description": "The requested member accounts for which Detective was unable to return member details.",
+      "items": {
+        "$ref": "#/components/schemas/UnprocessedAccount"
+      }
+    }
+  },
+  "name": "GetMembersResponse"
+}

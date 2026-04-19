@@ -1,0 +1,803 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: Amazon Detective API
+  description: Amazon Detective security investigation API for managing behavior graphs, member accounts, investigations, and data sources.
+  tags:
+    - Amazon Detective
+    - Security
+    - Investigation
+    - Forensics
+    - AWS
+  created: "2026-04-19"
+  modified: "2026-04-19"
+
+binds:
+  - namespace: env
+    keys:
+      AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
+      AWS_SESSION_TOKEN: AWS_SESSION_TOKEN
+      AWS_REGION: AWS_REGION
+
+capability:
+  consumes:
+    - type: http
+      namespace: detective
+      baseUri: https://api.detective.us-east-1.amazonaws.com
+      description: Amazon Detective REST API for security investigation and behavior graph management.
+      authentication:
+        type: apikey
+        key: Authorization
+        value: "{{AWS_ACCESS_KEY_ID}}"
+        placement: header
+      resources:
+        - name: graph
+          path: /graph
+          description: Behavior graph management
+          operations:
+            - name: create-graph
+              method: POST
+              description: Creates a new behavior graph for the calling account
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: graphs-list
+          path: /graphs/list
+          description: List behavior graphs
+          operations:
+            - name: list-graphs
+              method: POST
+              description: Returns the list of behavior graphs the calling account administers
+              inputParameters:
+                - name: NextToken
+                  in: body
+                  type: string
+                  required: false
+                  description: Pagination token
+                - name: MaxResults
+                  in: body
+                  type: integer
+                  required: false
+                  description: Maximum number of results
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: members
+          path: /graph/members
+          description: Member account management
+          operations:
+            - name: create-members
+              method: POST
+              description: Sends invitations to AWS accounts to become member accounts
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: Accounts
+                  in: body
+                  type: array
+                  required: true
+                  description: List of AWS accounts to invite
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: members-removal
+          path: /graph/members/removal
+          description: Remove member accounts
+          operations:
+            - name: delete-members
+              method: POST
+              description: Removes the specified member accounts from the behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: AccountIds
+                  in: body
+                  type: array
+                  required: true
+                  description: List of account IDs to remove
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: members-get
+          path: /graph/members/get
+          description: Get member details
+          operations:
+            - name: get-members
+              method: POST
+              description: Returns membership details for specified member accounts
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: AccountIds
+                  in: body
+                  type: array
+                  required: true
+                  description: List of account IDs
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: members-list
+          path: /graph/members/list
+          description: List member accounts
+          operations:
+            - name: list-members
+              method: POST
+              description: Retrieves the list of member accounts for a behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: MaxResults
+                  in: body
+                  type: integer
+                  required: false
+                  description: Maximum number of results
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: monitoring-enable
+          path: /graph/members/monitoringEnable
+          description: Start monitoring a member account
+          operations:
+            - name: start-monitoring-member
+              method: POST
+              description: Starts monitoring a member account with ACCEPTED_BUT_DISABLED status
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: AccountId
+                  in: body
+                  type: string
+                  required: true
+                  description: Account ID of the member to enable
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: invitation
+          path: /invitation
+          description: Manage behavior graph invitations
+          operations:
+            - name: accept-invitation
+              method: PUT
+              description: Accepts an invitation to contribute data to a behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: invitation-removal
+          path: /invitation/removal
+          description: Reject a behavior graph invitation
+          operations:
+            - name: reject-invitation
+              method: PUT
+              description: Rejects an invitation to contribute data to a behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: invitations-list
+          path: /invitations/list
+          description: List invitations
+          operations:
+            - name: list-invitations
+              method: POST
+              description: Lists open and accepted behavior graph invitations for the member account
+              inputParameters:
+                - name: MaxResults
+                  in: body
+                  type: integer
+                  required: false
+                  description: Maximum number of results
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: membership-removal
+          path: /membership/removal
+          description: Leave a behavior graph
+          operations:
+            - name: disassociate-membership
+              method: POST
+              description: Removes the member account from the specified behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph to leave
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: datasources-list
+          path: /graph/datasources/list
+          description: List datasource packages
+          operations:
+            - name: list-datasource-packages
+              method: POST
+              description: Lists data source packages in the behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: datasources-get
+          path: /graph/datasources/get
+          description: Get datasource details for behavior graph members
+          operations:
+            - name: batch-get-graph-member-datasources
+              method: POST
+              description: Gets data source package information for behavior graph members
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: AccountIds
+                  in: body
+                  type: array
+                  required: true
+                  description: List of account IDs
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: membership-datasources
+          path: /membership/datasources/get
+          description: Get membership datasource history
+          operations:
+            - name: batch-get-membership-datasources
+              method: POST
+              description: Gets data source package history for an account
+              inputParameters:
+                - name: GraphArns
+                  in: body
+                  type: array
+                  required: true
+                  description: List of behavior graph ARNs
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: datasources-update
+          path: /graph/datasources/update
+          description: Update datasource packages
+          operations:
+            - name: update-datasource-packages
+              method: POST
+              description: Starts a data source packages for the specified behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: DatasourcePackages
+                  in: body
+                  type: array
+                  required: true
+                  description: Datasource packages to enable
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: start-investigation
+          path: /investigations/startInvestigation
+          description: Start a security investigation
+          operations:
+            - name: start-investigation
+              method: POST
+              description: Initiates a Detective investigation on an entity
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: EntityArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the IAM user or role to investigate
+                - name: ScopeStartTime
+                  in: body
+                  type: string
+                  required: true
+                  description: Investigation scope start time
+                - name: ScopeEndTime
+                  in: body
+                  type: string
+                  required: true
+                  description: Investigation scope end time
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: get-investigation
+          path: /investigations/getInvestigation
+          description: Get investigation results
+          operations:
+            - name: get-investigation
+              method: POST
+              description: Returns the investigation results of an investigation for a behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: InvestigationId
+                  in: body
+                  type: string
+                  required: true
+                  description: The investigation ID
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: list-investigations
+          path: /investigations/listInvestigations
+          description: List investigations
+          operations:
+            - name: list-investigations
+              method: POST
+              description: Lists investigations for a behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: MaxResults
+                  in: body
+                  type: integer
+                  required: false
+                  description: Maximum number of results
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: update-investigation-state
+          path: /investigations/updateInvestigationState
+          description: Update investigation state
+          operations:
+            - name: update-investigation-state
+              method: POST
+              description: Updates the state of an investigation
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: InvestigationId
+                  in: body
+                  type: string
+                  required: true
+                  description: The investigation ID
+                - name: State
+                  in: body
+                  type: string
+                  required: true
+                  description: New state (ACTIVE or ARCHIVED)
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: list-indicators
+          path: /investigations/listIndicators
+          description: List investigation indicators
+          operations:
+            - name: list-indicators
+              method: POST
+              description: Gets the indicators of compromise from an investigation
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: InvestigationId
+                  in: body
+                  type: string
+                  required: true
+                  description: The investigation ID
+                - name: IndicatorType
+                  in: body
+                  type: string
+                  required: false
+                  description: Filter by indicator type
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: org-enable-admin
+          path: /orgs/enableAdminAccount
+          description: Enable organization admin account
+          operations:
+            - name: enable-organization-admin-account
+              method: POST
+              description: Designates the Detective administrator account for the organization
+              inputParameters:
+                - name: AccountId
+                  in: body
+                  type: string
+                  required: true
+                  description: AWS account to designate as Detective admin
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: org-disable-admin
+          path: /orgs/disableAdminAccount
+          description: Disable organization admin account
+          operations:
+            - name: disable-organization-admin-account
+              method: POST
+              description: Removes the Detective administrator account in the current Region
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: org-describe-config
+          path: /orgs/describeOrganizationConfiguration
+          description: Describe organization configuration
+          operations:
+            - name: describe-organization-configuration
+              method: POST
+              description: Returns information about the configuration for the organization behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the organization behavior graph
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: org-update-config
+          path: /orgs/updateOrganizationConfiguration
+          description: Update organization configuration
+          operations:
+            - name: update-organization-configuration
+              method: POST
+              description: Updates the configuration for the organization behavior graph
+              inputParameters:
+                - name: GraphArn
+                  in: body
+                  type: string
+                  required: true
+                  description: ARN of the organization behavior graph
+                - name: AutoEnable
+                  in: body
+                  type: boolean
+                  required: false
+                  description: Whether to auto-enable new org accounts as members
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: org-list-admins
+          path: /orgs/listAdminAccounts
+          description: List organization admin accounts
+          operations:
+            - name: list-organization-admin-accounts
+              method: POST
+              description: Lists the Detective administrator accounts in the organization
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: tags
+          path: /tags/{resourceArn}
+          description: Resource tagging
+          operations:
+            - name: list-tags-for-resource
+              method: GET
+              description: Returns the tag values assigned to a behavior graph
+              inputParameters:
+                - name: resourceArn
+                  in: path
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: tag-resource
+              method: POST
+              description: Applies tag values to a behavior graph
+              inputParameters:
+                - name: resourceArn
+                  in: path
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: Tags
+                  in: body
+                  type: object
+                  required: true
+                  description: Tags to apply
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: untag-resource
+              method: DELETE
+              description: Removes tags from a behavior graph
+              inputParameters:
+                - name: resourceArn
+                  in: path
+                  type: string
+                  required: true
+                  description: ARN of the behavior graph
+                - name: tagKeys
+                  in: query
+                  type: array
+                  required: true
+                  description: Tag keys to remove
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: detective-rest
+      resources:
+        - path: /v1/graphs
+          name: graphs
+          description: Behavior graph management
+          operations:
+            - method: GET
+              name: list-graphs
+              description: List behavior graphs
+              call: "detective.list-graphs"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-graph
+              description: Create a new behavior graph
+              call: "detective.create-graph"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/graphs/{graphArn}/members
+          name: members
+          description: Member account management
+          operations:
+            - method: GET
+              name: list-members
+              description: List member accounts
+              call: "detective.list-members"
+              with:
+                GraphArn: "rest.graphArn"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/investigations
+          name: investigations
+          description: Security investigations
+          operations:
+            - method: GET
+              name: list-investigations
+              description: List investigations
+              call: "detective.list-investigations"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: start-investigation
+              description: Start a new investigation
+              call: "detective.start-investigation"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/investigations/{investigationId}/indicators
+          name: indicators
+          description: Investigation indicators of compromise
+          operations:
+            - method: GET
+              name: list-indicators
+              description: List indicators of compromise
+              call: "detective.list-indicators"
+              with:
+                InvestigationId: "rest.investigationId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: detective-mcp
+      transport: http
+      tools:
+        - name: list-graphs
+          description: List Amazon Detective behavior graphs
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "detective.list-graphs"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: create-graph
+          description: Create a new Amazon Detective behavior graph
+          hints:
+            readOnly: false
+            destructive: false
+          call: "detective.create-graph"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-members
+          description: List member accounts in a behavior graph
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "detective.list-members"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-members
+          description: Get membership details for specific member accounts
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "detective.get-members"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: start-investigation
+          description: Start a Detective investigation on an IAM user or role
+          hints:
+            readOnly: false
+            destructive: false
+          call: "detective.start-investigation"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-investigation
+          description: Get results of a Detective investigation
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "detective.get-investigation"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-investigations
+          description: List investigations in a behavior graph
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "detective.list-investigations"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-indicators
+          description: Get indicators of compromise from an investigation
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "detective.list-indicators"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-datasource-packages
+          description: List data source packages in a behavior graph
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "detective.list-datasource-packages"
+          outputParameters:
+            - type: object
+              mapping: "$."

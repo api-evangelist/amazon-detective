@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-describe-organization-configuration-response-schema.json",
+  "title": "DescribeOrganizationConfigurationResponse",
+  "description": "Response from describing organization configuration",
+  "type": "object",
+  "properties": {
+    "AutoEnable": {
+      "type": "boolean",
+      "description": "Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.",
+      "example": true
+    }
+  }
+}

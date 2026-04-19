@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-list-investigations-request-schema.json",
+  "title": "ListInvestigationsRequest",
+  "description": "Request to list investigations",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "NextToken": {
+      "type": "string",
+      "description": "Lists the investigations for a behavior graph based on the maximum number of investigations in a page.",
+      "example": "abc123token"
+    },
+    "MaxResults": {
+      "type": "integer",
+      "description": "Lists the investigations for a behavior graph based on the total number of investigations.",
+      "example": 100
+    },
+    "FilterCriteria": {
+      "type": "object",
+      "description": "Filters the investigation results based on a criteria.",
+      "properties": {
+        "Severity": {
+          "type": "object",
+          "description": "Filter investigations by severity.",
+          "properties": {
+            "Value": {
+              "type": "string",
+              "enum": [
+                "INFORMATIONAL",
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "CRITICAL"
+              ]
+            }
+          }
+        },
+        "Status": {
+          "type": "object",
+          "description": "Filter investigations by status.",
+          "properties": {
+            "Value": {
+              "type": "string",
+              "enum": [
+                "RUNNING",
+                "FAILED",
+                "SUCCESSFUL"
+              ]
+            }
+          }
+        },
+        "State": {
+          "type": "object",
+          "description": "Filter investigations by state.",
+          "properties": {
+            "Value": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "ARCHIVED"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "SortCriteria": {
+      "type": "object",
+      "description": "Sorts the investigation results based on a criteria.",
+      "properties": {
+        "Field": {
+          "type": "string",
+          "description": "The field to use to sort the results.",
+          "enum": [
+            "SEVERITY",
+            "STATUS",
+            "CREATED_TIME"
+          ]
+        },
+        "SortOrder": {
+          "type": "string",
+          "enum": [
+            "ASC",
+            "DESC"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "GraphArn"
+  ]
+}

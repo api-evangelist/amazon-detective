@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-list-members-response-schema.json",
+  "title": "ListMembersResponse",
+  "description": "Response from listing member accounts",
+  "type": "object",
+  "properties": {
+    "MemberDetails": {
+      "type": "array",
+      "description": "The list of member accounts in the behavior graph.",
+      "items": {
+        "$ref": "#/components/schemas/MemberDetail"
+      }
+    },
+    "NextToken": {
+      "type": "string",
+      "description": "If there are more member accounts remaining in the results, then use this pagination token."
+    }
+  }
+}

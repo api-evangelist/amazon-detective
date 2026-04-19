@@ -1,0 +1,6 @@
+{
+  "GraphArn": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+  "EntityArn": "arn:aws:iam::123456789012:user/jsmith",
+  "ScopeStartTime": "2025-01-01T00:00:00Z",
+  "ScopeEndTime": "2025-01-15T23:59:59Z"
+}

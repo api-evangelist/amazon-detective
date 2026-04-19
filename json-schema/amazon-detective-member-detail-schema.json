@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-member-detail-schema.json",
+  "title": "MemberDetail",
+  "description": "Details about a member account in a behavior graph",
+  "type": "object",
+  "properties": {
+    "AccountId": {
+      "type": "string",
+      "description": "The AWS account identifier of the member account.",
+      "example": "234567890123"
+    },
+    "EmailAddress": {
+      "type": "string",
+      "description": "The AWS account root user email address for the member account.",
+      "example": "security@example.com"
+    },
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph that the member account was invited to.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "AdministratorId": {
+      "type": "string",
+      "description": "The AWS account identifier of the administrator account for the behavior graph.",
+      "example": "123456789012"
+    },
+    "Status": {
+      "type": "string",
+      "description": "The current membership status of the member account.",
+      "enum": [
+        "INVITED",
+        "VERIFICATION_IN_PROGRESS",
+        "VERIFICATION_FAILED",
+        "ENABLED",
+        "ACCEPTED_BUT_DISABLED"
+      ],
+      "example": "ENABLED"
+    },
+    "InvitedTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time that Detective sent the invitation to the member account.",
+      "example": "2025-01-15T10:00:00Z"
+    },
+    "UpdatedTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time that the member account was last updated.",
+      "example": "2025-01-16T12:00:00Z"
+    },
+    "VolumeUsageInBytes": {
+      "type": "integer",
+      "description": "Data volume in bytes per day for the member account.",
+      "example": 1073741824
+    },
+    "VolumeUsageUpdatedTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The data and time when the member account data volume was last updated.",
+      "example": "2025-01-16T12:00:00Z"
+    },
+    "PercentOfGraphUtilization": {
+      "type": "number",
+      "description": "The member account data volume as a percentage of the maximum allowed data volume.",
+      "example": 12.5
+    },
+    "DisabledReason": {
+      "type": "string",
+      "description": "For member accounts with a status of ACCEPTED_BUT_DISABLED, the reason the member account is not enabled.",
+      "enum": [
+        "VOLUME_TOO_HIGH",
+        "VOLUME_UNKNOWN"
+      ],
+      "example": "VOLUME_TOO_HIGH"
+    },
+    "InvitationType": {
+      "type": "string",
+      "description": "The type of behavior graph membership.",
+      "enum": [
+        "INVITATION",
+        "ORGANIZATION"
+      ],
+      "example": "INVITATION"
+    }
+  }
+}

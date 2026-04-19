@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-describe-organization-configuration-response-structure.json",
+  "description": "Response from describing organization configuration",
+  "type": "object",
+  "properties": {
+    "AutoEnable": {
+      "type": "boolean",
+      "description": "Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.",
+      "example": true
+    }
+  },
+  "name": "DescribeOrganizationConfigurationResponse"
+}

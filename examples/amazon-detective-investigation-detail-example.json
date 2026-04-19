@@ -1,0 +1,9 @@
+{
+  "InvestigationId": "invest-abc123def456",
+  "Severity": "HIGH",
+  "Status": "RUNNING",
+  "State": "ACTIVE",
+  "CreatedTime": "2025-01-15T10:00:00Z",
+  "EntityArn": "arn:aws:iam::123456789012:user/jsmith",
+  "EntityType": "IAM_ROLE"
+}

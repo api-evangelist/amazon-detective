@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-unprocessed-graph-structure.json",
+  "description": "A behavior graph that could not be processed",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the organization behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "Reason": {
+      "type": "string",
+      "description": "The reason data source package information could not be retrieved for the behavior graph.",
+      "example": "Graph not found"
+    }
+  },
+  "name": "UnprocessedGraph"
+}

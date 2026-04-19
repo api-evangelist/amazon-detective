@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-create-members-request-schema.json",
+  "title": "CreateMembersRequest",
+  "description": "Request to invite member accounts to a behavior graph",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "Message": {
+      "type": "string",
+      "description": "Customized message text to include in the invitation email message.",
+      "example": "Please join our security behavior graph."
+    },
+    "DisableEmailNotification": {
+      "type": "boolean",
+      "description": "If set to true, invitation emails are not sent.",
+      "example": false
+    },
+    "Accounts": {
+      "type": "array",
+      "description": "The list of AWS accounts to invite to become member accounts.",
+      "items": {
+        "$ref": "#/components/schemas/Account"
+      }
+    }
+  },
+  "required": [
+    "GraphArn",
+    "Accounts"
+  ]
+}

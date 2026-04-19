@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-list-graphs-request-structure.json",
+  "description": "Request to list behavior graphs",
+  "type": "object",
+  "properties": {
+    "NextToken": {
+      "type": "string",
+      "description": "For requests to get the next page of results. The pagination token from the previous request.",
+      "example": "abc123token"
+    },
+    "MaxResults": {
+      "type": "integer",
+      "description": "The maximum number of graphs to return at a time.",
+      "example": 100
+    }
+  },
+  "name": "ListGraphsRequest"
+}

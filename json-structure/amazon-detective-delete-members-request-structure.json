@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-delete-members-request-structure.json",
+  "description": "Request to remove member accounts from a behavior graph",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph to remove members from.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "AccountIds": {
+      "type": "array",
+      "description": "The list of AWS account identifiers of the member accounts to remove.",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "234567890123"
+      ]
+    }
+  },
+  "required": [
+    "GraphArn",
+    "AccountIds"
+  ],
+  "name": "DeleteMembersRequest"
+}

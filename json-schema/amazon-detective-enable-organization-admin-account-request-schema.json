@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-enable-organization-admin-account-request-schema.json",
+  "title": "EnableOrganizationAdminAccountRequest",
+  "description": "Request to enable an organization admin account for Detective",
+  "type": "object",
+  "properties": {
+    "AccountId": {
+      "type": "string",
+      "description": "The AWS account identifier of the account to designate as the Detective administrator account for the organization.",
+      "example": "123456789012"
+    }
+  },
+  "required": [
+    "AccountId"
+  ]
+}

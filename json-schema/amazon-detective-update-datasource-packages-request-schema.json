@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-update-datasource-packages-request-schema.json",
+  "title": "UpdateDatasourcePackagesRequest",
+  "description": "Request to update datasource packages for a behavior graph",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "DatasourcePackages": {
+      "type": "array",
+      "description": "The data source package start for the behavior graph.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "DETECTIVE_CORE",
+          "EKS_AUDIT",
+          "AD_AUDIT"
+        ]
+      },
+      "example": [
+        "EKS_AUDIT"
+      ]
+    }
+  },
+  "required": [
+    "GraphArn",
+    "DatasourcePackages"
+  ]
+}

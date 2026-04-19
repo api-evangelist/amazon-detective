@@ -1,0 +1,394 @@
+vocabulary: "1.0.0"
+
+info:
+  provider: Amazon Detective
+  description: Unified taxonomy mapping operational (OpenAPI) and capability (Naftiko) dimensions for Amazon Detective security investigation service.
+  created: "2026-04-19"
+  modified: "2026-04-19"
+
+operational:
+  apis:
+    - namespace: detective
+      version: "2018-10-26"
+      baseUrl: https://api.detective.{region}.amazonaws.com
+      status: active
+      description: Amazon Detective REST API for security investigation and behavior graph management
+
+  resources:
+    - name: graphs
+      description: Behavior graphs that aggregate security data from member accounts
+      api: detective
+      actions:
+        - create
+        - list
+        - delete
+    - name: members
+      description: Member accounts contributing security data to a behavior graph
+      api: detective
+      actions:
+        - create
+        - get
+        - list
+        - delete
+        - enable
+    - name: invitations
+      description: Invitations sent to AWS accounts to join a behavior graph
+      api: detective
+      actions:
+        - accept
+        - reject
+        - list
+        - disassociate
+    - name: datasources
+      description: Data source packages providing security telemetry to Detective
+      api: detective
+      actions:
+        - list
+        - get
+        - update
+    - name: investigations
+      description: Security investigations on IAM users and roles
+      api: detective
+      actions:
+        - start
+        - get
+        - list
+        - update
+    - name: indicators
+      description: Indicators of compromise identified during investigations
+      api: detective
+      actions:
+        - list
+    - name: organizations
+      description: AWS Organizations integration for multi-account Detective management
+      api: detective
+      actions:
+        - enable-admin
+        - disable-admin
+        - describe-config
+        - update-config
+        - list-admins
+    - name: tags
+      description: Resource tags applied to behavior graphs
+      api: detective
+      actions:
+        - list
+        - create
+        - delete
+
+  actions:
+    - name: create
+      httpMethod: POST
+      pattern: write
+      description: Create a new resource
+    - name: list
+      httpMethod: POST
+      pattern: read
+      description: List resources with pagination
+    - name: get
+      httpMethod: POST
+      pattern: read
+      description: Get details of specific resources
+    - name: delete
+      httpMethod: POST
+      pattern: destructive
+      description: Remove or disable a resource
+    - name: update
+      httpMethod: POST
+      pattern: write
+      description: Update resource state or configuration
+    - name: start
+      httpMethod: POST
+      pattern: write
+      description: Start a long-running operation
+    - name: accept
+      httpMethod: PUT
+      pattern: write
+      description: Accept a pending invitation
+    - name: reject
+      httpMethod: PUT
+      pattern: write
+      description: Reject a pending invitation
+    - name: enable
+      httpMethod: POST
+      pattern: write
+      description: Enable monitoring or account access
+    - name: disassociate
+      httpMethod: POST
+      pattern: destructive
+      description: Remove membership from a behavior graph
+
+  schemas:
+    core:
+      - name: Graph
+        description: A behavior graph aggregating security telemetry from member accounts
+        properties:
+          - Arn
+          - CreatedTime
+      - name: MemberDetail
+        description: Details about a member account in a behavior graph
+        properties:
+          - AccountId
+          - EmailAddress
+          - GraphArn
+          - Status
+          - InvitedTime
+          - UpdatedTime
+      - name: Account
+        description: An AWS account to invite as a member
+        properties:
+          - AccountId
+          - EmailAddress
+
+    investigation:
+      - name: InvestigationDetail
+        description: Summary of a security investigation
+        properties:
+          - InvestigationId
+          - EntityArn
+          - EntityType
+          - Severity
+          - Status
+          - State
+          - CreatedTime
+      - name: Indicator
+        description: An indicator of compromise from an investigation
+        properties:
+          - IndicatorType
+          - IndicatorDetail
+
+    datasource:
+      - name: DatasourcePackageIngestDetail
+        description: Details about data source package ingest state
+        properties:
+          - DatasourcePackageIngestState
+          - LastIngestStateChange
+      - name: MembershipDatasources
+        description: Data source details for a member account in a behavior graph
+        properties:
+          - AccountId
+          - GraphArn
+          - DatasourcePackageIngestHistory
+
+    organization:
+      - name: Administrator
+        description: An organization admin account for Amazon Detective
+        properties:
+          - AccountId
+          - GraphArn
+          - DelegationTime
+
+  parameters:
+    identifiers:
+      - name: GraphArn
+        description: ARN of the behavior graph
+        type: string
+      - name: InvestigationId
+        description: Unique identifier for an investigation
+        type: string
+      - name: EntityArn
+        description: ARN of the IAM user or role being investigated
+        type: string
+      - name: AccountId
+        description: AWS account identifier
+        type: string
+    pagination:
+      - name: NextToken
+        description: Pagination token for next page of results
+        type: string
+      - name: MaxResults
+        description: Maximum number of results to return
+        type: integer
+    filters:
+      - name: IndicatorType
+        description: Filter indicators by type
+        type: string
+      - name: FilterCriteria
+        description: Filter investigations by severity, status, or state
+        type: object
+
+  enums:
+    memberStatus:
+      - INVITED
+      - VERIFICATION_IN_PROGRESS
+      - VERIFICATION_FAILED
+      - ENABLED
+      - ACCEPTED_BUT_DISABLED
+    investigationStatus:
+      - RUNNING
+      - FAILED
+      - SUCCESSFUL
+    investigationState:
+      - ACTIVE
+      - ARCHIVED
+    severity:
+      - INFORMATIONAL
+      - LOW
+      - MEDIUM
+      - HIGH
+      - CRITICAL
+    indicatorType:
+      - TTP_OBSERVED
+      - IMPOSSIBLE_TRAVEL
+      - FLAGGED_IP_ADDRESS
+      - NEW_GEOLOCATION
+      - NEW_ASO
+      - NEW_USER_AGENT
+      - RELATED_FINDING
+      - RELATED_FINDING_GROUP
+    datasourcePackage:
+      - DETECTIVE_CORE
+      - EKS_AUDIT
+      - AD_AUDIT
+    datasourceIngestState:
+      - STARTED
+      - STOPPED
+      - DISABLED
+    entityType:
+      - IAM_ROLE
+      - IAM_USER
+    invitationType:
+      - INVITATION
+      - ORGANIZATION
+
+  authentication:
+    schemes:
+      - name: sigv4
+        type: apikey
+        description: AWS Signature Version 4 - signs requests with AWS credentials
+        headerName: Authorization
+    flows:
+      - name: aws-credentials
+        description: Standard AWS credentials (access key, secret key, optional session token)
+
+capability:
+  workflows:
+    - name: Security Investigation
+      file: capabilities/security-investigation.yaml
+      description: End-to-end security investigation workflow for SOC analysts
+      apisConsumed:
+        - detective
+      toolCount: 15
+      personas:
+        - SOC Analyst
+        - Security Engineer
+      domains:
+        - Security
+        - Investigation
+        - Forensics
+
+  personas:
+    - id: soc-analyst
+      name: SOC Analyst
+      description: Security operations center analyst using Detective to investigate alerts and hunt threats
+      workflows:
+        - Security Investigation
+
+    - id: security-engineer
+      name: Security Engineer
+      description: Security engineer managing the Detective behavior graph, member accounts, and data sources
+      workflows:
+        - Security Investigation
+
+  domains:
+    - name: Security Investigation
+      description: End-to-end security investigation using machine learning and graph analysis
+      resources:
+        - investigations
+        - indicators
+        - graphs
+    - name: Behavior Graph Management
+      description: Managing the Detective behavior graph and contributing member accounts
+      resources:
+        - graphs
+        - members
+        - datasources
+    - name: Organization Security
+      description: Multi-account security management via AWS Organizations integration
+      resources:
+        - organizations
+        - members
+
+  namespaces:
+    - type: consumed
+      name: detective
+      description: Amazon Detective REST API
+    - type: rest
+      name: security-investigation-api
+      port: 8080
+      description: Unified REST API for security investigations
+    - type: mcp
+      name: security-investigation-mcp
+      port: 9090
+      description: MCP server for AI-assisted security investigation
+
+  binds:
+    - name: AWS_ACCESS_KEY_ID
+      description: AWS access key ID for authentication
+      workflows:
+        - Security Investigation
+    - name: AWS_SECRET_ACCESS_KEY
+      description: AWS secret access key for authentication
+      workflows:
+        - Security Investigation
+    - name: AWS_SESSION_TOKEN
+      description: AWS session token for temporary credentials
+      workflows:
+        - Security Investigation
+    - name: AWS_REGION
+      description: AWS region for API endpoint selection
+      workflows:
+        - Security Investigation
+
+crossReference:
+  - resource: investigations
+    operations:
+      - startInvestigation
+      - getInvestigation
+      - listInvestigations
+      - updateInvestigationState
+    workflows:
+      - Security Investigation
+    personas:
+      - SOC Analyst
+      - Security Engineer
+
+  - resource: indicators
+    operations:
+      - listIndicators
+    workflows:
+      - Security Investigation
+    personas:
+      - SOC Analyst
+
+  - resource: graphs
+    operations:
+      - createGraph
+      - listGraphs
+      - deleteGraph
+    workflows:
+      - Security Investigation
+    personas:
+      - Security Engineer
+
+  - resource: members
+    operations:
+      - createMembers
+      - deleteMembers
+      - getMembers
+      - listMembers
+      - startMonitoringMember
+    workflows:
+      - Security Investigation
+    personas:
+      - Security Engineer
+
+  - resource: datasources
+    operations:
+      - listDatasourcePackages
+      - batchGetGraphMemberDatasources
+      - updateDatasourcePackages
+    workflows:
+      - Security Investigation
+    personas:
+      - Security Engineer

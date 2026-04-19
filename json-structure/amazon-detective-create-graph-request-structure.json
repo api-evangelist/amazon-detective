@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-create-graph-request-structure.json",
+  "description": "Request to create a new behavior graph",
+  "type": "object",
+  "properties": {
+    "Tags": {
+      "type": "object",
+      "description": "The tags to assign to the new behavior graph",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "name": "CreateGraphRequest"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-start-investigation-response-structure.json",
+  "description": "Response from starting an investigation",
+  "type": "object",
+  "properties": {
+    "InvestigationId": {
+      "type": "string",
+      "description": "The investigation ID of the investigation report.",
+      "example": "invest-abc123def456"
+    }
+  },
+  "name": "StartInvestigationResponse"
+}

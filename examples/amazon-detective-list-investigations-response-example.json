@@ -1,0 +1,6 @@
+{
+  "InvestigationDetails": [
+    "example-InvestigationDetails"
+  ],
+  "NextToken": "abc123token"
+}

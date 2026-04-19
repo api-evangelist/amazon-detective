@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-list-tags-for-resource-response-schema.json",
+  "title": "ListTagsForResourceResponse",
+  "description": "Response from listing tags for a resource",
+  "type": "object",
+  "properties": {
+    "Tags": {
+      "type": "object",
+      "description": "The tag values that are assigned to the behavior graph.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}

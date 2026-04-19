@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-list-graphs-request-schema.json",
+  "title": "ListGraphsRequest",
+  "description": "Request to list behavior graphs",
+  "type": "object",
+  "properties": {
+    "NextToken": {
+      "type": "string",
+      "description": "For requests to get the next page of results. The pagination token from the previous request.",
+      "example": "abc123token"
+    },
+    "MaxResults": {
+      "type": "integer",
+      "description": "The maximum number of graphs to return at a time.",
+      "example": 100
+    }
+  }
+}

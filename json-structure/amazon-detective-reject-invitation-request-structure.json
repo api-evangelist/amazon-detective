@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-reject-invitation-request-structure.json",
+  "description": "Request to reject a behavior graph invitation",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph that the member account is rejecting the invitation for.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    }
+  },
+  "required": [
+    "GraphArn"
+  ],
+  "name": "RejectInvitationRequest"
+}

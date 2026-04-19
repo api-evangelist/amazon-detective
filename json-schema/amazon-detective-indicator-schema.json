@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-indicator-schema.json",
+  "title": "Indicator",
+  "description": "An indicator of compromise detected during an investigation",
+  "type": "object",
+  "properties": {
+    "IndicatorType": {
+      "type": "string",
+      "description": "The type of indicator.",
+      "enum": [
+        "TTP_OBSERVED",
+        "IMPOSSIBLE_TRAVEL",
+        "FLAGGED_IP_ADDRESS",
+        "NEW_GEOLOCATION",
+        "NEW_ASO",
+        "NEW_USER_AGENT",
+        "RELATED_FINDING",
+        "RELATED_FINDING_GROUP"
+      ],
+      "example": "FLAGGED_IP_ADDRESS"
+    },
+    "IndicatorDetail": {
+      "type": "object",
+      "description": "Details about the indicator of compromise."
+    }
+  }
+}

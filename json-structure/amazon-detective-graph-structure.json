@@ -1,7 +1,6 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-graph-schema.json",
-  "title": "Graph",
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-graph-structure.json",
   "description": "A behavior graph in Amazon Detective",
   "type": "object",
   "properties": {
@@ -11,10 +10,10 @@
       "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
     },
     "CreatedTime": {
-      "type": "string",
-      "format": "date-time",
+      "type": "datetime",
       "description": "The date and time that the behavior graph was created.",
       "example": "2025-01-15T10:00:00Z"
     }
-  }
+  },
+  "name": "Graph"
 }

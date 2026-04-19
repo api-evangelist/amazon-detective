@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-delete-graph-request-schema.json",
+  "title": "DeleteGraphRequest",
+  "description": "Request to delete a behavior graph",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph to disable",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    }
+  },
+  "required": [
+    "GraphArn"
+  ]
+}

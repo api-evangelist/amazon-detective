@@ -1,0 +1,14 @@
+{
+  "AccountId": "234567890123",
+  "EmailAddress": "security@example.com",
+  "GraphArn": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+  "AdministratorId": "123456789012",
+  "Status": "ENABLED",
+  "InvitedTime": "2025-01-15T10:00:00Z",
+  "UpdatedTime": "2025-01-16T12:00:00Z",
+  "VolumeUsageInBytes": 1073741824,
+  "VolumeUsageUpdatedTime": "2025-01-16T12:00:00Z",
+  "PercentOfGraphUtilization": 12.5,
+  "DisabledReason": "VOLUME_TOO_HIGH",
+  "InvitationType": "INVITATION"
+}

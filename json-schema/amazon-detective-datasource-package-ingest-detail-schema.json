@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-datasource-package-ingest-detail-schema.json",
+  "title": "DatasourcePackageIngestDetail",
+  "description": "Details about the ingest state of a datasource package",
+  "type": "object",
+  "properties": {
+    "DatasourcePackageIngestState": {
+      "type": "string",
+      "description": "Details on which data source packages are ingested for a member account.",
+      "enum": [
+        "STARTED",
+        "STOPPED",
+        "DISABLED"
+      ]
+    },
+    "LastIngestStateChange": {
+      "type": "object",
+      "description": "The date a data source package type was last updated for a member account.",
+      "additionalProperties": {
+        "$ref": "#/components/schemas/TimestampForCollection"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-unprocessed-account-schema.json",
+  "title": "UnprocessedAccount",
+  "description": "A member account that could not be processed",
+  "type": "object",
+  "properties": {
+    "AccountId": {
+      "type": "string",
+      "description": "The AWS account identifier of the member account that was not processed.",
+      "example": "234567890123"
+    },
+    "Reason": {
+      "type": "string",
+      "description": "The reason that the member account request could not be processed.",
+      "example": "Account not found"
+    }
+  }
+}

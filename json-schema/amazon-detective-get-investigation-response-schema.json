@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-get-investigation-response-schema.json",
+  "title": "GetInvestigationResponse",
+  "description": "Response from getting investigation details",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "InvestigationId": {
+      "type": "string",
+      "description": "The investigation ID of the investigation report.",
+      "example": "invest-abc123def456"
+    },
+    "EntityArn": {
+      "type": "string",
+      "description": "The unique Amazon Resource Name (ARN) of the IAM user and IAM role.",
+      "example": "arn:aws:iam::123456789012:user/jsmith"
+    },
+    "EntityType": {
+      "type": "string",
+      "description": "Type of entity. For example, IAM_ROLE or IAM_USER.",
+      "enum": [
+        "IAM_ROLE",
+        "IAM_USER"
+      ],
+      "example": "IAM_ROLE"
+    },
+    "CreatedTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The creation time of the investigation report in UTC time stamp format.",
+      "example": "2025-01-15T10:00:00Z"
+    },
+    "ScopeStartTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The start date and time used to set the scope time within which you want Detective to investigate.",
+      "example": "2025-01-01T00:00:00Z"
+    },
+    "ScopeEndTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The end date and time used to set the scope time within which you want Detective to investigate.",
+      "example": "2025-01-15T23:59:59Z"
+    },
+    "Status": {
+      "type": "string",
+      "description": "The status based on the completion status of the investigation.",
+      "enum": [
+        "RUNNING",
+        "FAILED",
+        "SUCCESSFUL"
+      ],
+      "example": "RUNNING"
+    },
+    "Severity": {
+      "type": "string",
+      "description": "The severity assigned is based on the likelihood and impact of the indicators of compromise discovered in the investigation.",
+      "enum": [
+        "INFORMATIONAL",
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ],
+      "example": "HIGH"
+    },
+    "State": {
+      "type": "string",
+      "description": "The current state of the investigation. An archived investigation indicates you have completed reviewing the investigation.",
+      "enum": [
+        "ACTIVE",
+        "ARCHIVED"
+      ],
+      "example": "ACTIVE"
+    }
+  }
+}

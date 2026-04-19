@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-account-structure.json",
+  "description": "An AWS account to invite to become a member account in a behavior graph",
+  "type": "object",
+  "properties": {
+    "AccountId": {
+      "type": "string",
+      "description": "The account identifier of the AWS account.",
+      "example": "234567890123"
+    },
+    "EmailAddress": {
+      "type": "string",
+      "description": "The AWS account root user email address for the AWS account.",
+      "example": "security@example.com"
+    }
+  },
+  "required": [
+    "AccountId",
+    "EmailAddress"
+  ],
+  "name": "Account"
+}

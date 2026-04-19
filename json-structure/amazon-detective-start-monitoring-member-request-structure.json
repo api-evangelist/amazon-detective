@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-start-monitoring-member-request-structure.json",
+  "description": "Request to start monitoring a member account",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "AccountId": {
+      "type": "string",
+      "description": "The account ID of the member account to try to enable.",
+      "example": "234567890123"
+    }
+  },
+  "required": [
+    "GraphArn",
+    "AccountId"
+  ],
+  "name": "StartMonitoringMemberRequest"
+}

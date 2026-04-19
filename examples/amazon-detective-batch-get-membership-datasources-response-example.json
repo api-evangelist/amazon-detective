@@ -1,0 +1,8 @@
+{
+  "MembershipDatasources": [
+    "example-MembershipDatasource"
+  ],
+  "UnprocessedGraphs": [
+    "example-UnprocessedGraphs_it"
+  ]
+}

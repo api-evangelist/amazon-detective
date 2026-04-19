@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-create-graph-response-schema.json",
+  "title": "CreateGraphResponse",
+  "description": "Response from creating a behavior graph",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the new behavior graph",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    }
+  }
+}

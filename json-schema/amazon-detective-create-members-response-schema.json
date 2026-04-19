@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-create-members-response-schema.json",
+  "title": "CreateMembersResponse",
+  "description": "Response from creating member accounts",
+  "type": "object",
+  "properties": {
+    "Members": {
+      "type": "array",
+      "description": "The set of member account invitation or enablement requests.",
+      "items": {
+        "$ref": "#/components/schemas/MemberDetail"
+      }
+    },
+    "UnprocessedAccounts": {
+      "type": "array",
+      "description": "The list of accounts for which Detective was unable to process the invitation.",
+      "items": {
+        "$ref": "#/components/schemas/UnprocessedAccount"
+      }
+    }
+  }
+}

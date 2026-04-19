@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-start-investigation-request-structure.json",
+  "description": "Request to start an investigation",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "EntityArn": {
+      "type": "string",
+      "description": "The unique Amazon Resource Name (ARN) of the IAM user and IAM role.",
+      "example": "arn:aws:iam::123456789012:user/jsmith"
+    },
+    "ScopeStartTime": {
+      "type": "datetime",
+      "description": "The data and time when the investigation began.",
+      "example": "2025-01-01T00:00:00Z"
+    },
+    "ScopeEndTime": {
+      "type": "datetime",
+      "description": "The data and time when the investigation ended.",
+      "example": "2025-01-15T23:59:59Z"
+    }
+  },
+  "required": [
+    "GraphArn",
+    "EntityArn",
+    "ScopeStartTime",
+    "ScopeEndTime"
+  ],
+  "name": "StartInvestigationRequest"
+}

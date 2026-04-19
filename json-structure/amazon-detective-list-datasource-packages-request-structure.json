@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-list-datasource-packages-request-structure.json",
+  "description": "Request to list datasource packages",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "NextToken": {
+      "type": "string",
+      "description": "For requests to get the next page of results.",
+      "example": "abc123token"
+    },
+    "MaxResults": {
+      "type": "integer",
+      "description": "The total number of items to return.",
+      "example": 100
+    }
+  },
+  "required": [
+    "GraphArn"
+  ],
+  "name": "ListDatasourcePackagesRequest"
+}

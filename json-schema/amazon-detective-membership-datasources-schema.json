@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-membership-datasources-schema.json",
+  "title": "MembershipDatasources",
+  "description": "Details on data source packages for a member account in a behavior graph",
+  "type": "object",
+  "properties": {
+    "AccountId": {
+      "type": "string",
+      "description": "The account identifier of the AWS account.",
+      "example": "234567890123"
+    },
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the organization behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "DatasourcePackageIngestHistory": {
+      "type": "object",
+      "description": "Details on when a data source package was added to a behavior graph.",
+      "additionalProperties": {
+        "type": "object"
+      }
+    }
+  }
+}

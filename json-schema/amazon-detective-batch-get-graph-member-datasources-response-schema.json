@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-batch-get-graph-member-datasources-response-schema.json",
+  "title": "BatchGetGraphMemberDatasourcesResponse",
+  "description": "Response from getting datasource details for behavior graph members",
+  "type": "object",
+  "properties": {
+    "MemberDatasources": {
+      "type": "array",
+      "description": "Details on the data source packages active in the behavior graph.",
+      "items": {
+        "$ref": "#/components/schemas/MembershipDatasources"
+      }
+    },
+    "UnprocessedAccounts": {
+      "type": "array",
+      "description": "Accounts that data source package information could not be retrieved for.",
+      "items": {
+        "$ref": "#/components/schemas/UnprocessedAccount"
+      }
+    }
+  }
+}

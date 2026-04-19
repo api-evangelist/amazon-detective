@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-administrator-structure.json",
+  "description": "An organization admin account for Amazon Detective",
+  "type": "object",
+  "properties": {
+    "AccountId": {
+      "type": "string",
+      "description": "The AWS account identifier of the Detective administrator account.",
+      "example": "123456789012"
+    },
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the organization behavior graph.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "DelegationTime": {
+      "type": "datetime",
+      "description": "The date and time when the Detective administrator account was enabled.",
+      "example": "2025-01-15T10:00:00Z"
+    }
+  },
+  "name": "Administrator"
+}

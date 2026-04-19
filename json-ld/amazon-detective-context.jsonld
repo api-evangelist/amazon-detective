@@ -1,86 +1,296 @@
 {
   "@context": {
     "@version": 1.1,
-    "@vocab": "https://schema.org/",
-    "detective": "https://docs.aws.amazon.com/detective/latest/APIReference/",
-    "aws": "https://aws.amazon.com/",
-    "iam": "https://docs.aws.amazon.com/IAM/latest/UserGuide/",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dcterms": "http://purl.org/dc/terms/",
+    "amz": "https://amazonaws.com/detective/schema/",
     "schema": "https://schema.org/",
-
-    "BehaviorGraph": {
-      "@id": "detective:API_CreateGraph.html",
-      "@context": {
-        "Arn": {
-          "@id": "aws:arn",
-          "@type": "@id"
-        },
-        "CreatedTime": {
-          "@id": "dcterms:created",
-          "@type": "xsd:dateTime"
-        }
-      }
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "AcceptInvitationRequest": "amz:AcceptInvitationRequest",
+    "Account": "amz:Account",
+    "Administrator": "amz:Administrator",
+    "BatchGetGraphMemberDatasourcesRequest": "amz:BatchGetGraphMemberDatasourcesRequest",
+    "BatchGetGraphMemberDatasourcesResponse": "amz:BatchGetGraphMemberDatasourcesResponse",
+    "BatchGetMembershipDatasourcesRequest": "amz:BatchGetMembershipDatasourcesRequest",
+    "BatchGetMembershipDatasourcesResponse": "amz:BatchGetMembershipDatasourcesResponse",
+    "CreateGraphRequest": "amz:CreateGraphRequest",
+    "CreateGraphResponse": "amz:CreateGraphResponse",
+    "CreateMembersRequest": "amz:CreateMembersRequest",
+    "CreateMembersResponse": "amz:CreateMembersResponse",
+    "DatasourcePackageIngestDetail": "amz:DatasourcePackageIngestDetail",
+    "DeleteGraphRequest": "amz:DeleteGraphRequest",
+    "DeleteMembersRequest": "amz:DeleteMembersRequest",
+    "DeleteMembersResponse": "amz:DeleteMembersResponse",
+    "DescribeOrganizationConfigurationRequest": "amz:DescribeOrganizationConfigurationRequest",
+    "DescribeOrganizationConfigurationResponse": "amz:DescribeOrganizationConfigurationResponse",
+    "DisassociateMembershipRequest": "amz:DisassociateMembershipRequest",
+    "EnableOrganizationAdminAccountRequest": "amz:EnableOrganizationAdminAccountRequest",
+    "GetInvestigationRequest": "amz:GetInvestigationRequest",
+    "GetInvestigationResponse": "amz:GetInvestigationResponse",
+    "GetMembersRequest": "amz:GetMembersRequest",
+    "GetMembersResponse": "amz:GetMembersResponse",
+    "Graph": "amz:Graph",
+    "Indicator": "amz:Indicator",
+    "InvestigationDetail": "amz:InvestigationDetail",
+    "ListDatasourcePackagesRequest": "amz:ListDatasourcePackagesRequest",
+    "ListDatasourcePackagesResponse": "amz:ListDatasourcePackagesResponse",
+    "ListGraphsRequest": "amz:ListGraphsRequest",
+    "ListGraphsResponse": "amz:ListGraphsResponse",
+    "ListIndicatorsRequest": "amz:ListIndicatorsRequest",
+    "ListIndicatorsResponse": "amz:ListIndicatorsResponse",
+    "ListInvestigationsRequest": "amz:ListInvestigationsRequest",
+    "ListInvestigationsResponse": "amz:ListInvestigationsResponse",
+    "ListInvitationsRequest": "amz:ListInvitationsRequest",
+    "ListInvitationsResponse": "amz:ListInvitationsResponse",
+    "ListMembersRequest": "amz:ListMembersRequest",
+    "ListMembersResponse": "amz:ListMembersResponse",
+    "ListOrganizationAdminAccountsRequest": "amz:ListOrganizationAdminAccountsRequest",
+    "ListOrganizationAdminAccountsResponse": "amz:ListOrganizationAdminAccountsResponse",
+    "ListTagsForResourceResponse": "amz:ListTagsForResourceResponse",
+    "MemberDetail": "amz:MemberDetail",
+    "MembershipDatasources": {
+      "@id": "amz:MembershipDatasources",
+      "@container": "@set",
+      "@type": "xsd:string"
     },
-
-    "MemberDetail": {
-      "@id": "detective:API_MemberDetail.html",
-      "@context": {
-        "AccountId": {
-          "@id": "schema:identifier",
-          "@type": "xsd:string"
-        },
-        "EmailAddress": {
-          "@id": "schema:email",
-          "@type": "xsd:string"
-        },
-        "GraphArn": {
-          "@id": "aws:arn",
-          "@type": "@id"
-        },
-        "Status": {
-          "@id": "detective:MemberStatus",
-          "@type": "xsd:string"
-        },
-        "InvitedTime": {
-          "@id": "dcterms:created",
-          "@type": "xsd:dateTime"
-        },
-        "UpdatedTime": {
-          "@id": "dcterms:modified",
-          "@type": "xsd:dateTime"
-        }
-      }
+    "RejectInvitationRequest": "amz:RejectInvitationRequest",
+    "StartInvestigationRequest": "amz:StartInvestigationRequest",
+    "StartInvestigationResponse": "amz:StartInvestigationResponse",
+    "StartMonitoringMemberRequest": "amz:StartMonitoringMemberRequest",
+    "TagResourceRequest": "amz:TagResourceRequest",
+    "TimestampForCollection": "amz:TimestampForCollection",
+    "UnprocessedAccount": "amz:UnprocessedAccount",
+    "UnprocessedGraph": "amz:UnprocessedGraph",
+    "UpdateDatasourcePackagesRequest": "amz:UpdateDatasourcePackagesRequest",
+    "UpdateInvestigationStateRequest": "amz:UpdateInvestigationStateRequest",
+    "UpdateOrganizationConfigurationRequest": "amz:UpdateOrganizationConfigurationRequest",
+    "AccountId": {
+      "@id": "amz:AccountId",
+      "@type": "xsd:string"
     },
-
-    "Investigation": {
-      "@id": "detective:API_StartInvestigation.html",
-      "@context": {
-        "InvestigationId": {
-          "@id": "schema:identifier",
-          "@type": "xsd:string"
-        },
-        "EntityArn": {
-          "@id": "aws:arn",
-          "@type": "@id"
-        },
-        "ScopeStartTime": {
-          "@id": "schema:startDate",
-          "@type": "xsd:dateTime"
-        },
-        "ScopeEndTime": {
-          "@id": "schema:endDate",
-          "@type": "xsd:dateTime"
-        },
-        "Status": {
-          "@id": "detective:InvestigationStatus",
-          "@type": "xsd:string"
-        },
-        "CreatedTime": {
-          "@id": "dcterms:created",
-          "@type": "xsd:dateTime"
-        }
-      }
+    "AccountIds": {
+      "@id": "amz:AccountIds",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "Accounts": {
+      "@id": "amz:Accounts",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "AdministratorId": {
+      "@id": "amz:AdministratorId",
+      "@type": "xsd:string"
+    },
+    "Administrators": {
+      "@id": "amz:Administrators",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "Arn": {
+      "@id": "amz:Arn",
+      "@type": "xsd:string"
+    },
+    "AutoEnable": {
+      "@id": "amz:AutoEnable",
+      "@type": "xsd:boolean"
+    },
+    "CreatedTime": {
+      "@id": "amz:CreatedTime",
+      "@type": "xsd:dateTime"
+    },
+    "DatasourcePackageIngestHistory": {
+      "@id": "amz:DatasourcePackageIngestHistory",
+      "@type": "@id"
+    },
+    "DatasourcePackageIngestState": {
+      "@id": "amz:DatasourcePackageIngestState",
+      "@type": "xsd:string"
+    },
+    "DatasourcePackages": {
+      "@id": "amz:DatasourcePackages",
+      "@type": "@id"
+    },
+    "DelegationTime": {
+      "@id": "amz:DelegationTime",
+      "@type": "xsd:dateTime"
+    },
+    "DisableEmailNotification": {
+      "@id": "amz:DisableEmailNotification",
+      "@type": "xsd:boolean"
+    },
+    "DisabledReason": {
+      "@id": "amz:DisabledReason",
+      "@type": "xsd:string"
+    },
+    "EmailAddress": {
+      "@id": "amz:EmailAddress",
+      "@type": "xsd:string"
+    },
+    "EntityArn": {
+      "@id": "amz:EntityArn",
+      "@type": "xsd:string"
+    },
+    "EntityType": {
+      "@id": "amz:EntityType",
+      "@type": "xsd:string"
+    },
+    "Field": {
+      "@id": "amz:Field",
+      "@type": "xsd:string"
+    },
+    "FilterCriteria": {
+      "@id": "amz:FilterCriteria",
+      "@type": "@id"
+    },
+    "GraphArn": {
+      "@id": "amz:GraphArn",
+      "@type": "xsd:string"
+    },
+    "GraphArns": {
+      "@id": "amz:GraphArns",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "GraphList": {
+      "@id": "amz:GraphList",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "IndicatorDetail": {
+      "@id": "amz:IndicatorDetail",
+      "@type": "@id"
+    },
+    "IndicatorType": {
+      "@id": "amz:IndicatorType",
+      "@type": "xsd:string"
+    },
+    "Indicators": {
+      "@id": "amz:Indicators",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "InvestigationDetails": {
+      "@id": "amz:InvestigationDetails",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "InvestigationId": {
+      "@id": "amz:InvestigationId",
+      "@type": "xsd:string"
+    },
+    "InvitationType": {
+      "@id": "amz:InvitationType",
+      "@type": "xsd:string"
+    },
+    "Invitations": {
+      "@id": "amz:Invitations",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "InvitedTime": {
+      "@id": "amz:InvitedTime",
+      "@type": "xsd:dateTime"
+    },
+    "LastIngestStateChange": {
+      "@id": "amz:LastIngestStateChange",
+      "@type": "@id"
+    },
+    "MaxResults": {
+      "@id": "amz:MaxResults",
+      "@type": "xsd:integer"
+    },
+    "MemberDatasources": {
+      "@id": "amz:MemberDatasources",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "MemberDetails": {
+      "@id": "amz:MemberDetails",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "Members": {
+      "@id": "amz:Members",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "Message": {
+      "@id": "amz:Message",
+      "@type": "xsd:string"
+    },
+    "NextToken": {
+      "@id": "amz:NextToken",
+      "@type": "xsd:string"
+    },
+    "PercentOfGraphUtilization": {
+      "@id": "amz:PercentOfGraphUtilization",
+      "@type": "xsd:decimal"
+    },
+    "Reason": {
+      "@id": "amz:Reason",
+      "@type": "xsd:string"
+    },
+    "ScopeEndTime": {
+      "@id": "amz:ScopeEndTime",
+      "@type": "xsd:dateTime"
+    },
+    "ScopeStartTime": {
+      "@id": "amz:ScopeStartTime",
+      "@type": "xsd:dateTime"
+    },
+    "Severity": {
+      "@id": "amz:Severity",
+      "@type": "xsd:string"
+    },
+    "SortCriteria": {
+      "@id": "amz:SortCriteria",
+      "@type": "@id"
+    },
+    "SortOrder": {
+      "@id": "amz:SortOrder",
+      "@type": "xsd:string"
+    },
+    "State": {
+      "@id": "amz:State",
+      "@type": "xsd:string"
+    },
+    "Status": {
+      "@id": "amz:Status",
+      "@type": "xsd:string"
+    },
+    "Tags": {
+      "@id": "amz:Tags",
+      "@type": "@id"
+    },
+    "Timestamp": {
+      "@id": "amz:Timestamp",
+      "@type": "xsd:dateTime"
+    },
+    "UnprocessedAccounts": {
+      "@id": "amz:UnprocessedAccounts",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "UnprocessedGraphs": {
+      "@id": "amz:UnprocessedGraphs",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "UpdatedTime": {
+      "@id": "amz:UpdatedTime",
+      "@type": "xsd:dateTime"
+    },
+    "Value": {
+      "@id": "amz:Value",
+      "@type": "xsd:string"
+    },
+    "VolumeUsageInBytes": {
+      "@id": "amz:VolumeUsageInBytes",
+      "@type": "xsd:integer"
+    },
+    "VolumeUsageUpdatedTime": {
+      "@id": "amz:VolumeUsageUpdatedTime",
+      "@type": "xsd:dateTime"
     }
   }
 }

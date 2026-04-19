@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-structure/amazon-detective-list-organization-admin-accounts-request-structure.json",
+  "description": "Request to list organization admin accounts",
+  "type": "object",
+  "properties": {
+    "NextToken": {
+      "type": "string",
+      "description": "The pagination token for the next page of results.",
+      "example": "abc123token"
+    },
+    "MaxResults": {
+      "type": "integer",
+      "description": "The maximum number of results to return.",
+      "example": 100
+    }
+  },
+  "name": "ListOrganizationAdminAccountsRequest"
+}

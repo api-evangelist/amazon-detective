@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-create-graph-request-schema.json",
+  "title": "CreateGraphRequest",
+  "description": "Request to create a new behavior graph",
+  "type": "object",
+  "properties": {
+    "Tags": {
+      "type": "object",
+      "description": "The tags to assign to the new behavior graph",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}

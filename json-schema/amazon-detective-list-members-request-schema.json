@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-detective/refs/heads/main/json-schema/amazon-detective-list-members-request-schema.json",
+  "title": "ListMembersRequest",
+  "description": "Request to list member accounts",
+  "type": "object",
+  "properties": {
+    "GraphArn": {
+      "type": "string",
+      "description": "The ARN of the behavior graph to list member accounts for.",
+      "example": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456"
+    },
+    "NextToken": {
+      "type": "string",
+      "description": "For requests to retrieve the next page of member account results.",
+      "example": "abc123token"
+    },
+    "MaxResults": {
+      "type": "integer",
+      "description": "The maximum number of member accounts to include in the response.",
+      "example": 100
+    }
+  },
+  "required": [
+    "GraphArn"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "GraphArn": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+  "NextToken": "abc123token",
+  "MaxResults": 100,
+  "FilterCriteria": {
+    "Severity": {
+      "Value": "LOW"
+    },
+    "Status": {
+      "Value": "FAILED"
+    },
+    "State": {
+      "Value": "ACTIVE"
+    }
+  },
+  "SortCriteria": {
+    "Field": "SEVERITY",
+    "SortOrder": "ASC"
+  }
+}
