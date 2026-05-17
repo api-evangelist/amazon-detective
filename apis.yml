@@ -47,7 +47,7 @@ apis:
         url: json-structure/amazon-detective-member-detail-structure.json
       - type: JSONStructure
         url: json-structure/amazon-detective-investigation-detail-structure.json
-      - type: JSON-LD
+      - type: JSONLD
         url: json-ld/amazon-detective-context.jsonld
       - type: Example
         url: examples/amazon-detective-graph-example.json
