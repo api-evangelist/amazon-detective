@@ -1,0 +1,250 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Amazon Detective — Members
+  description: 'Amazon Detective — Members. 5 operations. Lead operation: Amazon Detective Create Members. Self-contained
+    Naftiko capability covering one Amazon Detective business surface.'
+  tags:
+  - Amazon Detective
+  - Members
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AMAZON_DETECTIVE_API_KEY: AMAZON_DETECTIVE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: amazon-detective-members
+    baseUri: https://api.detective.{region}.amazonaws.com
+    description: Amazon Detective — Members business capability. Self-contained, no shared references.
+    resources:
+    - name: graph-members
+      path: /graph/members
+      operations:
+      - name: createmembers
+        method: POST
+        description: Amazon Detective Create Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: graph-members-get
+      path: /graph/members/get
+      operations:
+      - name: getmembers
+        method: POST
+        description: Amazon Detective Get Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: graph-members-list
+      path: /graph/members/list
+      operations:
+      - name: listmembers
+        method: POST
+        description: Amazon Detective List Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: graph-members-monitoringEnable
+      path: /graph/members/monitoringEnable
+      operations:
+      - name: startmonitoringmember
+        method: POST
+        description: Amazon Detective Start Monitoring Member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: graph-members-removal
+      path: /graph/members/removal
+      operations:
+      - name: deletemembers
+        method: POST
+        description: Amazon Detective Delete Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{env.AMAZON_DETECTIVE_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: amazon-detective-members-rest
+    port: 8080
+    description: REST adapter for Amazon Detective — Members. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/graph/members
+      name: graph-members
+      description: REST surface for graph-members.
+      operations:
+      - method: POST
+        name: createmembers
+        description: Amazon Detective Create Members
+        call: amazon-detective-members.createmembers
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/graph/members/get
+      name: graph-members-get
+      description: REST surface for graph-members-get.
+      operations:
+      - method: POST
+        name: getmembers
+        description: Amazon Detective Get Members
+        call: amazon-detective-members.getmembers
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/graph/members/list
+      name: graph-members-list
+      description: REST surface for graph-members-list.
+      operations:
+      - method: POST
+        name: listmembers
+        description: Amazon Detective List Members
+        call: amazon-detective-members.listmembers
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/graph/members/monitoringenable
+      name: graph-members-monitoringenable
+      description: REST surface for graph-members-monitoringEnable.
+      operations:
+      - method: POST
+        name: startmonitoringmember
+        description: Amazon Detective Start Monitoring Member
+        call: amazon-detective-members.startmonitoringmember
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/graph/members/removal
+      name: graph-members-removal
+      description: REST surface for graph-members-removal.
+      operations:
+      - method: POST
+        name: deletemembers
+        description: Amazon Detective Delete Members
+        call: amazon-detective-members.deletemembers
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: amazon-detective-members-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Amazon Detective — Members. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: amazon-detective-create-members
+      description: Amazon Detective Create Members
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: amazon-detective-members.createmembers
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: amazon-detective-get-members
+      description: Amazon Detective Get Members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: amazon-detective-members.getmembers
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: amazon-detective-list-members
+      description: Amazon Detective List Members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: amazon-detective-members.listmembers
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: amazon-detective-start-monitoring-member
+      description: Amazon Detective Start Monitoring Member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: amazon-detective-members.startmonitoringmember
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: amazon-detective-delete-members
+      description: Amazon Detective Delete Members
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: amazon-detective-members.deletemembers
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
