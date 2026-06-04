@@ -1,0 +1,105 @@
+arazzo: 1.0.1
+info:
+  title: Amazon Detective Start Monitoring a Member Account
+  summary: Invite a member account, enable data ingest for it, and confirm it is being monitored.
+  description: >-
+    Brings a member account into active data ingest in an Amazon Detective
+    behavior graph. The workflow invites the account, enables monitoring so the
+    account begins contributing data, and then reads back its membership record
+    to confirm it has reached an enabled status. It branches on whether the
+    invitation produced any unprocessed accounts before attempting to enable
+    monitoring. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: detectiveApi
+  url: ../openapi/amazon-detective-openapi.yml
+  type: openapi
+workflows:
+- workflowId: start-monitoring-member
+  summary: Invite a member account, enable data ingest, and verify its monitoring status.
+  description: >-
+    Invites a single AWS account into a behavior graph, starts data ingest for
+    it, and reads back its membership detail to confirm monitoring is active.
+    Branches on whether the invite returned unprocessed accounts.
+  inputs:
+    type: object
+    required:
+    - graphArn
+    - accountId
+    - emailAddress
+    properties:
+      graphArn:
+        type: string
+        description: The ARN of the behavior graph to add the member to.
+      accountId:
+        type: string
+        description: The AWS account identifier of the member to invite and monitor.
+      emailAddress:
+        type: string
+        description: The root user email address of the member account.
+      message:
+        type: string
+        description: The invitation message shown to the member account.
+  steps:
+  - stepId: inviteMember
+    description: >-
+      Invite the AWS account to become a member account in the behavior graph.
+    operationId: createMembers
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        Message: $inputs.message
+        Accounts:
+        - AccountId: $inputs.accountId
+          EmailAddress: $inputs.emailAddress
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      members: $response.body#/Members
+      unprocessedAccounts: $response.body#/UnprocessedAccounts
+    onSuccess:
+    - name: invited
+      type: goto
+      stepId: enableMonitoring
+      criteria:
+      - context: $response.body
+        condition: $.UnprocessedAccounts.length == 0
+        type: jsonpath
+    - name: inviteFailed
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.UnprocessedAccounts.length > 0
+        type: jsonpath
+  - stepId: enableMonitoring
+    description: >-
+      Enable data ingest for the member account so it begins contributing data
+      to the behavior graph.
+    operationId: startMonitoringMember
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        AccountId: $inputs.accountId
+    successCriteria:
+    - condition: $statusCode == 200
+  - stepId: confirmMonitoring
+    description: >-
+      Read back the membership record for the account to confirm it has reached
+      an enabled, monitored status.
+    operationId: getMembers
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        AccountIds:
+        - $inputs.accountId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      memberDetails: $response.body#/MemberDetails
+  outputs:
+    members: $steps.inviteMember.outputs.members
+    memberDetails: $steps.confirmMonitoring.outputs.memberDetails

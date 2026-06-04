@@ -1,0 +1,115 @@
+arazzo: 1.0.1
+info:
+  title: Amazon Detective Onboard a Behavior Graph with Member Accounts
+  summary: Create a new behavior graph and invite member accounts, then confirm their membership status.
+  description: >-
+    Stands up a fresh Amazon Detective behavior graph for the calling account
+    and immediately invites one or more AWS member accounts to contribute data
+    to it. After the invitations are sent the workflow reads back the membership
+    details so the caller can confirm the invited accounts were registered and
+    inspect their current status. Every step spells out its request inline so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: detectiveApi
+  url: ../openapi/amazon-detective-openapi.yml
+  type: openapi
+workflows:
+- workflowId: graph-onboard-members
+  summary: Create a behavior graph, invite member accounts, and read back their membership details.
+  description: >-
+    Creates a behavior graph, captures its ARN, invites the supplied member
+    accounts into that graph, and then retrieves the membership records for the
+    invited accounts. Branches on whether the create-members call returned any
+    unprocessed accounts.
+  inputs:
+    type: object
+    required:
+    - accounts
+    properties:
+      message:
+        type: string
+        description: The invitation message shown to the invited member accounts.
+      tags:
+        type: object
+        description: Optional tag name/value pairs to apply to the new behavior graph.
+      accounts:
+        type: array
+        description: The AWS accounts to invite, each with an AccountId and EmailAddress.
+        items:
+          type: object
+          properties:
+            AccountId:
+              type: string
+            EmailAddress:
+              type: string
+      accountIds:
+        type: array
+        description: The list of invited account identifiers used to read back membership details.
+        items:
+          type: string
+  steps:
+  - stepId: createGraph
+    description: >-
+      Create a new behavior graph for the calling account and capture the
+      returned graph ARN for use by the subsequent steps.
+    operationId: createGraph
+    requestBody:
+      contentType: application/json
+      payload:
+        Tags: $inputs.tags
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      graphArn: $response.body#/GraphArn
+  - stepId: inviteMembers
+    description: >-
+      Invite the supplied AWS accounts to become member accounts in the newly
+      created behavior graph.
+    operationId: createMembers
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $steps.createGraph.outputs.graphArn
+        Message: $inputs.message
+        Accounts: $inputs.accounts
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      members: $response.body#/Members
+      unprocessedAccounts: $response.body#/UnprocessedAccounts
+    onSuccess:
+    - name: allInvited
+      type: goto
+      stepId: confirmMembers
+      criteria:
+      - context: $response.body
+        condition: $.UnprocessedAccounts.length == 0
+        type: jsonpath
+    - name: someUnprocessed
+      type: goto
+      stepId: confirmMembers
+      criteria:
+      - context: $response.body
+        condition: $.UnprocessedAccounts.length > 0
+        type: jsonpath
+  - stepId: confirmMembers
+    description: >-
+      Read back the membership details for the invited accounts to confirm they
+      were registered in the behavior graph and inspect their current status.
+    operationId: getMembers
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $steps.createGraph.outputs.graphArn
+        AccountIds: $inputs.accountIds
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      memberDetails: $response.body#/MemberDetails
+      unresolvedAccounts: $response.body#/UnprocessedAccounts
+  outputs:
+    graphArn: $steps.createGraph.outputs.graphArn
+    invitedMembers: $steps.inviteMembers.outputs.members
+    memberDetails: $steps.confirmMembers.outputs.memberDetails

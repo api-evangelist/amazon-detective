@@ -71,6 +71,30 @@ apis:
   - type: NaftikoCapability
     url: capabilities/amazon-detective-tags.yaml
 common:
+- type: ArazzoWorkflows
+  url: arazzo/
+  workflows:
+  - url: arazzo/amazon-detective-archive-resolved-investigation-workflow.yml
+    name: Amazon Detective Archive a Resolved Investigation
+    summary: Find a behavior graph's investigations, inspect one, and archive it when it has succeeded.
+  - url: arazzo/amazon-detective-enable-datasource-package-workflow.yml
+    name: Amazon Detective Enable a Data Source Package
+    summary: Start a data source package on a behavior graph and verify its ingest state.
+  - url: arazzo/amazon-detective-graph-onboard-members-workflow.yml
+    name: Amazon Detective Onboard a Behavior Graph with Member Accounts
+    summary: Create a new behavior graph and invite member accounts, then confirm their membership status.
+  - url: arazzo/amazon-detective-member-accept-invitation-workflow.yml
+    name: Amazon Detective Member Accepts a Behavior Graph Invitation
+    summary: List open invitations for a member account, accept one, and confirm enrollment.
+  - url: arazzo/amazon-detective-run-investigation-workflow.yml
+    name: Amazon Detective Run an Investigation and Collect Indicators
+    summary: Start an investigation on an entity, poll until it completes, then list its indicators.
+  - url: arazzo/amazon-detective-start-monitoring-member-workflow.yml
+    name: Amazon Detective Start Monitoring a Member Account
+    summary: Invite a member account, enable data ingest for it, and confirm it is being monitored.
+  - url: arazzo/amazon-detective-tag-behavior-graph-workflow.yml
+    name: Amazon Detective Tag a Behavior Graph
+    summary: Discover behavior graphs, apply tag values to one, and read the tags back.
 - type: Portal
   url: https://aws.amazon.com/
 - type: Website

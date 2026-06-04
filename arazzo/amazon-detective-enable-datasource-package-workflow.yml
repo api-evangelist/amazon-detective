@@ -1,0 +1,100 @@
+arazzo: 1.0.1
+info:
+  title: Amazon Detective Enable a Data Source Package
+  summary: Start a data source package on a behavior graph and verify its ingest state.
+  description: >-
+    Turns on an optional Amazon Detective data source package, such as EKS_AUDIT
+    or AD_AUDIT, for a behavior graph and then confirms the change. The workflow
+    submits the update, lists the data source packages on the graph to observe
+    their ingest state, and reads back the per-member ingest detail for the
+    requested accounts. It branches on whether the package reports an active
+    ingest state. Every step spells out its request inline so the flow can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: detectiveApi
+  url: ../openapi/amazon-detective-openapi.yml
+  type: openapi
+workflows:
+- workflowId: enable-datasource-package
+  summary: Update data source packages on a graph, then verify ingest state at graph and member level.
+  description: >-
+    Starts the requested data source packages for a behavior graph, lists the
+    package ingest states on the graph, and retrieves the per-member ingest
+    detail for the supplied accounts. Branches on whether any package ingest
+    state is reported.
+  inputs:
+    type: object
+    required:
+    - graphArn
+    - datasourcePackages
+    - accountIds
+    properties:
+      graphArn:
+        type: string
+        description: The ARN of the behavior graph to update.
+      datasourcePackages:
+        type: array
+        description: The data source packages to start (e.g. DETECTIVE_CORE, EKS_AUDIT, AD_AUDIT).
+        items:
+          type: string
+      accountIds:
+        type: array
+        description: The member account identifiers to inspect for ingest history.
+        items:
+          type: string
+      maxResults:
+        type: integer
+        description: The maximum number of data source packages to return when listing.
+  steps:
+  - stepId: updatePackages
+    description: >-
+      Start the requested data source packages for the behavior graph.
+    operationId: updateDatasourcePackages
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        DatasourcePackages: $inputs.datasourcePackages
+    successCriteria:
+    - condition: $statusCode == 200
+  - stepId: listPackages
+    description: >-
+      List the data source packages on the behavior graph to observe their
+      current ingest state after the update.
+    operationId: listDatasourcePackages
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        MaxResults: $inputs.maxResults
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      datasourcePackages: $response.body#/DatasourcePackages
+    onSuccess:
+    - name: packagesPresent
+      type: goto
+      stepId: getMemberDatasources
+      criteria:
+      - context: $response.body
+        condition: $.DatasourcePackages
+        type: jsonpath
+  - stepId: getMemberDatasources
+    description: >-
+      Retrieve the per-member data source package ingest history for the
+      supplied accounts to confirm the package is being ingested.
+    operationId: batchGetGraphMemberDatasources
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        AccountIds: $inputs.accountIds
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      memberDatasources: $response.body#/MemberDatasources
+      unprocessedAccounts: $response.body#/UnprocessedAccounts
+  outputs:
+    datasourcePackages: $steps.listPackages.outputs.datasourcePackages
+    memberDatasources: $steps.getMemberDatasources.outputs.memberDatasources

@@ -1,0 +1,98 @@
+arazzo: 1.0.1
+info:
+  title: Amazon Detective Tag a Behavior Graph
+  summary: Discover behavior graphs, apply tag values to one, and read the tags back.
+  description: >-
+    Applies governance tags to an Amazon Detective behavior graph and confirms
+    the result. The workflow lists the behavior graphs administered by the
+    calling account, applies the supplied tag name/value pairs to the target
+    graph ARN, and then reads the tags back from the graph to verify they were
+    stored. It branches on whether any graphs were returned. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: detectiveApi
+  url: ../openapi/amazon-detective-openapi.yml
+  type: openapi
+workflows:
+- workflowId: tag-behavior-graph
+  summary: List behavior graphs, apply tags to one, and verify the applied tags.
+  description: >-
+    Lists the behavior graphs the calling account administers, applies the
+    supplied tags to the target graph ARN, and reads the tags back to confirm
+    they were stored. Branches on whether any graphs were returned.
+  inputs:
+    type: object
+    required:
+    - resourceArn
+    - tags
+    properties:
+      resourceArn:
+        type: string
+        description: The ARN of the behavior graph to tag.
+      tags:
+        type: object
+        description: The tag name/value pairs to apply to the behavior graph.
+      maxResults:
+        type: integer
+        description: The maximum number of behavior graphs to return when listing.
+  steps:
+  - stepId: listGraphs
+    description: >-
+      List the behavior graphs that the calling account administers to confirm
+      the target graph exists before tagging it.
+    operationId: listGraphs
+    requestBody:
+      contentType: application/json
+      payload:
+        MaxResults: $inputs.maxResults
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      graphList: $response.body#/GraphList
+    onSuccess:
+    - name: graphsFound
+      type: goto
+      stepId: applyTags
+      criteria:
+      - context: $response.body
+        condition: $.GraphList.length > 0
+        type: jsonpath
+    - name: noGraphs
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.GraphList.length == 0
+        type: jsonpath
+  - stepId: applyTags
+    description: >-
+      Apply the supplied tag values to the target behavior graph. The tag
+      operation returns 204 No Content on success.
+    operationId: tagResource
+    parameters:
+    - name: resourceArn
+      in: path
+      value: $inputs.resourceArn
+    requestBody:
+      contentType: application/json
+      payload:
+        Tags: $inputs.tags
+    successCriteria:
+    - condition: $statusCode == 204
+  - stepId: verifyTags
+    description: >-
+      Read the tags back from the behavior graph to confirm the supplied tag
+      values were stored.
+    operationId: listTagsForResource
+    parameters:
+    - name: resourceArn
+      in: path
+      value: $inputs.resourceArn
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      tags: $response.body#/Tags
+  outputs:
+    graphList: $steps.listGraphs.outputs.graphList
+    tags: $steps.verifyTags.outputs.tags

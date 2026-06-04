@@ -1,0 +1,97 @@
+arazzo: 1.0.1
+info:
+  title: Amazon Detective Member Accepts a Behavior Graph Invitation
+  summary: List open invitations for a member account, accept one, and confirm enrollment.
+  description: >-
+    Runs the member-account side of Amazon Detective onboarding. The workflow
+    lists the open and accepted behavior graph invitations for the calling
+    member account, accepts the invitation for the requested graph so the
+    account begins contributing data, and then reads back its own membership
+    record to confirm enrollment. Branches on whether any invitations exist
+    before attempting to accept. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: detectiveApi
+  url: ../openapi/amazon-detective-openapi.yml
+  type: openapi
+workflows:
+- workflowId: member-accept-invitation
+  summary: List invitations, accept the one for a target behavior graph, and verify membership.
+  description: >-
+    Lists pending behavior graph invitations for the member account, accepts the
+    invitation for the supplied graph ARN, and confirms the account's membership
+    status. Branches on whether the invitation list is empty.
+  inputs:
+    type: object
+    required:
+    - graphArn
+    - accountId
+    properties:
+      graphArn:
+        type: string
+        description: The ARN of the behavior graph whose invitation should be accepted.
+      accountId:
+        type: string
+        description: The member account identifier used to read back membership details.
+      maxResults:
+        type: integer
+        description: The maximum number of invitations to return when listing.
+  steps:
+  - stepId: listInvitations
+    description: >-
+      Retrieve the open and accepted behavior graph invitations for the calling
+      member account.
+    operationId: listInvitations
+    requestBody:
+      contentType: application/json
+      payload:
+        MaxResults: $inputs.maxResults
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      invitations: $response.body#/Invitations
+    onSuccess:
+    - name: hasInvitations
+      type: goto
+      stepId: acceptInvitation
+      criteria:
+      - context: $response.body
+        condition: $.Invitations.length > 0
+        type: jsonpath
+    - name: noInvitations
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.Invitations.length == 0
+        type: jsonpath
+  - stepId: acceptInvitation
+    description: >-
+      Accept the invitation for the target behavior graph so the member account
+      begins contributing data to it.
+    operationId: acceptInvitation
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+    successCriteria:
+    - condition: $statusCode == 200
+  - stepId: confirmMembership
+    description: >-
+      Read back the membership record for the member account to confirm it is
+      now enrolled in the behavior graph.
+    operationId: getMembers
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        AccountIds:
+        - $inputs.accountId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      memberDetails: $response.body#/MemberDetails
+  outputs:
+    invitations: $steps.listInvitations.outputs.invitations
+    memberDetails: $steps.confirmMembership.outputs.memberDetails

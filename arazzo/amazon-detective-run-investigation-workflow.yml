@@ -1,0 +1,123 @@
+arazzo: 1.0.1
+info:
+  title: Amazon Detective Run an Investigation and Collect Indicators
+  summary: Start an investigation on an entity, poll until it completes, then list its indicators.
+  description: >-
+    Drives a full Amazon Detective investigation. The workflow starts an
+    investigation on a target IAM entity within a behavior graph for a given
+    scope window, polls the investigation until its status reaches a terminal
+    value, and then retrieves the indicators of compromise that the
+    investigation surfaced. The poll loop reruns the status check while the
+    investigation is still RUNNING and branches to collect indicators only once
+    it succeeds. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: detectiveApi
+  url: ../openapi/amazon-detective-openapi.yml
+  type: openapi
+workflows:
+- workflowId: run-investigation
+  summary: Start an investigation, poll to completion, and list the resulting indicators.
+  description: >-
+    Starts an investigation on an entity, captures the investigation ID, polls
+    getInvestigation until the status leaves RUNNING, and then lists the
+    indicators for a successful investigation. Branches on the terminal status.
+  inputs:
+    type: object
+    required:
+    - graphArn
+    - entityArn
+    - scopeStartTime
+    - scopeEndTime
+    properties:
+      graphArn:
+        type: string
+        description: The ARN of the behavior graph to investigate within.
+      entityArn:
+        type: string
+        description: The ARN of the IAM user or IAM role entity to investigate.
+      scopeStartTime:
+        type: string
+        description: The start of the investigation scope window (ISO 8601 date-time).
+      scopeEndTime:
+        type: string
+        description: The end of the investigation scope window (ISO 8601 date-time).
+      indicatorType:
+        type: string
+        description: Optional indicator type used to filter the listed indicators.
+  steps:
+  - stepId: startInvestigation
+    description: >-
+      Initiate a Detective investigation on the target entity within the
+      behavior graph and capture the returned investigation ID.
+    operationId: startInvestigation
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        EntityArn: $inputs.entityArn
+        ScopeStartTime: $inputs.scopeStartTime
+        ScopeEndTime: $inputs.scopeEndTime
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      investigationId: $response.body#/InvestigationId
+  - stepId: pollInvestigation
+    description: >-
+      Fetch the current investigation results. While the status is still RUNNING
+      the step loops back on itself; once the status is SUCCESSFUL it proceeds to
+      collect indicators, and on FAILED it ends the workflow.
+    operationId: getInvestigation
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        InvestigationId: $steps.startInvestigation.outputs.investigationId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/Status
+      severity: $response.body#/Severity
+      state: $response.body#/State
+    onSuccess:
+    - name: stillRunning
+      type: goto
+      stepId: pollInvestigation
+      criteria:
+      - context: $response.body
+        condition: $.Status == "RUNNING"
+        type: jsonpath
+    - name: succeeded
+      type: goto
+      stepId: listIndicators
+      criteria:
+      - context: $response.body
+        condition: $.Status == "SUCCESSFUL"
+        type: jsonpath
+    - name: failed
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.Status == "FAILED"
+        type: jsonpath
+  - stepId: listIndicators
+    description: >-
+      Retrieve the indicators of compromise surfaced by the completed
+      investigation, optionally narrowed by indicator type.
+    operationId: listIndicators
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        InvestigationId: $steps.startInvestigation.outputs.investigationId
+        IndicatorType: $inputs.indicatorType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      indicators: $response.body#/Indicators
+  outputs:
+    investigationId: $steps.startInvestigation.outputs.investigationId
+    status: $steps.pollInvestigation.outputs.status
+    severity: $steps.pollInvestigation.outputs.severity
+    indicators: $steps.listIndicators.outputs.indicators

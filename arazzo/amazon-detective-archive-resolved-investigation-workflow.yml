@@ -1,0 +1,101 @@
+arazzo: 1.0.1
+info:
+  title: Amazon Detective Archive a Resolved Investigation
+  summary: Find a behavior graph's investigations, inspect one, and archive it when it has succeeded.
+  description: >-
+    Cleans up the Amazon Detective investigation queue by archiving completed
+    work. The workflow lists the investigations on a behavior graph, reads the
+    detail of a chosen investigation, and archives it only when its status is
+    SUCCESSFUL so that active or failed investigations are left untouched. It
+    branches on the investigation status before changing state. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: detectiveApi
+  url: ../openapi/amazon-detective-openapi.yml
+  type: openapi
+workflows:
+- workflowId: archive-resolved-investigation
+  summary: List investigations, inspect one, and archive it when its status is SUCCESSFUL.
+  description: >-
+    Lists investigations for a behavior graph, retrieves the full detail of the
+    supplied investigation, and sets its state to ARCHIVED only when the
+    investigation has completed successfully. Branches on the investigation
+    status.
+  inputs:
+    type: object
+    required:
+    - graphArn
+    - investigationId
+    properties:
+      graphArn:
+        type: string
+        description: The ARN of the behavior graph that owns the investigations.
+      investigationId:
+        type: string
+        description: The identifier of the investigation to inspect and archive.
+      maxResults:
+        type: integer
+        description: The maximum number of investigations to return when listing.
+  steps:
+  - stepId: listInvestigations
+    description: >-
+      List the investigations on the behavior graph to provide context for the
+      archive decision.
+    operationId: listInvestigations
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        MaxResults: $inputs.maxResults
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      investigationDetails: $response.body#/InvestigationDetails
+  - stepId: getInvestigation
+    description: >-
+      Retrieve the full detail of the target investigation so its completion
+      status can be evaluated before archiving.
+    operationId: getInvestigation
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        InvestigationId: $inputs.investigationId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/Status
+      state: $response.body#/State
+      severity: $response.body#/Severity
+    onSuccess:
+    - name: succeeded
+      type: goto
+      stepId: archiveInvestigation
+      criteria:
+      - context: $response.body
+        condition: $.Status == "SUCCESSFUL"
+        type: jsonpath
+    - name: notSucceeded
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.Status != "SUCCESSFUL"
+        type: jsonpath
+  - stepId: archiveInvestigation
+    description: >-
+      Set the investigation state to ARCHIVED now that it has completed
+      successfully.
+    operationId: updateInvestigationState
+    requestBody:
+      contentType: application/json
+      payload:
+        GraphArn: $inputs.graphArn
+        InvestigationId: $inputs.investigationId
+        State: ARCHIVED
+    successCriteria:
+    - condition: $statusCode == 200
+  outputs:
+    investigationDetails: $steps.listInvestigations.outputs.investigationDetails
+    status: $steps.getInvestigation.outputs.status
