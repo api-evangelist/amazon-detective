@@ -1,0 +1,527 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Amazon Detective",
+    "version": "2018-10-26"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Graph",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective Create Graph",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new behavior graph for the calling account and sets it as the administrator account."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Delete Graph",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.detective.{region}.amazonaws.com/graph",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Disables Amazon Detective and queues the behavior graph for deletion. This operation requires the behavior graph ARN in the request."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Graphs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graphs/list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the list of behavior graphs that the calling account is an administrator account of. This operation can only be called by a Detective administrator account."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Members",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective Create Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph. This operation can only be called by the administrator account."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Delete Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members/removal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes the specified member accounts from the behavior graph. The removed accounts no longer contribute data to the behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Get Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members/get",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the membership details for specified member accounts for a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members/list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieves the list of member accounts for a behavior graph. Does not return member accounts that were removed."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Start Monitoring Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members/monitoringEnable",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a request to enable data ingest for a member account that has a status of ACCEPTED_BUT_DISABLED."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Invitations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective Accept Invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.detective.{region}.amazonaws.com/invitation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Accepts an invitation for the member account to contribute data to a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Reject Invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.detective.{region}.amazonaws.com/invitation/removal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rejects an invitation to contribute the account data to a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Invitations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/invitations/list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieves the list of open and accepted behavior graph invitations for the member account."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Disassociate Membership",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/membership/removal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes the member account from the specified behavior graph. This operation can only be called by a Detective member account."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Datasources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective List Datasource Packages",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/datasources/list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Lists data source packages in the behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Batch Get Graph Member Datasources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/datasources/get",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Gets data source package information for the behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Batch Get Membership Datasources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/membership/datasources/get",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Gets information on the data source package history for an account."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Update Datasource Packages",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/datasources/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts a data source packages for the specified behavior graph."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Investigations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective Start Investigation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/startInvestigation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates a Detective investigation on an entity in a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Get Investigation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/getInvestigation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the investigation results of an investigation for a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Investigations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/listInvestigations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Lists investigations for a behavior graph using filters such as time range, entity ARN, and investigation state."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Update Investigation State",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/updateInvestigationState",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the state of an investigation. Valid states are ACTIVE and ARCHIVED."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Indicators",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/listIndicators",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Gets the indicators from an investigation. You can use the filters to narrow the results based on the type of indicator."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective Enable Organization Admin Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/orgs/enableAdminAccount",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Designates the Detective administrator account for the organization in the current Region."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Disable Organization Admin Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/orgs/disableAdminAccount"
+          },
+          "docs": "Removes the Detective administrator account in the current Region. Must be called from the organization management account."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Describe Organization Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/orgs/describeOrganizationConfiguration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns information about the configuration for the organization behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Update Organization Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/orgs/updateOrganizationConfiguration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the configuration for the organization behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Organization Admin Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/orgs/listAdminAccounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Lists the Detective administrator accounts in the organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective List Tags for Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.detective.{region}.amazonaws.com/tags/:resourceArn",
+            "params": [
+              {
+                "name": "resourceArn",
+                "value": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+                "type": "path",
+                "description": "The ARN of the behavior graph for which you want to list tag values."
+              }
+            ]
+          },
+          "docs": "Returns the tag values that are assigned to a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Tag Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/tags/:resourceArn",
+            "params": [
+              {
+                "name": "resourceArn",
+                "value": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+                "type": "path",
+                "description": "The ARN of the behavior graph to assign the tags to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies tag values to a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Untag Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.detective.{region}.amazonaws.com/tags/:resourceArn",
+            "params": [
+              {
+                "name": "resourceArn",
+                "value": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+                "type": "path",
+                "description": "The ARN of the behavior graph to remove the tags from."
+              },
+              {
+                "name": "tagKeys",
+                "value": "Environment,Team",
+                "type": "query",
+                "description": "The tag keys of the tags to remove from the behavior graph."
+              }
+            ]
+          },
+          "docs": "Removes tags from a behavior graph."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
