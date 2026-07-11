@@ -59,6 +59,14 @@ apis:
       - type: Examples
         url: examples/amazon-detective-investigation-detail-example.json
 common:
+  - type: TrustCenter
+    url: security/amazon-detective-trust-center.yml
+  - type: VulnerabilityDisclosure
+    url: security/amazon-detective-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/amazon-detective-domain-security.yml
+  - type: Authentication
+    url: authentication/amazon-detective-authentication.yml
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/amazon-detective/overview
   - type: Arazzo
