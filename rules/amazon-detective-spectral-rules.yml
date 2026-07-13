@@ -1,5 +1,24 @@
+# amazon-detective — Spectral ruleset (strengthened)
+# Plain Spectral. Existing hand-authored rules preserved; measured rules added
+# from this provider's own OpenAPI conventions by strengthen_ruleset.py,
+# then self-validated against the spec.
+#
+# Provenance:
+#   - servers-https-only: 100% of servers already https (error)
+#   - servers-expected-domain: 1/1 servers on amazonaws.com
+#   - path-params-casing: camel @ 100% (n=3)
+#   - operationid-casing: camel @ 100% (n=29)
+#   - schema-names-casing: pascal @ 100% (n=55)
+#   - schema-properties-casing: pascal @ 100% (n=136)
+#   - security: global (root) — NOT emitting operation-security-required
+#   - error-schema-defined: ErrorResponse
+#   - operation-documents-400: 100% adherence
+#   - operation-documents-500: 100% adherence
+#   - merge: kept 39 existing, added 7 measured, upgraded 0
+#   - added: servers-expected-domain, path-params-casing, schema-names-casing, schema-properties-casing, error-schema-defined, operation-documents-400, operation-documents-500
+extends:
+  - spectral:oas
 rules:
-  # INFO / METADATA
   info-title-prefix:
     description: API title should start with "Amazon Detective"
     severity: warn
@@ -7,8 +26,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^Amazon Detective"
-
+        match: ^Amazon Detective
   info-description-required:
     description: API must have a description of at least 50 characters
     severity: error
@@ -16,7 +34,6 @@ rules:
     then:
       field: description
       function: truthy
-
   info-version-required:
     description: API must have a version
     severity: error
@@ -24,7 +41,6 @@ rules:
     then:
       field: version
       function: truthy
-
   info-contact-required:
     description: API info should include contact information
     severity: warn
@@ -32,7 +48,6 @@ rules:
     then:
       field: contact
       function: truthy
-
   info-license-required:
     description: API info should include license information
     severity: warn
@@ -40,8 +55,6 @@ rules:
     then:
       field: license
       function: truthy
-
-  # OPENAPI VERSION
   openapi-version-3:
     description: Must use OpenAPI 3.x
     severity: error
@@ -50,9 +63,7 @@ rules:
       field: openapi
       function: pattern
       functionOptions:
-        match: "^3\\."
-
-  # SERVERS
+        match: ^3\.
   servers-defined:
     description: At least one server must be defined
     severity: error
@@ -60,7 +71,6 @@ rules:
     then:
       field: servers
       function: truthy
-
   servers-https-only:
     description: All server URLs must use HTTPS
     severity: error
@@ -68,8 +78,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^https://"
-
+        match: ^https://
   servers-description-required:
     description: Each server should have a description
     severity: warn
@@ -77,17 +86,15 @@ rules:
     then:
       field: description
       function: truthy
-
-  # PATHS — NAMING CONVENTIONS
   paths-kebab-case:
-    description: Path segments should use kebab-case or camelCase (AWS Detective uses camelCase in some paths)
+    description: Path segments should use kebab-case or camelCase (AWS Detective uses camelCase in some
+      paths)
     severity: info
     given: $.paths
     then:
       function: pattern
       functionOptions:
-        match: "^(/[a-z][a-zA-Z0-9/-]*)+$"
-
+        match: ^(/[a-z][a-zA-Z0-9/-]*)+$
   paths-no-trailing-slash:
     description: Paths must not end with a trailing slash
     severity: error
@@ -95,9 +102,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        notMatch: "/$"
-
-  # OPERATIONS
+        notMatch: /$
   operation-summary-required:
     description: All operations must have a summary
     severity: error
@@ -105,7 +110,6 @@ rules:
     then:
       field: summary
       function: truthy
-
   operation-summary-prefix:
     description: Operation summaries should start with "Amazon Detective"
     severity: warn
@@ -113,8 +117,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^Amazon Detective"
-
+        match: ^Amazon Detective
   operation-description-required:
     description: All operations must have a description
     severity: error
@@ -122,7 +125,6 @@ rules:
     then:
       field: description
       function: truthy
-
   operation-id-required:
     description: All operations must have an operationId
     severity: error
@@ -130,7 +132,6 @@ rules:
     then:
       field: operationId
       function: truthy
-
   operation-id-camel-case:
     description: OperationIds should use camelCase
     severity: warn
@@ -138,8 +139,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^[a-z][a-zA-Z0-9]*$"
-
+        match: ^[a-z][a-zA-Z0-9]*$
   operation-tags-required:
     description: All operations must have at least one tag
     severity: error
@@ -147,8 +147,6 @@ rules:
     then:
       field: tags
       function: truthy
-
-  # TAGS
   tags-global-defined:
     description: Global tags array should be defined
     severity: warn
@@ -156,7 +154,6 @@ rules:
     then:
       field: tags
       function: truthy
-
   tag-description-required:
     description: Global tags should have descriptions
     severity: info
@@ -164,8 +161,6 @@ rules:
     then:
       field: description
       function: truthy
-
-  # PARAMETERS
   parameter-description-required:
     description: All parameters must have a description
     severity: error
@@ -173,7 +168,6 @@ rules:
     then:
       field: description
       function: truthy
-
   parameter-schema-required:
     description: All parameters must have a schema
     severity: error
@@ -181,8 +175,6 @@ rules:
     then:
       field: schema
       function: truthy
-
-  # REQUEST BODIES
   request-body-description:
     description: Request bodies should have a description
     severity: info
@@ -190,7 +182,6 @@ rules:
     then:
       field: description
       function: truthy
-
   request-body-json-content:
     description: Request bodies should use application/json content type
     severity: warn
@@ -201,8 +192,6 @@ rules:
         schema:
           type: object
           minProperties: 1
-
-  # RESPONSES
   response-success-required:
     description: Operations must have at least one 2xx response
     severity: error
@@ -213,10 +202,12 @@ rules:
         schema:
           type: object
           anyOf:
-            - required: ['200']
-            - required: ['201']
-            - required: ['204']
-
+          - required:
+            - '200'
+          - required:
+            - '201'
+          - required:
+            - '204'
   response-description-required:
     description: All responses must have a description
     severity: error
@@ -224,7 +215,6 @@ rules:
     then:
       field: description
       function: truthy
-
   response-error-400:
     description: Operations should include a 400 error response
     severity: info
@@ -234,8 +224,8 @@ rules:
       functionOptions:
         schema:
           type: object
-          required: ['400']
-
+          required:
+          - '400'
   response-error-500:
     description: Operations should include a 500 error response
     severity: warn
@@ -245,9 +235,8 @@ rules:
       functionOptions:
         schema:
           type: object
-          required: ['500']
-
-  # SCHEMAS — PROPERTY NAMING
+          required:
+          - '500'
   schema-description-required:
     description: Top-level schemas should have descriptions
     severity: warn
@@ -255,7 +244,6 @@ rules:
     then:
       field: description
       function: truthy
-
   schema-type-required:
     description: Schemas should have a type defined
     severity: warn
@@ -263,7 +251,6 @@ rules:
     then:
       field: type
       function: truthy
-
   schema-property-pascal-case:
     description: Amazon Detective schema properties use PascalCase naming
     severity: info
@@ -273,8 +260,6 @@ rules:
       functionOptions:
         schema:
           type: object
-
-  # SECURITY
   security-global-defined:
     description: Global security must be defined
     severity: error
@@ -282,7 +267,6 @@ rules:
     then:
       field: security
       function: truthy
-
   security-schemes-defined:
     description: Security schemes must be defined in components
     severity: error
@@ -290,7 +274,6 @@ rules:
     then:
       field: securitySchemes
       function: truthy
-
   security-scheme-description:
     description: Security schemes should have descriptions
     severity: warn
@@ -298,8 +281,6 @@ rules:
     then:
       field: description
       function: truthy
-
-  # HTTP METHOD CONVENTIONS
   get-no-request-body:
     description: GET operations must not have a request body
     severity: error
@@ -307,7 +288,6 @@ rules:
     then:
       field: requestBody
       function: falsy
-
   delete-no-request-body-unless-needed:
     description: DELETE operations typically should not have a request body
     severity: info
@@ -315,7 +295,6 @@ rules:
     then:
       field: requestBody
       function: falsy
-
   post-should-have-request-body:
     description: POST operations should have a request body
     severity: info
@@ -323,15 +302,12 @@ rules:
     then:
       field: requestBody
       function: truthy
-
-  # GENERAL QUALITY
   no-empty-descriptions:
     description: Descriptions must not be empty strings
     severity: error
     given: $..description
     then:
       function: truthy
-
   operations-microcks-extension:
     description: Operations should have x-microcks-operation for mock support
     severity: info
@@ -339,11 +315,65 @@ rules:
     then:
       field: x-microcks-operation
       function: truthy
-
   external-docs-encouraged:
     description: API should reference external documentation
     severity: info
     given: $
     then:
       field: externalDocs
+      function: truthy
+  servers-expected-domain:
+    description: Server URLs should be on the amazonaws.com domain.
+    severity: warn
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: amazonaws\.com
+  path-params-casing:
+    description: Path parameters should be camelCase (the dominant convention in this API).
+    severity: warn
+    given: $.paths[*].parameters[?(@.in=='path')].name
+    then:
+      function: casing
+      functionOptions:
+        type: camel
+  schema-names-casing:
+    description: Component schema names should be PascalCase (the dominant convention in this API).
+    severity: warn
+    given: $.components.schemas
+    then:
+      field: '@key'
+      function: casing
+      functionOptions:
+        type: pascal
+  schema-properties-casing:
+    description: Schema properties should be PascalCase (the dominant convention in this API).
+    severity: warn
+    given: $.components.schemas[*].properties
+    then:
+      field: '@key'
+      function: casing
+      functionOptions:
+        type: pascal
+  error-schema-defined:
+    description: A shared error schema (ErrorResponse) should be defined for error payloads.
+    severity: warn
+    given: $.components.schemas
+    then:
+      field: ErrorResponse
+      function: truthy
+  operation-documents-400:
+    description: Operations should document a 400 response (documented on 100% of this API's operations).
+    severity: warn
+    given: $.paths[*][get,post,put,patch,delete].responses
+    then:
+      field: '400'
+      function: truthy
+  operation-documents-500:
+    description: Operations should document a 500 response (documented on 100% of this API's operations).
+    severity: warn
+    given: $.paths[*][get,post,put,patch,delete].responses
+    then:
+      field: '500'
       function: truthy
