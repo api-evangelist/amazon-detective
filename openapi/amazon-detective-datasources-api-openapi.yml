@@ -1,0 +1,438 @@
+openapi: 3.1.0
+info:
+  title: Amazon Detective Datasources API
+  description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
+  version: '2018-10-26'
+  contact:
+    name: AWS Support
+    url: https://aws.amazon.com/premiumsupport/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://aws.amazon.com/service-terms/
+  x-logo:
+    url: https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png
+  x-generated-from: documentation
+servers:
+- url: https://api.detective.{region}.amazonaws.com
+  description: Amazon Detective regional endpoint
+  variables:
+    region:
+      default: us-east-1
+      description: AWS region
+      enum:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - eu-west-1
+      - eu-west-2
+      - eu-central-1
+      - ap-northeast-1
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-south-1
+      - sa-east-1
+security:
+- sigv4: []
+tags:
+- name: Datasources
+  description: Data source package management operations
+paths:
+  /graph/datasources/list:
+    post:
+      summary: Amazon Detective List Datasource Packages
+      description: Lists data source packages in the behavior graph.
+      operationId: listDatasourcePackages
+      tags:
+      - Datasources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListDatasourcePackagesRequest'
+            examples:
+              ListDatasourcePackagesRequestExample:
+                summary: Default listDatasourcePackages request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  MaxResults: 100
+      responses:
+        '200':
+          description: Successfully listed datasource packages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasourcePackagesResponse'
+              examples:
+                ListDatasourcePackages200Example:
+                  summary: Default listDatasourcePackages 200 response
+                  x-microcks-default: true
+                  value:
+                    DatasourcePackages:
+                      DETECTIVE_CORE:
+                        DatasourcePackageIngestState: STARTED
+                        LastIngestStateChange:
+                          STARTED:
+                            Timestamp: '2025-01-15T10:00:00Z'
+                    NextToken: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /graph/datasources/get:
+    post:
+      summary: Amazon Detective Batch Get Graph Member Datasources
+      description: Gets data source package information for the behavior graph.
+      operationId: batchGetGraphMemberDatasources
+      tags:
+      - Datasources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchGetGraphMemberDatasourcesRequest'
+            examples:
+              BatchGetGraphMemberDatasourcesRequestExample:
+                summary: Default batchGetGraphMemberDatasources request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  AccountIds:
+                  - '234567890123'
+      responses:
+        '200':
+          description: Successfully retrieved datasource details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchGetGraphMemberDatasourcesResponse'
+              examples:
+                BatchGetGraphMemberDatasources200Example:
+                  summary: Default batchGetGraphMemberDatasources 200 response
+                  x-microcks-default: true
+                  value:
+                    MemberDatasources:
+                    - AccountId: '234567890123'
+                      GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                      DatasourcePackageIngestHistory: {}
+                    UnprocessedAccounts: []
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /membership/datasources/get:
+    post:
+      summary: Amazon Detective Batch Get Membership Datasources
+      description: Gets information on the data source package history for an account.
+      operationId: batchGetMembershipDatasources
+      tags:
+      - Datasources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchGetMembershipDatasourcesRequest'
+            examples:
+              BatchGetMembershipDatasourcesRequestExample:
+                summary: Default batchGetMembershipDatasources request
+                x-microcks-default: true
+                value:
+                  GraphArns:
+                  - arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+      responses:
+        '200':
+          description: Successfully retrieved membership datasource history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchGetMembershipDatasourcesResponse'
+              examples:
+                BatchGetMembershipDatasources200Example:
+                  summary: Default batchGetMembershipDatasources 200 response
+                  x-microcks-default: true
+                  value:
+                    MembershipDatasources:
+                    - AccountId: '234567890123'
+                      GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                    UnprocessedGraphs: []
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /graph/datasources/update:
+    post:
+      summary: Amazon Detective Update Datasource Packages
+      description: Starts a data source packages for the specified behavior graph.
+      operationId: updateDatasourcePackages
+      tags:
+      - Datasources
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDatasourcePackagesRequest'
+            examples:
+              UpdateDatasourcePackagesRequestExample:
+                summary: Default updateDatasourcePackages request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  DatasourcePackages:
+                  - EKS_AUDIT
+      responses:
+        '200':
+          description: Successfully updated datasource packages
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    ListDatasourcePackagesRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to list datasource packages
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        NextToken:
+          type: string
+          description: For requests to get the next page of results.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The total number of items to return.
+          example: 100
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+    TimestampForCollection:
+      type: object
+      description: Details on when data collection began for a source package.
+      properties:
+        Timestamp:
+          type: string
+          format: date-time
+          description: The data and time when data collection began for a source package.
+          example: '2025-01-15T10:00:00Z'
+    MembershipDatasources:
+      type: object
+      description: Details on data source packages for a member account in a behavior graph
+      properties:
+        AccountId:
+          type: string
+          description: The account identifier of the AWS account.
+          example: '234567890123'
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        DatasourcePackageIngestHistory:
+          type: object
+          description: Details on when a data source package was added to a behavior graph.
+          additionalProperties:
+            type: object
+    BatchGetGraphMemberDatasourcesResponse:
+      type: object
+      description: Response from getting datasource details for behavior graph members
+      properties:
+        MemberDatasources:
+          type: array
+          description: Details on the data source packages active in the behavior graph.
+          items:
+            $ref: '#/components/schemas/MembershipDatasources'
+        UnprocessedAccounts:
+          type: array
+          description: Accounts that data source package information could not be retrieved for.
+          items:
+            $ref: '#/components/schemas/UnprocessedAccount'
+    UnprocessedGraph:
+      type: object
+      description: A behavior graph that could not be processed
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        Reason:
+          type: string
+          description: The reason data source package information could not be retrieved for the behavior graph.
+          example: Graph not found
+    BatchGetMembershipDatasourcesResponse:
+      type: object
+      description: Response from getting membership datasource history
+      properties:
+        MembershipDatasources:
+          type: array
+          description: Details on the data source packages active in the behavior graph.
+          items:
+            $ref: '#/components/schemas/MembershipDatasources'
+        UnprocessedGraphs:
+          type: array
+          description: Graphs that data source package information could not be retrieved for.
+          items:
+            $ref: '#/components/schemas/UnprocessedGraph'
+    UnprocessedAccount:
+      type: object
+      description: A member account that could not be processed
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the member account that was not processed.
+          example: '234567890123'
+        Reason:
+          type: string
+          description: The reason that the member account request could not be processed.
+          example: Account not found
+    UpdateDatasourcePackagesRequest:
+      type: object
+      required:
+      - GraphArn
+      - DatasourcePackages
+      description: Request to update datasource packages for a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        DatasourcePackages:
+          type: array
+          description: The data source package start for the behavior graph.
+          items:
+            type: string
+            enum:
+            - DETECTIVE_CORE
+            - EKS_AUDIT
+            - AD_AUDIT
+          example:
+          - EKS_AUDIT
+    DatasourcePackageIngestDetail:
+      type: object
+      description: Details about the ingest state of a datasource package
+      properties:
+        DatasourcePackageIngestState:
+          type: string
+          description: Details on which data source packages are ingested for a member account.
+          enum:
+          - STARTED
+          - STOPPED
+          - DISABLED
+        LastIngestStateChange:
+          type: object
+          description: The date a data source package type was last updated for a member account.
+          additionalProperties:
+            $ref: '#/components/schemas/TimestampForCollection'
+    BatchGetMembershipDatasourcesRequest:
+      type: object
+      required:
+      - GraphArns
+      description: Request to get datasource package history for accounts
+      properties:
+        GraphArns:
+          type: array
+          description: The ARN of the behavior graph.
+          items:
+            type: string
+          example:
+          - arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    BatchGetGraphMemberDatasourcesRequest:
+      type: object
+      required:
+      - GraphArn
+      - AccountIds
+      description: Request to get datasource details for behavior graph members
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AccountIds:
+          type: array
+          description: The list of AWS accounts to get data source package information for.
+          items:
+            type: string
+          example:
+          - '234567890123'
+    ListDatasourcePackagesResponse:
+      type: object
+      description: Response from listing datasource packages
+      properties:
+        DatasourcePackages:
+          type: object
+          description: Details on the data source packages active in the behavior graph.
+          additionalProperties:
+            $ref: '#/components/schemas/DatasourcePackageIngestDetail'
+        NextToken:
+          type: string
+          description: For requests to get the next page of results.
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: AWS Signature Version 4 authentication
+externalDocs:
+  description: Amazon Detective API Reference
+  url: https://docs.aws.amazon.com/detective/latest/APIReference/Welcome.html

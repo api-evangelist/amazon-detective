@@ -1,0 +1,351 @@
+openapi: 3.1.0
+info:
+  title: Amazon Detective Datasources Organizations API
+  description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
+  version: '2018-10-26'
+  contact:
+    name: AWS Support
+    url: https://aws.amazon.com/premiumsupport/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://aws.amazon.com/service-terms/
+  x-logo:
+    url: https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png
+  x-generated-from: documentation
+servers:
+- url: https://api.detective.{region}.amazonaws.com
+  description: Amazon Detective regional endpoint
+  variables:
+    region:
+      default: us-east-1
+      description: AWS region
+      enum:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - eu-west-1
+      - eu-west-2
+      - eu-central-1
+      - ap-northeast-1
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-south-1
+      - sa-east-1
+security:
+- sigv4: []
+tags:
+- name: Organizations
+  description: AWS Organizations integration operations
+paths:
+  /orgs/enableAdminAccount:
+    post:
+      summary: Amazon Detective Enable Organization Admin Account
+      description: Designates the Detective administrator account for the organization in the current Region.
+      operationId: enableOrganizationAdminAccount
+      tags:
+      - Organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnableOrganizationAdminAccountRequest'
+            examples:
+              EnableOrganizationAdminAccountRequestExample:
+                summary: Default enableOrganizationAdminAccount request
+                x-microcks-default: true
+                value:
+                  AccountId: '123456789012'
+      responses:
+        '200':
+          description: Successfully enabled organization admin account
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /orgs/disableAdminAccount:
+    post:
+      summary: Amazon Detective Disable Organization Admin Account
+      description: Removes the Detective administrator account in the current Region. Must be called from the organization management account.
+      operationId: disableOrganizationAdminAccount
+      tags:
+      - Organizations
+      responses:
+        '200':
+          description: Successfully disabled organization admin account
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /orgs/describeOrganizationConfiguration:
+    post:
+      summary: Amazon Detective Describe Organization Configuration
+      description: Returns information about the configuration for the organization behavior graph.
+      operationId: describeOrganizationConfiguration
+      tags:
+      - Organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DescribeOrganizationConfigurationRequest'
+            examples:
+              DescribeOrganizationConfigurationRequestExample:
+                summary: Default describeOrganizationConfiguration request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+      responses:
+        '200':
+          description: Successfully retrieved organization configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DescribeOrganizationConfigurationResponse'
+              examples:
+                DescribeOrganizationConfiguration200Example:
+                  summary: Default describeOrganizationConfiguration 200 response
+                  x-microcks-default: true
+                  value:
+                    AutoEnable: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /orgs/updateOrganizationConfiguration:
+    post:
+      summary: Amazon Detective Update Organization Configuration
+      description: Updates the configuration for the organization behavior graph.
+      operationId: updateOrganizationConfiguration
+      tags:
+      - Organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationConfigurationRequest'
+            examples:
+              UpdateOrganizationConfigurationRequestExample:
+                summary: Default updateOrganizationConfiguration request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  AutoEnable: true
+      responses:
+        '200':
+          description: Successfully updated organization configuration
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /orgs/listAdminAccounts:
+    post:
+      summary: Amazon Detective List Organization Admin Accounts
+      description: Lists the Detective administrator accounts in the organization.
+      operationId: listOrganizationAdminAccounts
+      tags:
+      - Organizations
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListOrganizationAdminAccountsRequest'
+            examples:
+              ListOrganizationAdminAccountsRequestExample:
+                summary: Default listOrganizationAdminAccounts request
+                x-microcks-default: true
+                value:
+                  MaxResults: 100
+      responses:
+        '200':
+          description: Successfully listed organization admin accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganizationAdminAccountsResponse'
+              examples:
+                ListOrganizationAdminAccounts200Example:
+                  summary: Default listOrganizationAdminAccounts 200 response
+                  x-microcks-default: true
+                  value:
+                    Administrators:
+                    - AccountId: '123456789012'
+                      GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                      DelegationTime: '2025-01-15T10:00:00Z'
+                    NextToken: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    ListOrganizationAdminAccountsResponse:
+      type: object
+      description: Response from listing organization admin accounts
+      properties:
+        Administrators:
+          type: array
+          description: The list of delegated administrator accounts.
+          items:
+            $ref: '#/components/schemas/Administrator'
+        NextToken:
+          type: string
+          description: If there are more accounts remaining in the results, then this is the pagination token.
+    ListOrganizationAdminAccountsRequest:
+      type: object
+      description: Request to list organization admin accounts
+      properties:
+        NextToken:
+          type: string
+          description: The pagination token for the next page of results.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The maximum number of results to return.
+          example: 100
+    DescribeOrganizationConfigurationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to describe organization configuration
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    UpdateOrganizationConfigurationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to update organization configuration
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AutoEnable:
+          type: boolean
+          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
+          example: true
+    Administrator:
+      type: object
+      description: An organization admin account for Amazon Detective
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the Detective administrator account.
+          example: '123456789012'
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        DelegationTime:
+          type: string
+          format: date-time
+          description: The date and time when the Detective administrator account was enabled.
+          example: '2025-01-15T10:00:00Z'
+    EnableOrganizationAdminAccountRequest:
+      type: object
+      required:
+      - AccountId
+      description: Request to enable an organization admin account for Detective
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the account to designate as the Detective administrator account for the organization.
+          example: '123456789012'
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+    DescribeOrganizationConfigurationResponse:
+      type: object
+      description: Response from describing organization configuration
+      properties:
+        AutoEnable:
+          type: boolean
+          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
+          example: true
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: AWS Signature Version 4 authentication
+externalDocs:
+  description: Amazon Detective API Reference
+  url: https://docs.aws.amazon.com/detective/latest/APIReference/Welcome.html

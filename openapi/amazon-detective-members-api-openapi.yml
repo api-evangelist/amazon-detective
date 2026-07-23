@@ -1,0 +1,566 @@
+openapi: 3.1.0
+info:
+  title: Amazon Detective Datasources Members API
+  description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
+  version: '2018-10-26'
+  contact:
+    name: AWS Support
+    url: https://aws.amazon.com/premiumsupport/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://aws.amazon.com/service-terms/
+  x-logo:
+    url: https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png
+  x-generated-from: documentation
+servers:
+- url: https://api.detective.{region}.amazonaws.com
+  description: Amazon Detective regional endpoint
+  variables:
+    region:
+      default: us-east-1
+      description: AWS region
+      enum:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - eu-west-1
+      - eu-west-2
+      - eu-central-1
+      - ap-northeast-1
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-south-1
+      - sa-east-1
+security:
+- sigv4: []
+tags:
+- name: Members
+  description: Member account management operations
+paths:
+  /graph/members:
+    post:
+      summary: Amazon Detective Create Members
+      description: Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph. This operation can only be called by the administrator account.
+      operationId: createMembers
+      tags:
+      - Members
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMembersRequest'
+            examples:
+              CreateMembersRequestExample:
+                summary: Default createMembers request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  Message: You are invited to join the security behavior graph.
+                  Accounts:
+                  - AccountId: '234567890123'
+                    EmailAddress: security@example.com
+      responses:
+        '200':
+          description: Successfully invited member accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateMembersResponse'
+              examples:
+                CreateMembers200Example:
+                  summary: Default createMembers 200 response
+                  x-microcks-default: true
+                  value:
+                    Members:
+                    - AccountId: '234567890123'
+                      EmailAddress: security@example.com
+                      GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                      Status: INVITED
+                    UnprocessedAccounts: []
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /graph/members/removal:
+    post:
+      summary: Amazon Detective Delete Members
+      description: Removes the specified member accounts from the behavior graph. The removed accounts no longer contribute data to the behavior graph.
+      operationId: deleteMembers
+      tags:
+      - Members
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteMembersRequest'
+            examples:
+              DeleteMembersRequestExample:
+                summary: Default deleteMembers request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  AccountIds:
+                  - '234567890123'
+      responses:
+        '200':
+          description: Successfully removed member accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteMembersResponse'
+              examples:
+                DeleteMembers200Example:
+                  summary: Default deleteMembers 200 response
+                  x-microcks-default: true
+                  value:
+                    AccountIds:
+                    - '234567890123'
+                    UnprocessedAccounts: []
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /graph/members/get:
+    post:
+      summary: Amazon Detective Get Members
+      description: Returns the membership details for specified member accounts for a behavior graph.
+      operationId: getMembers
+      tags:
+      - Members
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMembersRequest'
+            examples:
+              GetMembersRequestExample:
+                summary: Default getMembers request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  AccountIds:
+                  - '234567890123'
+      responses:
+        '200':
+          description: Successfully retrieved member details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMembersResponse'
+              examples:
+                GetMembers200Example:
+                  summary: Default getMembers 200 response
+                  x-microcks-default: true
+                  value:
+                    MemberDetails:
+                    - AccountId: '234567890123'
+                      EmailAddress: security@example.com
+                      GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                      AdministratorId: '123456789012'
+                      Status: ENABLED
+                      InvitedTime: '2025-01-15T10:00:00Z'
+                      UpdatedTime: '2025-01-16T12:00:00Z'
+                    UnprocessedAccounts: []
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /graph/members/list:
+    post:
+      summary: Amazon Detective List Members
+      description: Retrieves the list of member accounts for a behavior graph. Does not return member accounts that were removed.
+      operationId: listMembers
+      tags:
+      - Members
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListMembersRequest'
+            examples:
+              ListMembersRequestExample:
+                summary: Default listMembers request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  MaxResults: 100
+      responses:
+        '200':
+          description: Successfully listed members
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMembersResponse'
+              examples:
+                ListMembers200Example:
+                  summary: Default listMembers 200 response
+                  x-microcks-default: true
+                  value:
+                    MemberDetails:
+                    - AccountId: '234567890123'
+                      EmailAddress: security@example.com
+                      GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                      Status: ENABLED
+                    NextToken: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /graph/members/monitoringEnable:
+    post:
+      summary: Amazon Detective Start Monitoring Member
+      description: Sends a request to enable data ingest for a member account that has a status of ACCEPTED_BUT_DISABLED.
+      operationId: startMonitoringMember
+      tags:
+      - Members
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartMonitoringMemberRequest'
+            examples:
+              StartMonitoringMemberRequestExample:
+                summary: Default startMonitoringMember request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  AccountId: '234567890123'
+      responses:
+        '200':
+          description: Successfully started monitoring member
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    GetMembersRequest:
+      type: object
+      required:
+      - GraphArn
+      - AccountIds
+      description: Request to get member details
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph to get member details for.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AccountIds:
+          type: array
+          description: The list of AWS account identifiers of the member accounts to get information on.
+          items:
+            type: string
+          example:
+          - '234567890123'
+    Account:
+      type: object
+      required:
+      - AccountId
+      - EmailAddress
+      description: An AWS account to invite to become a member account in a behavior graph
+      properties:
+        AccountId:
+          type: string
+          description: The account identifier of the AWS account.
+          example: '234567890123'
+        EmailAddress:
+          type: string
+          description: The AWS account root user email address for the AWS account.
+          example: security@example.com
+    MemberDetail:
+      type: object
+      description: Details about a member account in a behavior graph
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the member account.
+          example: '234567890123'
+        EmailAddress:
+          type: string
+          description: The AWS account root user email address for the member account.
+          example: security@example.com
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph that the member account was invited to.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AdministratorId:
+          type: string
+          description: The AWS account identifier of the administrator account for the behavior graph.
+          example: '123456789012'
+        Status:
+          type: string
+          description: The current membership status of the member account.
+          enum:
+          - INVITED
+          - VERIFICATION_IN_PROGRESS
+          - VERIFICATION_FAILED
+          - ENABLED
+          - ACCEPTED_BUT_DISABLED
+          example: ENABLED
+        InvitedTime:
+          type: string
+          format: date-time
+          description: The date and time that Detective sent the invitation to the member account.
+          example: '2025-01-15T10:00:00Z'
+        UpdatedTime:
+          type: string
+          format: date-time
+          description: The date and time that the member account was last updated.
+          example: '2025-01-16T12:00:00Z'
+        VolumeUsageInBytes:
+          type: integer
+          description: Data volume in bytes per day for the member account.
+          example: 1073741824
+        VolumeUsageUpdatedTime:
+          type: string
+          format: date-time
+          description: The data and time when the member account data volume was last updated.
+          example: '2025-01-16T12:00:00Z'
+        PercentOfGraphUtilization:
+          type: number
+          description: The member account data volume as a percentage of the maximum allowed data volume.
+          example: 12.5
+        DisabledReason:
+          type: string
+          description: For member accounts with a status of ACCEPTED_BUT_DISABLED, the reason the member account is not enabled.
+          enum:
+          - VOLUME_TOO_HIGH
+          - VOLUME_UNKNOWN
+          example: VOLUME_TOO_HIGH
+        InvitationType:
+          type: string
+          description: The type of behavior graph membership.
+          enum:
+          - INVITATION
+          - ORGANIZATION
+          example: INVITATION
+    DeleteMembersResponse:
+      type: object
+      description: Response from deleting member accounts
+      properties:
+        AccountIds:
+          type: array
+          description: The list of AWS account identifiers of the member accounts that Detective successfully deleted.
+          items:
+            type: string
+        UnprocessedAccounts:
+          type: array
+          description: The list of member accounts that Detective was unable to delete.
+          items:
+            $ref: '#/components/schemas/UnprocessedAccount'
+    GetMembersResponse:
+      type: object
+      description: Response from getting member details
+      properties:
+        MemberDetails:
+          type: array
+          description: The member account details that Detective retrieved.
+          items:
+            $ref: '#/components/schemas/MemberDetail'
+        UnprocessedAccounts:
+          type: array
+          description: The requested member accounts for which Detective was unable to return member details.
+          items:
+            $ref: '#/components/schemas/UnprocessedAccount'
+    CreateMembersResponse:
+      type: object
+      description: Response from creating member accounts
+      properties:
+        Members:
+          type: array
+          description: The set of member account invitation or enablement requests.
+          items:
+            $ref: '#/components/schemas/MemberDetail'
+        UnprocessedAccounts:
+          type: array
+          description: The list of accounts for which Detective was unable to process the invitation.
+          items:
+            $ref: '#/components/schemas/UnprocessedAccount'
+    DeleteMembersRequest:
+      type: object
+      required:
+      - GraphArn
+      - AccountIds
+      description: Request to remove member accounts from a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph to remove members from.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AccountIds:
+          type: array
+          description: The list of AWS account identifiers of the member accounts to remove.
+          items:
+            type: string
+          example:
+          - '234567890123'
+    UnprocessedAccount:
+      type: object
+      description: A member account that could not be processed
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the member account that was not processed.
+          example: '234567890123'
+        Reason:
+          type: string
+          description: The reason that the member account request could not be processed.
+          example: Account not found
+    CreateMembersRequest:
+      type: object
+      required:
+      - GraphArn
+      - Accounts
+      description: Request to invite member accounts to a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        Message:
+          type: string
+          description: Customized message text to include in the invitation email message.
+          example: Please join our security behavior graph.
+        DisableEmailNotification:
+          type: boolean
+          description: If set to true, invitation emails are not sent.
+          example: false
+        Accounts:
+          type: array
+          description: The list of AWS accounts to invite to become member accounts.
+          items:
+            $ref: '#/components/schemas/Account'
+    StartMonitoringMemberRequest:
+      type: object
+      required:
+      - GraphArn
+      - AccountId
+      description: Request to start monitoring a member account
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AccountId:
+          type: string
+          description: The account ID of the member account to try to enable.
+          example: '234567890123'
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+    ListMembersRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to list member accounts
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph to list member accounts for.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        NextToken:
+          type: string
+          description: For requests to retrieve the next page of member account results.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The maximum number of member accounts to include in the response.
+          example: 100
+    ListMembersResponse:
+      type: object
+      description: Response from listing member accounts
+      properties:
+        MemberDetails:
+          type: array
+          description: The list of member accounts in the behavior graph.
+          items:
+            $ref: '#/components/schemas/MemberDetail'
+        NextToken:
+          type: string
+          description: If there are more member accounts remaining in the results, then use this pagination token.
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: AWS Signature Version 4 authentication
+externalDocs:
+  description: Amazon Detective API Reference
+  url: https://docs.aws.amazon.com/detective/latest/APIReference/Welcome.html

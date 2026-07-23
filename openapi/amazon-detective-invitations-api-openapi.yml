@@ -1,0 +1,353 @@
+openapi: 3.1.0
+info:
+  title: Amazon Detective Datasources Invitations API
+  description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
+  version: '2018-10-26'
+  contact:
+    name: AWS Support
+    url: https://aws.amazon.com/premiumsupport/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://aws.amazon.com/service-terms/
+  x-logo:
+    url: https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png
+  x-generated-from: documentation
+servers:
+- url: https://api.detective.{region}.amazonaws.com
+  description: Amazon Detective regional endpoint
+  variables:
+    region:
+      default: us-east-1
+      description: AWS region
+      enum:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - eu-west-1
+      - eu-west-2
+      - eu-central-1
+      - ap-northeast-1
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-south-1
+      - sa-east-1
+security:
+- sigv4: []
+tags:
+- name: Invitations
+  description: Invitation management for member accounts
+paths:
+  /invitation:
+    put:
+      summary: Amazon Detective Accept Invitation
+      description: Accepts an invitation for the member account to contribute data to a behavior graph.
+      operationId: acceptInvitation
+      tags:
+      - Invitations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptInvitationRequest'
+            examples:
+              AcceptInvitationRequestExample:
+                summary: Default acceptInvitation request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+      responses:
+        '200':
+          description: Successfully accepted invitation
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /invitation/removal:
+    put:
+      summary: Amazon Detective Reject Invitation
+      description: Rejects an invitation to contribute the account data to a behavior graph.
+      operationId: rejectInvitation
+      tags:
+      - Invitations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectInvitationRequest'
+            examples:
+              RejectInvitationRequestExample:
+                summary: Default rejectInvitation request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+      responses:
+        '200':
+          description: Successfully rejected invitation
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /invitations/list:
+    post:
+      summary: Amazon Detective List Invitations
+      description: Retrieves the list of open and accepted behavior graph invitations for the member account.
+      operationId: listInvitations
+      tags:
+      - Invitations
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListInvitationsRequest'
+            examples:
+              ListInvitationsRequestExample:
+                summary: Default listInvitations request
+                x-microcks-default: true
+                value:
+                  MaxResults: 100
+      responses:
+        '200':
+          description: Successfully listed invitations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListInvitationsResponse'
+              examples:
+                ListInvitations200Example:
+                  summary: Default listInvitations 200 response
+                  x-microcks-default: true
+                  value:
+                    Invitations:
+                    - AccountId: '234567890123'
+                      GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                      Status: INVITED
+                    NextToken: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /membership/removal:
+    post:
+      summary: Amazon Detective Disassociate Membership
+      description: Removes the member account from the specified behavior graph. This operation can only be called by a Detective member account.
+      operationId: disassociateMembership
+      tags:
+      - Invitations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisassociateMembershipRequest'
+            examples:
+              DisassociateMembershipRequestExample:
+                summary: Default disassociateMembership request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+      responses:
+        '200':
+          description: Successfully disassociated membership
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    AcceptInvitationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to accept an invitation to a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph that the member account is accepting the invitation for.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    MemberDetail:
+      type: object
+      description: Details about a member account in a behavior graph
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the member account.
+          example: '234567890123'
+        EmailAddress:
+          type: string
+          description: The AWS account root user email address for the member account.
+          example: security@example.com
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph that the member account was invited to.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AdministratorId:
+          type: string
+          description: The AWS account identifier of the administrator account for the behavior graph.
+          example: '123456789012'
+        Status:
+          type: string
+          description: The current membership status of the member account.
+          enum:
+          - INVITED
+          - VERIFICATION_IN_PROGRESS
+          - VERIFICATION_FAILED
+          - ENABLED
+          - ACCEPTED_BUT_DISABLED
+          example: ENABLED
+        InvitedTime:
+          type: string
+          format: date-time
+          description: The date and time that Detective sent the invitation to the member account.
+          example: '2025-01-15T10:00:00Z'
+        UpdatedTime:
+          type: string
+          format: date-time
+          description: The date and time that the member account was last updated.
+          example: '2025-01-16T12:00:00Z'
+        VolumeUsageInBytes:
+          type: integer
+          description: Data volume in bytes per day for the member account.
+          example: 1073741824
+        VolumeUsageUpdatedTime:
+          type: string
+          format: date-time
+          description: The data and time when the member account data volume was last updated.
+          example: '2025-01-16T12:00:00Z'
+        PercentOfGraphUtilization:
+          type: number
+          description: The member account data volume as a percentage of the maximum allowed data volume.
+          example: 12.5
+        DisabledReason:
+          type: string
+          description: For member accounts with a status of ACCEPTED_BUT_DISABLED, the reason the member account is not enabled.
+          enum:
+          - VOLUME_TOO_HIGH
+          - VOLUME_UNKNOWN
+          example: VOLUME_TOO_HIGH
+        InvitationType:
+          type: string
+          description: The type of behavior graph membership.
+          enum:
+          - INVITATION
+          - ORGANIZATION
+          example: INVITATION
+    ListInvitationsResponse:
+      type: object
+      description: Response from listing invitations
+      properties:
+        Invitations:
+          type: array
+          description: The list of behavior graphs for which the member account has open or accepted invitations.
+          items:
+            $ref: '#/components/schemas/MemberDetail'
+        NextToken:
+          type: string
+          description: If there are more invitations remaining in the results, then use this pagination token.
+    RejectInvitationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to reject a behavior graph invitation
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph that the member account is rejecting the invitation for.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    DisassociateMembershipRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to disassociate from a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph to remove the member account from.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    ListInvitationsRequest:
+      type: object
+      description: Request to list invitations
+      properties:
+        NextToken:
+          type: string
+          description: The pagination token for the next page of results.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The maximum number of invitations to return.
+          example: 100
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: AWS Signature Version 4 authentication
+externalDocs:
+  description: Amazon Detective API Reference
+  url: https://docs.aws.amazon.com/detective/latest/APIReference/Welcome.html

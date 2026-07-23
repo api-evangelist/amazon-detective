@@ -1,0 +1,686 @@
+openapi: 3.1.0
+info:
+  title: Amazon Detective Datasources Investigations API
+  description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
+  version: '2018-10-26'
+  contact:
+    name: AWS Support
+    url: https://aws.amazon.com/premiumsupport/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://aws.amazon.com/service-terms/
+  x-logo:
+    url: https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png
+  x-generated-from: documentation
+servers:
+- url: https://api.detective.{region}.amazonaws.com
+  description: Amazon Detective regional endpoint
+  variables:
+    region:
+      default: us-east-1
+      description: AWS region
+      enum:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - eu-west-1
+      - eu-west-2
+      - eu-central-1
+      - ap-northeast-1
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-south-1
+      - sa-east-1
+security:
+- sigv4: []
+tags:
+- name: Investigations
+  description: Security investigation operations
+paths:
+  /investigations/startInvestigation:
+    post:
+      summary: Amazon Detective Start Investigation
+      description: Initiates a Detective investigation on an entity in a behavior graph.
+      operationId: startInvestigation
+      tags:
+      - Investigations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartInvestigationRequest'
+            examples:
+              StartInvestigationRequestExample:
+                summary: Default startInvestigation request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  EntityArn: arn:aws:iam::123456789012:user/jsmith
+                  ScopeStartTime: '2025-01-01T00:00:00Z'
+                  ScopeEndTime: '2025-01-15T23:59:59Z'
+      responses:
+        '200':
+          description: Successfully started investigation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartInvestigationResponse'
+              examples:
+                StartInvestigation200Example:
+                  summary: Default startInvestigation 200 response
+                  x-microcks-default: true
+                  value:
+                    InvestigationId: invest-abc123def456
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /investigations/getInvestigation:
+    post:
+      summary: Amazon Detective Get Investigation
+      description: Returns the investigation results of an investigation for a behavior graph.
+      operationId: getInvestigation
+      tags:
+      - Investigations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetInvestigationRequest'
+            examples:
+              GetInvestigationRequestExample:
+                summary: Default getInvestigation request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  InvestigationId: invest-abc123def456
+      responses:
+        '200':
+          description: Successfully retrieved investigation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInvestigationResponse'
+              examples:
+                GetInvestigation200Example:
+                  summary: Default getInvestigation 200 response
+                  x-microcks-default: true
+                  value:
+                    GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                    InvestigationId: invest-abc123def456
+                    EntityArn: arn:aws:iam::123456789012:user/jsmith
+                    EntityType: IAM_ROLE
+                    CreatedTime: '2025-01-15T10:00:00Z'
+                    ScopeStartTime: '2025-01-01T00:00:00Z'
+                    ScopeEndTime: '2025-01-15T23:59:59Z'
+                    Status: RUNNING
+                    Severity: HIGH
+                    State: ACTIVE
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /investigations/listInvestigations:
+    post:
+      summary: Amazon Detective List Investigations
+      description: Lists investigations for a behavior graph using filters such as time range, entity ARN, and investigation state.
+      operationId: listInvestigations
+      tags:
+      - Investigations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListInvestigationsRequest'
+            examples:
+              ListInvestigationsRequestExample:
+                summary: Default listInvestigations request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  MaxResults: 100
+      responses:
+        '200':
+          description: Successfully listed investigations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListInvestigationsResponse'
+              examples:
+                ListInvestigations200Example:
+                  summary: Default listInvestigations 200 response
+                  x-microcks-default: true
+                  value:
+                    InvestigationDetails:
+                    - InvestigationId: invest-abc123def456
+                      Severity: HIGH
+                      Status: RUNNING
+                      State: ACTIVE
+                      CreatedTime: '2025-01-15T10:00:00Z'
+                      EntityArn: arn:aws:iam::123456789012:user/jsmith
+                      EntityType: IAM_ROLE
+                    NextToken: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /investigations/updateInvestigationState:
+    post:
+      summary: Amazon Detective Update Investigation State
+      description: Updates the state of an investigation. Valid states are ACTIVE and ARCHIVED.
+      operationId: updateInvestigationState
+      tags:
+      - Investigations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInvestigationStateRequest'
+            examples:
+              UpdateInvestigationStateRequestExample:
+                summary: Default updateInvestigationState request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  InvestigationId: invest-abc123def456
+                  State: ARCHIVED
+      responses:
+        '200':
+          description: Successfully updated investigation state
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /investigations/listIndicators:
+    post:
+      summary: Amazon Detective List Indicators
+      description: Gets the indicators from an investigation. You can use the filters to narrow the results based on the type of indicator.
+      operationId: listIndicators
+      tags:
+      - Investigations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListIndicatorsRequest'
+            examples:
+              ListIndicatorsRequestExample:
+                summary: Default listIndicators request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                  InvestigationId: invest-abc123def456
+                  IndicatorType: FLAGGED_IP_ADDRESS
+      responses:
+        '200':
+          description: Successfully listed indicators
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListIndicatorsResponse'
+              examples:
+                ListIndicators200Example:
+                  summary: Default listIndicators 200 response
+                  x-microcks-default: true
+                  value:
+                    GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                    InvestigationId: invest-abc123def456
+                    Indicators:
+                    - IndicatorType: FLAGGED_IP_ADDRESS
+                      IndicatorDetail: {}
+                    NextToken: null
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    UpdateInvestigationStateRequest:
+      type: object
+      required:
+      - GraphArn
+      - InvestigationId
+      - State
+      description: Request to update the state of an investigation
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        InvestigationId:
+          type: string
+          description: The investigation ID of the investigation report.
+          example: invest-abc123def456
+        State:
+          type: string
+          description: The current state of the investigation. An archived investigation indicates you have completed reviewing the investigation.
+          enum:
+          - ACTIVE
+          - ARCHIVED
+          example: ARCHIVED
+    ListInvestigationsRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to list investigations
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        NextToken:
+          type: string
+          description: Lists the investigations for a behavior graph based on the maximum number of investigations in a page.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: Lists the investigations for a behavior graph based on the total number of investigations.
+          example: 100
+        FilterCriteria:
+          type: object
+          description: Filters the investigation results based on a criteria.
+          properties:
+            Severity:
+              type: object
+              description: Filter investigations by severity.
+              properties:
+                Value:
+                  type: string
+                  enum:
+                  - INFORMATIONAL
+                  - LOW
+                  - MEDIUM
+                  - HIGH
+                  - CRITICAL
+            Status:
+              type: object
+              description: Filter investigations by status.
+              properties:
+                Value:
+                  type: string
+                  enum:
+                  - RUNNING
+                  - FAILED
+                  - SUCCESSFUL
+            State:
+              type: object
+              description: Filter investigations by state.
+              properties:
+                Value:
+                  type: string
+                  enum:
+                  - ACTIVE
+                  - ARCHIVED
+        SortCriteria:
+          type: object
+          description: Sorts the investigation results based on a criteria.
+          properties:
+            Field:
+              type: string
+              description: The field to use to sort the results.
+              enum:
+              - SEVERITY
+              - STATUS
+              - CREATED_TIME
+            SortOrder:
+              type: string
+              enum:
+              - ASC
+              - DESC
+    StartInvestigationResponse:
+      type: object
+      description: Response from starting an investigation
+      properties:
+        InvestigationId:
+          type: string
+          description: The investigation ID of the investigation report.
+          example: invest-abc123def456
+    ListIndicatorsResponse:
+      type: object
+      description: Response from listing indicators
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        InvestigationId:
+          type: string
+          description: The investigation ID of the investigation report.
+          example: invest-abc123def456
+        NextToken:
+          type: string
+          description: List if there are more results available.
+        Indicators:
+          type: array
+          description: Lists the indicators of compromise.
+          items:
+            $ref: '#/components/schemas/Indicator'
+    GetInvestigationResponse:
+      type: object
+      description: Response from getting investigation details
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        InvestigationId:
+          type: string
+          description: The investigation ID of the investigation report.
+          example: invest-abc123def456
+        EntityArn:
+          type: string
+          description: The unique Amazon Resource Name (ARN) of the IAM user and IAM role.
+          example: arn:aws:iam::123456789012:user/jsmith
+        EntityType:
+          type: string
+          description: Type of entity. For example, IAM_ROLE or IAM_USER.
+          enum:
+          - IAM_ROLE
+          - IAM_USER
+          example: IAM_ROLE
+        CreatedTime:
+          type: string
+          format: date-time
+          description: The creation time of the investigation report in UTC time stamp format.
+          example: '2025-01-15T10:00:00Z'
+        ScopeStartTime:
+          type: string
+          format: date-time
+          description: The start date and time used to set the scope time within which you want Detective to investigate.
+          example: '2025-01-01T00:00:00Z'
+        ScopeEndTime:
+          type: string
+          format: date-time
+          description: The end date and time used to set the scope time within which you want Detective to investigate.
+          example: '2025-01-15T23:59:59Z'
+        Status:
+          type: string
+          description: The status based on the completion status of the investigation.
+          enum:
+          - RUNNING
+          - FAILED
+          - SUCCESSFUL
+          example: RUNNING
+        Severity:
+          type: string
+          description: The severity assigned is based on the likelihood and impact of the indicators of compromise discovered in the investigation.
+          enum:
+          - INFORMATIONAL
+          - LOW
+          - MEDIUM
+          - HIGH
+          - CRITICAL
+          example: HIGH
+        State:
+          type: string
+          description: The current state of the investigation. An archived investigation indicates you have completed reviewing the investigation.
+          enum:
+          - ACTIVE
+          - ARCHIVED
+          example: ACTIVE
+    ListIndicatorsRequest:
+      type: object
+      required:
+      - GraphArn
+      - InvestigationId
+      description: Request to list indicators from an investigation
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        InvestigationId:
+          type: string
+          description: The investigation ID of the investigation report.
+          example: invest-abc123def456
+        IndicatorType:
+          type: string
+          description: For the list of indicators of compromise that are generated by Detective investigations, see Detective investigations.
+          enum:
+          - TTP_OBSERVED
+          - IMPOSSIBLE_TRAVEL
+          - FLAGGED_IP_ADDRESS
+          - NEW_GEOLOCATION
+          - NEW_ASO
+          - NEW_USER_AGENT
+          - RELATED_FINDING
+          - RELATED_FINDING_GROUP
+          example: FLAGGED_IP_ADDRESS
+        NextToken:
+          type: string
+          description: List if there are more results available.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The maximum number of results to return.
+          example: 100
+    Indicator:
+      type: object
+      description: An indicator of compromise detected during an investigation
+      properties:
+        IndicatorType:
+          type: string
+          description: The type of indicator.
+          enum:
+          - TTP_OBSERVED
+          - IMPOSSIBLE_TRAVEL
+          - FLAGGED_IP_ADDRESS
+          - NEW_GEOLOCATION
+          - NEW_ASO
+          - NEW_USER_AGENT
+          - RELATED_FINDING
+          - RELATED_FINDING_GROUP
+          example: FLAGGED_IP_ADDRESS
+        IndicatorDetail:
+          type: object
+          description: Details about the indicator of compromise.
+    ListInvestigationsResponse:
+      type: object
+      description: Response from listing investigations
+      properties:
+        InvestigationDetails:
+          type: array
+          description: Lists the summary of uncommon behavior or malicious activity which indicates a compromise.
+          items:
+            $ref: '#/components/schemas/InvestigationDetail'
+        NextToken:
+          type: string
+          description: Lists investigations for a behavior graph based on the maximum number of investigations in a page.
+    StartInvestigationRequest:
+      type: object
+      required:
+      - GraphArn
+      - EntityArn
+      - ScopeStartTime
+      - ScopeEndTime
+      description: Request to start an investigation
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        EntityArn:
+          type: string
+          description: The unique Amazon Resource Name (ARN) of the IAM user and IAM role.
+          example: arn:aws:iam::123456789012:user/jsmith
+        ScopeStartTime:
+          type: string
+          format: date-time
+          description: The data and time when the investigation began.
+          example: '2025-01-01T00:00:00Z'
+        ScopeEndTime:
+          type: string
+          format: date-time
+          description: The data and time when the investigation ended.
+          example: '2025-01-15T23:59:59Z'
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+    GetInvestigationRequest:
+      type: object
+      required:
+      - GraphArn
+      - InvestigationId
+      description: Request to get investigation details
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        InvestigationId:
+          type: string
+          description: The investigation ID of the investigation report.
+          example: invest-abc123def456
+    InvestigationDetail:
+      type: object
+      description: Summary details of an investigation
+      properties:
+        InvestigationId:
+          type: string
+          description: The investigation ID of the investigation report.
+          example: invest-abc123def456
+        Severity:
+          type: string
+          description: The severity assigned to the investigation.
+          enum:
+          - INFORMATIONAL
+          - LOW
+          - MEDIUM
+          - HIGH
+          - CRITICAL
+          example: HIGH
+        Status:
+          type: string
+          description: The status based on the completion status of the investigation.
+          enum:
+          - RUNNING
+          - FAILED
+          - SUCCESSFUL
+          example: RUNNING
+        State:
+          type: string
+          description: The current state of the investigation.
+          enum:
+          - ACTIVE
+          - ARCHIVED
+          example: ACTIVE
+        CreatedTime:
+          type: string
+          format: date-time
+          description: The time stamp of the creation time of the investigation report.
+          example: '2025-01-15T10:00:00Z'
+        EntityArn:
+          type: string
+          description: The unique Amazon Resource Name (ARN) of the IAM user and IAM role.
+          example: arn:aws:iam::123456789012:user/jsmith
+        EntityType:
+          type: string
+          description: Type of entity. For example, IAM_ROLE or IAM_USER.
+          enum:
+          - IAM_ROLE
+          - IAM_USER
+          example: IAM_ROLE
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: AWS Signature Version 4 authentication
+externalDocs:
+  description: Amazon Detective API Reference
+  url: https://docs.aws.amazon.com/detective/latest/APIReference/Welcome.html

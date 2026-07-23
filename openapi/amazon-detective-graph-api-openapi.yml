@@ -1,0 +1,274 @@
+openapi: 3.1.0
+info:
+  title: Amazon Detective Datasources Graph API
+  description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
+  version: '2018-10-26'
+  contact:
+    name: AWS Support
+    url: https://aws.amazon.com/premiumsupport/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://aws.amazon.com/service-terms/
+  x-logo:
+    url: https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png
+  x-generated-from: documentation
+servers:
+- url: https://api.detective.{region}.amazonaws.com
+  description: Amazon Detective regional endpoint
+  variables:
+    region:
+      default: us-east-1
+      description: AWS region
+      enum:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - eu-west-1
+      - eu-west-2
+      - eu-central-1
+      - ap-northeast-1
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-south-1
+      - sa-east-1
+security:
+- sigv4: []
+tags:
+- name: Graph
+  description: Behavior graph management operations
+paths:
+  /graph:
+    post:
+      summary: Amazon Detective Create Graph
+      description: Creates a new behavior graph for the calling account and sets it as the administrator account.
+      operationId: createGraph
+      tags:
+      - Graph
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGraphRequest'
+            examples:
+              CreateGraphRequestExample:
+                summary: Default createGraph request
+                x-microcks-default: true
+                value:
+                  Tags:
+                    Environment: production
+      responses:
+        '200':
+          description: Successfully created behavior graph
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateGraphResponse'
+              examples:
+                CreateGraph200Example:
+                  summary: Default createGraph 200 response
+                  x-microcks-default: true
+                  value:
+                    GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict - behavior graph already enabled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      summary: Amazon Detective Delete Graph
+      description: Disables Amazon Detective and queues the behavior graph for deletion. This operation requires the behavior graph ARN in the request.
+      operationId: deleteGraph
+      tags:
+      - Graph
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteGraphRequest'
+            examples:
+              DeleteGraphRequestExample:
+                summary: Default deleteGraph request
+                x-microcks-default: true
+                value:
+                  GraphArn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+      responses:
+        '200':
+          description: Successfully deleted behavior graph
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /graphs/list:
+    post:
+      summary: Amazon Detective List Graphs
+      description: Returns the list of behavior graphs that the calling account is an administrator account of. This operation can only be called by a Detective administrator account.
+      operationId: listGraphs
+      tags:
+      - Graph
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListGraphsRequest'
+            examples:
+              ListGraphsRequestExample:
+                summary: Default listGraphs request
+                x-microcks-default: true
+                value:
+                  MaxResults: 100
+      responses:
+        '200':
+          description: Successfully listed behavior graphs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGraphsResponse'
+              examples:
+                ListGraphs200Example:
+                  summary: Default listGraphs 200 response
+                  x-microcks-default: true
+                  value:
+                    GraphList:
+                    - Arn: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+                      CreatedTime: '2025-01-15T10:00:00Z'
+                    NextToken: null
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    CreateGraphResponse:
+      type: object
+      description: Response from creating a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the new behavior graph
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    CreateGraphRequest:
+      type: object
+      description: Request to create a new behavior graph
+      properties:
+        Tags:
+          type: object
+          description: The tags to assign to the new behavior graph
+          additionalProperties:
+            type: string
+    ListGraphsResponse:
+      type: object
+      description: Response from listing behavior graphs
+      properties:
+        GraphList:
+          type: array
+          description: A list of behavior graphs that the account is an administrator account of.
+          items:
+            $ref: '#/components/schemas/Graph'
+        NextToken:
+          type: string
+          description: If there are more behavior graphs remaining in the results, then this is the pagination token to use.
+    DeleteGraphRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to delete a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph to disable
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    Graph:
+      type: object
+      description: A behavior graph in Amazon Detective
+      properties:
+        Arn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        CreatedTime:
+          type: string
+          format: date-time
+          description: The date and time that the behavior graph was created.
+          example: '2025-01-15T10:00:00Z'
+    ListGraphsRequest:
+      type: object
+      description: Request to list behavior graphs
+      properties:
+        NextToken:
+          type: string
+          description: For requests to get the next page of results. The pagination token from the previous request.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The maximum number of graphs to return at a time.
+          example: 100
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: AWS Signature Version 4 authentication
+externalDocs:
+  description: Amazon Detective API Reference
+  url: https://docs.aws.amazon.com/detective/latest/APIReference/Welcome.html

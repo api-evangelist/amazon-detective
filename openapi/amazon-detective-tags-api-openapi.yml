@@ -1,0 +1,236 @@
+openapi: 3.1.0
+info:
+  title: Amazon Detective Datasources Tags API
+  description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
+  version: '2018-10-26'
+  contact:
+    name: AWS Support
+    url: https://aws.amazon.com/premiumsupport/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://aws.amazon.com/service-terms/
+  x-logo:
+    url: https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png
+  x-generated-from: documentation
+servers:
+- url: https://api.detective.{region}.amazonaws.com
+  description: Amazon Detective regional endpoint
+  variables:
+    region:
+      default: us-east-1
+      description: AWS region
+      enum:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - eu-west-1
+      - eu-west-2
+      - eu-central-1
+      - ap-northeast-1
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-south-1
+      - sa-east-1
+security:
+- sigv4: []
+tags:
+- name: Tags
+  description: Resource tagging operations
+paths:
+  /tags/{resourceArn}:
+    get:
+      summary: Amazon Detective List Tags for Resource
+      description: Returns the tag values that are assigned to a behavior graph.
+      operationId: listTagsForResource
+      tags:
+      - Tags
+      parameters:
+      - name: resourceArn
+        in: path
+        required: true
+        description: The ARN of the behavior graph for which you want to list tag values.
+        schema:
+          type: string
+        example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+      responses:
+        '200':
+          description: Successfully listed tags
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTagsForResourceResponse'
+              examples:
+                ListTagsForResource200Example:
+                  summary: Default listTagsForResource 200 response
+                  x-microcks-default: true
+                  value:
+                    Tags:
+                      Environment: production
+                      Team: security
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      summary: Amazon Detective Tag Resource
+      description: Applies tag values to a behavior graph.
+      operationId: tagResource
+      tags:
+      - Tags
+      parameters:
+      - name: resourceArn
+        in: path
+        required: true
+        description: The ARN of the behavior graph to assign the tags to.
+        schema:
+          type: string
+        example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagResourceRequest'
+            examples:
+              TagResourceRequestExample:
+                summary: Default tagResource request
+                x-microcks-default: true
+                value:
+                  Tags:
+                    Environment: production
+                    Team: security
+      responses:
+        '204':
+          description: Successfully applied tags
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      summary: Amazon Detective Untag Resource
+      description: Removes tags from a behavior graph.
+      operationId: untagResource
+      tags:
+      - Tags
+      parameters:
+      - name: resourceArn
+        in: path
+        required: true
+        description: The ARN of the behavior graph to remove the tags from.
+        schema:
+          type: string
+        example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+      - name: tagKeys
+        in: query
+        required: true
+        description: The tag keys of the tags to remove from the behavior graph.
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - Environment
+        - Team
+      responses:
+        '204':
+          description: Successfully removed tags
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    ListTagsForResourceResponse:
+      type: object
+      description: Response from listing tags for a resource
+      properties:
+        Tags:
+          type: object
+          description: The tag values that are assigned to the behavior graph.
+          additionalProperties:
+            type: string
+    TagResourceRequest:
+      type: object
+      required:
+      - Tags
+      description: Request to apply tags to a behavior graph
+      properties:
+        Tags:
+          type: object
+          description: The tags to assign to the behavior graph.
+          additionalProperties:
+            type: string
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+  securitySchemes:
+    sigv4:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: AWS Signature Version 4 authentication
+externalDocs:
+  description: Amazon Detective API Reference
+  url: https://docs.aws.amazon.com/detective/latest/APIReference/Welcome.html
