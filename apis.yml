@@ -4,60 +4,318 @@ description: >-
   the root cause of potential security issues or suspicious activities. It automatically collects log data from your AWS
   resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that
   help you conduct faster and more efficient security investigations.
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 image: https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png
 url: https://aws.amazon.com/detective/
 created: '2024-01-15'
 modified: '2026-05-19'
 apis:
-  - name: Amazon Detective API
-    description: >-
-      The Amazon Detective API provides programmatic access to manage security investigation workflows. It enables
-      developers to create and manage behavior graphs, invite and manage member accounts, start and manage
-      investigations, list indicators of compromise, manage data source packages, and configure AWS Organizations
-      integration for multi-account security management.
-    image: https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png
-    humanURL: https://aws.amazon.com/detective/
-    baseURL: https://api.detective.amazonaws.com
-    tags:
-      - AWS
-      - Forensics
-      - Investigation
-      - Security
-    properties:
-      - type: Documentation
-        url: https://docs.aws.amazon.com/detective/
-      - type: OpenAPI
-        url: openapi/amazon-detective-openapi.yml
-      - type: Pricing
-        url: https://aws.amazon.com/detective/pricing/
-      - type: GettingStarted
-        url: https://aws.amazon.com/detective/getting-started/
-      - type: FAQ
-        url: https://aws.amazon.com/detective/faqs/
-      - type: JSONSchema
-        url: json-schema/amazon-detective-graph-schema.json
-      - type: JSONSchema
-        url: json-schema/amazon-detective-member-detail-schema.json
-      - type: JSONSchema
-        url: json-schema/amazon-detective-investigation-detail-schema.json
-      - type: JSONSchema
-        url: json-schema/amazon-detective-indicator-schema.json
-      - type: JSONSchema
-        url: json-schema/amazon-detective-administrator-schema.json
-      - type: JSONStructure
-        url: json-structure/amazon-detective-graph-structure.json
-      - type: JSONStructure
-        url: json-structure/amazon-detective-member-detail-structure.json
-      - type: JSONStructure
-        url: json-structure/amazon-detective-investigation-detail-structure.json
-      - type: JSONLD
-        url: json-ld/amazon-detective-context.jsonld
-      - type: Examples
-        url: examples/amazon-detective-graph-example.json
-      - type: Examples
-        url: examples/amazon-detective-member-detail-example.json
-      - type: Examples
-        url: examples/amazon-detective-investigation-detail-example.json
+- aid: amazon-detective:amazon-detective-datasources-api
+  name: Amazon Detective Datasources API
+  description: Data source package management operations
+  humanURL: https://aws.amazon.com/detective/
+  baseURL: https://api.detective.amazonaws.com
+  tags:
+  - Datasources
+  properties:
+  - type: OpenAPI
+    url: openapi/amazon-detective-datasources-api-openapi.yml
+  - type: Documentation
+    url: https://docs.aws.amazon.com/detective/
+  - type: Pricing
+    url: https://aws.amazon.com/detective/pricing/
+  - type: GettingStarted
+    url: https://aws.amazon.com/detective/getting-started/
+  - type: FAQ
+    url: https://aws.amazon.com/detective/faqs/
+  - type: JSONSchema
+    url: json-schema/amazon-detective-graph-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-member-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-investigation-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-indicator-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-administrator-schema.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-graph-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-member-detail-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-investigation-detail-structure.json
+  - type: JSONLD
+    url: json-ld/amazon-detective-context.jsonld
+  - type: Examples
+    url: examples/amazon-detective-graph-example.json
+  - type: Examples
+    url: examples/amazon-detective-member-detail-example.json
+  - type: Examples
+    url: examples/amazon-detective-investigation-detail-example.json
+- aid: amazon-detective:amazon-detective-graph-api
+  name: Amazon Detective Graph API
+  description: Behavior graph management operations
+  humanURL: https://aws.amazon.com/detective/
+  baseURL: https://api.detective.amazonaws.com
+  tags:
+  - Graph
+  properties:
+  - type: OpenAPI
+    url: openapi/amazon-detective-graph-api-openapi.yml
+  - type: Documentation
+    url: https://docs.aws.amazon.com/detective/
+  - type: Pricing
+    url: https://aws.amazon.com/detective/pricing/
+  - type: GettingStarted
+    url: https://aws.amazon.com/detective/getting-started/
+  - type: FAQ
+    url: https://aws.amazon.com/detective/faqs/
+  - type: JSONSchema
+    url: json-schema/amazon-detective-graph-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-member-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-investigation-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-indicator-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-administrator-schema.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-graph-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-member-detail-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-investigation-detail-structure.json
+  - type: JSONLD
+    url: json-ld/amazon-detective-context.jsonld
+  - type: Examples
+    url: examples/amazon-detective-graph-example.json
+  - type: Examples
+    url: examples/amazon-detective-member-detail-example.json
+  - type: Examples
+    url: examples/amazon-detective-investigation-detail-example.json
+- aid: amazon-detective:amazon-detective-investigations-api
+  name: Amazon Detective Investigations API
+  description: Security investigation operations
+  humanURL: https://aws.amazon.com/detective/
+  baseURL: https://api.detective.amazonaws.com
+  tags:
+  - Investigations
+  properties:
+  - type: OpenAPI
+    url: openapi/amazon-detective-investigations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.aws.amazon.com/detective/
+  - type: Pricing
+    url: https://aws.amazon.com/detective/pricing/
+  - type: GettingStarted
+    url: https://aws.amazon.com/detective/getting-started/
+  - type: FAQ
+    url: https://aws.amazon.com/detective/faqs/
+  - type: JSONSchema
+    url: json-schema/amazon-detective-graph-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-member-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-investigation-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-indicator-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-administrator-schema.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-graph-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-member-detail-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-investigation-detail-structure.json
+  - type: JSONLD
+    url: json-ld/amazon-detective-context.jsonld
+  - type: Examples
+    url: examples/amazon-detective-graph-example.json
+  - type: Examples
+    url: examples/amazon-detective-member-detail-example.json
+  - type: Examples
+    url: examples/amazon-detective-investigation-detail-example.json
+- aid: amazon-detective:amazon-detective-invitations-api
+  name: Amazon Detective Invitations API
+  description: Invitation management for member accounts
+  humanURL: https://aws.amazon.com/detective/
+  baseURL: https://api.detective.amazonaws.com
+  tags:
+  - Invitations
+  properties:
+  - type: OpenAPI
+    url: openapi/amazon-detective-invitations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.aws.amazon.com/detective/
+  - type: Pricing
+    url: https://aws.amazon.com/detective/pricing/
+  - type: GettingStarted
+    url: https://aws.amazon.com/detective/getting-started/
+  - type: FAQ
+    url: https://aws.amazon.com/detective/faqs/
+  - type: JSONSchema
+    url: json-schema/amazon-detective-graph-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-member-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-investigation-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-indicator-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-administrator-schema.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-graph-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-member-detail-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-investigation-detail-structure.json
+  - type: JSONLD
+    url: json-ld/amazon-detective-context.jsonld
+  - type: Examples
+    url: examples/amazon-detective-graph-example.json
+  - type: Examples
+    url: examples/amazon-detective-member-detail-example.json
+  - type: Examples
+    url: examples/amazon-detective-investigation-detail-example.json
+- aid: amazon-detective:amazon-detective-members-api
+  name: Amazon Detective Members API
+  description: Member account management operations
+  humanURL: https://aws.amazon.com/detective/
+  baseURL: https://api.detective.amazonaws.com
+  tags:
+  - Members
+  properties:
+  - type: OpenAPI
+    url: openapi/amazon-detective-members-api-openapi.yml
+  - type: Documentation
+    url: https://docs.aws.amazon.com/detective/
+  - type: Pricing
+    url: https://aws.amazon.com/detective/pricing/
+  - type: GettingStarted
+    url: https://aws.amazon.com/detective/getting-started/
+  - type: FAQ
+    url: https://aws.amazon.com/detective/faqs/
+  - type: JSONSchema
+    url: json-schema/amazon-detective-graph-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-member-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-investigation-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-indicator-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-administrator-schema.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-graph-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-member-detail-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-investigation-detail-structure.json
+  - type: JSONLD
+    url: json-ld/amazon-detective-context.jsonld
+  - type: Examples
+    url: examples/amazon-detective-graph-example.json
+  - type: Examples
+    url: examples/amazon-detective-member-detail-example.json
+  - type: Examples
+    url: examples/amazon-detective-investigation-detail-example.json
+- aid: amazon-detective:amazon-detective-organizations-api
+  name: Amazon Detective Organizations API
+  description: AWS Organizations integration operations
+  humanURL: https://aws.amazon.com/detective/
+  baseURL: https://api.detective.amazonaws.com
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/amazon-detective-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.aws.amazon.com/detective/
+  - type: Pricing
+    url: https://aws.amazon.com/detective/pricing/
+  - type: GettingStarted
+    url: https://aws.amazon.com/detective/getting-started/
+  - type: FAQ
+    url: https://aws.amazon.com/detective/faqs/
+  - type: JSONSchema
+    url: json-schema/amazon-detective-graph-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-member-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-investigation-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-indicator-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-administrator-schema.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-graph-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-member-detail-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-investigation-detail-structure.json
+  - type: JSONLD
+    url: json-ld/amazon-detective-context.jsonld
+  - type: Examples
+    url: examples/amazon-detective-graph-example.json
+  - type: Examples
+    url: examples/amazon-detective-member-detail-example.json
+  - type: Examples
+    url: examples/amazon-detective-investigation-detail-example.json
+- aid: amazon-detective:amazon-detective-tags-api
+  name: Amazon Detective Tags API
+  description: Resource tagging operations
+  humanURL: https://aws.amazon.com/detective/
+  baseURL: https://api.detective.amazonaws.com
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/amazon-detective-tags-api-openapi.yml
+  - type: Documentation
+    url: https://docs.aws.amazon.com/detective/
+  - type: Pricing
+    url: https://aws.amazon.com/detective/pricing/
+  - type: GettingStarted
+    url: https://aws.amazon.com/detective/getting-started/
+  - type: FAQ
+    url: https://aws.amazon.com/detective/faqs/
+  - type: JSONSchema
+    url: json-schema/amazon-detective-graph-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-member-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-investigation-detail-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-indicator-schema.json
+  - type: JSONSchema
+    url: json-schema/amazon-detective-administrator-schema.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-graph-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-member-detail-structure.json
+  - type: JSONStructure
+    url: json-structure/amazon-detective-investigation-detail-structure.json
+  - type: JSONLD
+    url: json-ld/amazon-detective-context.jsonld
+  - type: Examples
+    url: examples/amazon-detective-graph-example.json
+  - type: Examples
+    url: examples/amazon-detective-member-detail-example.json
+  - type: Examples
+    url: examples/amazon-detective-investigation-detail-example.json
 common:
   - type: AgenticAccess
     url: agentic-access/amazon-detective-agentic-access.yml
