@@ -1,0 +1,26 @@
+{
+  "provider": "amazon-detective",
+  "sources": [
+    "amazon-detective-datasources-api-openapi.yml",
+    "amazon-detective-graph-api-openapi.yml",
+    "amazon-detective-investigations-api-openapi.yml",
+    "amazon-detective-invitations-api-openapi.yml",
+    "amazon-detective-members-api-openapi.yml",
+    "amazon-detective-organizations-api-openapi.yml",
+    "amazon-detective-tags-api-openapi.yml"
+  ],
+  "outputs": [
+    "amazon-detective-datasources-api-openapi.yml",
+    "amazon-detective-graph-api-openapi.yml",
+    "amazon-detective-investigations-api-openapi.yml",
+    "amazon-detective-invitations-api-openapi.yml",
+    "amazon-detective-members-api-openapi.yml",
+    "amazon-detective-organizations-api-openapi.yml",
+    "amazon-detective-tags-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
