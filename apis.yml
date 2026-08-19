@@ -4,6 +4,7 @@ description: >-
   the root cause of potential security issues or suspicious activities. It automatically collects log data from your AWS
   resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that
   help you conduct faster and more efficient security investigations.
+specificationVersion: '0.23'
 accessModel:
   pricing: freemium
   onboarding: self-serve
