@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Amazon Detective Datasources Graph API",
+    "version": "2018-10-26"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Graph",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective Create Graph",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new behavior graph for the calling account and sets it as the administrator account."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Delete Graph",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.detective.{region}.amazonaws.com/graph",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Disables Amazon Detective and queues the behavior graph for deletion. This operation requires the behavior graph ARN in the request."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Graphs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graphs/list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the list of behavior graphs that the calling account is an administrator account of. This operation can only be called by a Detective administrator account."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

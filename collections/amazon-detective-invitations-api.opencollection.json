@@ -1,0 +1,86 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Amazon Detective Datasources Invitations API",
+    "version": "2018-10-26"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invitations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective Accept Invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.detective.{region}.amazonaws.com/invitation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Accepts an invitation for the member account to contribute data to a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Reject Invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.detective.{region}.amazonaws.com/invitation/removal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rejects an invitation to contribute the account data to a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Invitations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/invitations/list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieves the list of open and accepted behavior graph invitations for the member account."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Disassociate Membership",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/membership/removal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes the member account from the specified behavior graph. This operation can only be called by a Detective member account."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

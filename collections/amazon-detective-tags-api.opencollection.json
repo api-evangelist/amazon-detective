@@ -1,0 +1,93 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Amazon Detective Datasources Tags API",
+    "version": "2018-10-26"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective List Tags for Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.detective.{region}.amazonaws.com/tags/:resourceArn",
+            "params": [
+              {
+                "name": "resourceArn",
+                "value": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+                "type": "path",
+                "description": "The ARN of the behavior graph for which you want to list tag values."
+              }
+            ]
+          },
+          "docs": "Returns the tag values that are assigned to a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Tag Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/tags/:resourceArn",
+            "params": [
+              {
+                "name": "resourceArn",
+                "value": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+                "type": "path",
+                "description": "The ARN of the behavior graph to assign the tags to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies tag values to a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Untag Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.detective.{region}.amazonaws.com/tags/:resourceArn",
+            "params": [
+              {
+                "name": "resourceArn",
+                "value": "arn:aws:detective:us-east-1:123456789012:graph:abc123def456",
+                "type": "path",
+                "description": "The ARN of the behavior graph to remove the tags from."
+              },
+              {
+                "name": "tagKeys",
+                "value": "Environment,Team",
+                "type": "query",
+                "description": "The tag keys of the tags to remove from the behavior graph."
+              }
+            ]
+          },
+          "docs": "Removes tags from a behavior graph."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

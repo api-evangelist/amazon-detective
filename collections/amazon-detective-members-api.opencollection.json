@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Amazon Detective Datasources Members API",
+    "version": "2018-10-26"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Members",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective Create Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a request to invite the specified AWS accounts to be member accounts in the behavior graph. This operation can only be called by the administrator account."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Delete Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members/removal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes the specified member accounts from the behavior graph. The removed accounts no longer contribute data to the behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Get Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members/get",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the membership details for specified member accounts for a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members/list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieves the list of member accounts for a behavior graph. Does not return member accounts that were removed."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Start Monitoring Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/graph/members/monitoringEnable",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a request to enable data ingest for a member account that has a status of ACCEPTED_BUT_DISABLED."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

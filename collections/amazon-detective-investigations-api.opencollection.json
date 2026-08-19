@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Amazon Detective Datasources Investigations API",
+    "version": "2018-10-26"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Investigations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon Detective Start Investigation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/startInvestigation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates a Detective investigation on an entity in a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Get Investigation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/getInvestigation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the investigation results of an investigation for a behavior graph."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Investigations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/listInvestigations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Lists investigations for a behavior graph using filters such as time range, entity ARN, and investigation state."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective Update Investigation State",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/updateInvestigationState",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the state of an investigation. Valid states are ACTIVE and ARCHIVED."
+        },
+        {
+          "info": {
+            "name": "Amazon Detective List Indicators",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.detective.{region}.amazonaws.com/investigations/listIndicators",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Gets the indicators from an investigation. You can use the filters to narrow the results based on the type of indicator."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
