@@ -29,6 +29,8 @@ apis:
   humanURL: https://aws.amazon.com/detective/
   baseURL: https://api.detective.amazonaws.com
   tags:
+  - Data Sources
+  tags_raw:
   - Datasources
   properties:
   - type: OpenAPI
@@ -239,6 +241,8 @@ apis:
   humanURL: https://aws.amazon.com/detective/
   baseURL: https://api.detective.amazonaws.com
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
