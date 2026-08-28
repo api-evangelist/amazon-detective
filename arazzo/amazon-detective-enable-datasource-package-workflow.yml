@@ -12,8 +12,8 @@ info:
     read and executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: detectiveApi
-  url: ../openapi/amazon-detective-openapi.yml
+- name: datasourcesApi
+  url: ../openapi/amazon-detective-datasources-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: enable-datasource-package

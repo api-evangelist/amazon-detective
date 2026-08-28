@@ -13,8 +13,11 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: detectiveApi
-  url: ../openapi/amazon-detective-openapi.yml
+- name: invitationsApi
+  url: ../openapi/amazon-detective-invitations-api-openapi.yml
+  type: openapi
+- name: membersApi
+  url: ../openapi/amazon-detective-members-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: member-accept-invitation

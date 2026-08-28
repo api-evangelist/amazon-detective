@@ -12,8 +12,8 @@ info:
     and executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: detectiveApi
-  url: ../openapi/amazon-detective-openapi.yml
+- name: membersApi
+  url: ../openapi/amazon-detective-members-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: start-monitoring-member

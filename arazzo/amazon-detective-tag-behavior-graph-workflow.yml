@@ -12,8 +12,11 @@ info:
     the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: detectiveApi
-  url: ../openapi/amazon-detective-openapi.yml
+- name: graphApi
+  url: ../openapi/amazon-detective-graph-api-openapi.yml
+  type: openapi
+- name: tagsApi
+  url: ../openapi/amazon-detective-tags-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: tag-behavior-graph
