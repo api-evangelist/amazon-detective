@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Amazon Detective Datasources Invitations API
   description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
@@ -209,15 +209,49 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    AcceptInvitationRequest:
+    ListInvitationsResponse:
+      type: object
+      description: Response from listing invitations
+      properties:
+        Invitations:
+          type: array
+          description: The list of behavior graphs for which the member account has open or accepted invitations.
+          items:
+            $ref: '#/components/schemas/MemberDetail'
+        NextToken:
+          type: string
+          description: If there are more invitations remaining in the results, then use this pagination token.
+    DisassociateMembershipRequest:
       type: object
       required:
       - GraphArn
-      description: Request to accept an invitation to a behavior graph
+      description: Request to disassociate from a behavior graph
       properties:
         GraphArn:
           type: string
-          description: The ARN of the behavior graph that the member account is accepting the invitation for.
+          description: The ARN of the behavior graph to remove the member account from.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    ListInvitationsRequest:
+      type: object
+      description: Request to list invitations
+      properties:
+        NextToken:
+          type: string
+          description: The pagination token for the next page of results.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The maximum number of invitations to return.
+          example: 100
+    RejectInvitationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to reject a behavior graph invitation
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph that the member account is rejecting the invitation for.
           example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
     MemberDetail:
       type: object
@@ -286,50 +320,6 @@ components:
           - INVITATION
           - ORGANIZATION
           example: INVITATION
-    ListInvitationsResponse:
-      type: object
-      description: Response from listing invitations
-      properties:
-        Invitations:
-          type: array
-          description: The list of behavior graphs for which the member account has open or accepted invitations.
-          items:
-            $ref: '#/components/schemas/MemberDetail'
-        NextToken:
-          type: string
-          description: If there are more invitations remaining in the results, then use this pagination token.
-    RejectInvitationRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to reject a behavior graph invitation
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph that the member account is rejecting the invitation for.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    DisassociateMembershipRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to disassociate from a behavior graph
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph to remove the member account from.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    ListInvitationsRequest:
-      type: object
-      description: Request to list invitations
-      properties:
-        NextToken:
-          type: string
-          description: The pagination token for the next page of results.
-          example: abc123token
-        MaxResults:
-          type: integer
-          description: The maximum number of invitations to return.
-          example: 100
     ErrorResponse:
       type: object
       description: Standard error response from Amazon Detective
@@ -342,6 +332,16 @@ components:
           type: string
           description: Error code
           example: ValidationException
+    AcceptInvitationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to accept an invitation to a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph that the member account is accepting the invitation for.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
   securitySchemes:
     sigv4:
       type: apiKey

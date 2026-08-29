@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Amazon Detective Datasources API
   description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
@@ -256,27 +256,48 @@ components:
           type: integer
           description: The total number of items to return.
           example: 100
-    ErrorResponse:
+    ListDatasourcePackagesResponse:
       type: object
-      description: Standard error response from Amazon Detective
+      description: Response from listing datasource packages
       properties:
-        Message:
+        DatasourcePackages:
+          type: object
+          description: Details on the data source packages active in the behavior graph.
+          additionalProperties:
+            $ref: '#/components/schemas/DatasourcePackageIngestDetail'
+        NextToken:
           type: string
-          description: Human-readable error message
-          example: The request is invalid.
-        Code:
-          type: string
-          description: Error code
-          example: ValidationException
-    TimestampForCollection:
+          description: For requests to get the next page of results.
+    BatchGetGraphMemberDatasourcesResponse:
       type: object
-      description: Details on when data collection began for a source package.
+      description: Response from getting datasource details for behavior graph members
       properties:
-        Timestamp:
+        MemberDatasources:
+          type: array
+          description: Details on the data source packages active in the behavior graph.
+          items:
+            $ref: '#/components/schemas/MembershipDatasources'
+        UnprocessedAccounts:
+          type: array
+          description: Accounts that data source package information could not be retrieved for.
+          items:
+            $ref: '#/components/schemas/UnprocessedAccount'
+    DatasourcePackageIngestDetail:
+      type: object
+      description: Details about the ingest state of a datasource package
+      properties:
+        DatasourcePackageIngestState:
           type: string
-          format: date-time
-          description: The data and time when data collection began for a source package.
-          example: '2025-01-15T10:00:00Z'
+          description: Details on which data source packages are ingested for a member account.
+          enum:
+          - STARTED
+          - STOPPED
+          - DISABLED
+        LastIngestStateChange:
+          type: object
+          description: The date a data source package type was last updated for a member account.
+          additionalProperties:
+            $ref: '#/components/schemas/TimestampForCollection'
     MembershipDatasources:
       type: object
       description: Details on data source packages for a member account in a behavior graph
@@ -294,32 +315,18 @@ components:
           description: Details on when a data source package was added to a behavior graph.
           additionalProperties:
             type: object
-    BatchGetGraphMemberDatasourcesResponse:
+    UnprocessedAccount:
       type: object
-      description: Response from getting datasource details for behavior graph members
+      description: A member account that could not be processed
       properties:
-        MemberDatasources:
-          type: array
-          description: Details on the data source packages active in the behavior graph.
-          items:
-            $ref: '#/components/schemas/MembershipDatasources'
-        UnprocessedAccounts:
-          type: array
-          description: Accounts that data source package information could not be retrieved for.
-          items:
-            $ref: '#/components/schemas/UnprocessedAccount'
-    UnprocessedGraph:
-      type: object
-      description: A behavior graph that could not be processed
-      properties:
-        GraphArn:
+        AccountId:
           type: string
-          description: The ARN of the organization behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+          description: The AWS account identifier of the member account that was not processed.
+          example: '234567890123'
         Reason:
           type: string
-          description: The reason data source package information could not be retrieved for the behavior graph.
-          example: Graph not found
+          description: The reason that the member account request could not be processed.
+          example: Account not found
     BatchGetMembershipDatasourcesResponse:
       type: object
       description: Response from getting membership datasource history
@@ -334,18 +341,15 @@ components:
           description: Graphs that data source package information could not be retrieved for.
           items:
             $ref: '#/components/schemas/UnprocessedGraph'
-    UnprocessedAccount:
+    TimestampForCollection:
       type: object
-      description: A member account that could not be processed
+      description: Details on when data collection began for a source package.
       properties:
-        AccountId:
+        Timestamp:
           type: string
-          description: The AWS account identifier of the member account that was not processed.
-          example: '234567890123'
-        Reason:
-          type: string
-          description: The reason that the member account request could not be processed.
-          example: Account not found
+          format: date-time
+          description: The data and time when data collection began for a source package.
+          example: '2025-01-15T10:00:00Z'
     UpdateDatasourcePackagesRequest:
       type: object
       required:
@@ -368,22 +372,30 @@ components:
             - AD_AUDIT
           example:
           - EKS_AUDIT
-    DatasourcePackageIngestDetail:
+    UnprocessedGraph:
       type: object
-      description: Details about the ingest state of a datasource package
+      description: A behavior graph that could not be processed
       properties:
-        DatasourcePackageIngestState:
+        GraphArn:
           type: string
-          description: Details on which data source packages are ingested for a member account.
-          enum:
-          - STARTED
-          - STOPPED
-          - DISABLED
-        LastIngestStateChange:
-          type: object
-          description: The date a data source package type was last updated for a member account.
-          additionalProperties:
-            $ref: '#/components/schemas/TimestampForCollection'
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        Reason:
+          type: string
+          description: The reason data source package information could not be retrieved for the behavior graph.
+          example: Graph not found
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
     BatchGetMembershipDatasourcesRequest:
       type: object
       required:
@@ -415,18 +427,6 @@ components:
             type: string
           example:
           - '234567890123'
-    ListDatasourcePackagesResponse:
-      type: object
-      description: Response from listing datasource packages
-      properties:
-        DatasourcePackages:
-          type: object
-          description: Details on the data source packages active in the behavior graph.
-          additionalProperties:
-            $ref: '#/components/schemas/DatasourcePackageIngestDetail'
-        NextToken:
-          type: string
-          description: For requests to get the next page of results.
   securitySchemes:
     sigv4:
       type: apiKey

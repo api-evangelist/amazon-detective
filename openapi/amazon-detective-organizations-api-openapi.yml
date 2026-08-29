@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Amazon Detective Datasources Organizations API
   description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
@@ -245,18 +245,16 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ListOrganizationAdminAccountsResponse:
+    DescribeOrganizationConfigurationRequest:
       type: object
-      description: Response from listing organization admin accounts
+      required:
+      - GraphArn
+      description: Request to describe organization configuration
       properties:
-        Administrators:
-          type: array
-          description: The list of delegated administrator accounts.
-          items:
-            $ref: '#/components/schemas/Administrator'
-        NextToken:
+        GraphArn:
           type: string
-          description: If there are more accounts remaining in the results, then this is the pagination token.
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
     ListOrganizationAdminAccountsRequest:
       type: object
       description: Request to list organization admin accounts
@@ -269,16 +267,6 @@ components:
           type: integer
           description: The maximum number of results to return.
           example: 100
-    DescribeOrganizationConfigurationRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to describe organization configuration
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the organization behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
     UpdateOrganizationConfigurationRequest:
       type: object
       required:
@@ -289,6 +277,36 @@ components:
           type: string
           description: The ARN of the organization behavior graph.
           example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AutoEnable:
+          type: boolean
+          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
+          example: true
+    EnableOrganizationAdminAccountRequest:
+      type: object
+      required:
+      - AccountId
+      description: Request to enable an organization admin account for Detective
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the account to designate as the Detective administrator account for the organization.
+          example: '123456789012'
+    ListOrganizationAdminAccountsResponse:
+      type: object
+      description: Response from listing organization admin accounts
+      properties:
+        Administrators:
+          type: array
+          description: The list of delegated administrator accounts.
+          items:
+            $ref: '#/components/schemas/Administrator'
+        NextToken:
+          type: string
+          description: If there are more accounts remaining in the results, then this is the pagination token.
+    DescribeOrganizationConfigurationResponse:
+      type: object
+      description: Response from describing organization configuration
+      properties:
         AutoEnable:
           type: boolean
           description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
@@ -310,16 +328,6 @@ components:
           format: date-time
           description: The date and time when the Detective administrator account was enabled.
           example: '2025-01-15T10:00:00Z'
-    EnableOrganizationAdminAccountRequest:
-      type: object
-      required:
-      - AccountId
-      description: Request to enable an organization admin account for Detective
-      properties:
-        AccountId:
-          type: string
-          description: The AWS account identifier of the account to designate as the Detective administrator account for the organization.
-          example: '123456789012'
     ErrorResponse:
       type: object
       description: Standard error response from Amazon Detective
@@ -332,14 +340,6 @@ components:
           type: string
           description: Error code
           example: ValidationException
-    DescribeOrganizationConfigurationResponse:
-      type: object
-      description: Response from describing organization configuration
-      properties:
-        AutoEnable:
-          type: boolean
-          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
-          example: true
   securitySchemes:
     sigv4:
       type: apiKey
