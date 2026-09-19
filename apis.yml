@@ -481,6 +481,11 @@ maintainers:
 tags:
   - AWS
   - Forensics
+  - Investigations
+  - Security
+tags_raw:
+  - AWS
+  - Forensics
   - Investigation
   - Security
 x-parent: aws
