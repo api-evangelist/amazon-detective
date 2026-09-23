@@ -1,13 +1,7 @@
 {
   "provider": "amazon-detective",
   "sources": [
-    "amazon-detective-datasources-api-openapi.yml",
-    "amazon-detective-graph-api-openapi.yml",
-    "amazon-detective-investigations-api-openapi.yml",
-    "amazon-detective-invitations-api-openapi.yml",
-    "amazon-detective-members-api-openapi.yml",
-    "amazon-detective-organizations-api-openapi.yml",
-    "amazon-detective-tags-api-openapi.yml"
+    "_ae-authored/amazon-detective-openapi.yml"
   ],
   "outputs": [
     "amazon-detective-datasources-api-openapi.yml",
@@ -18,11 +12,24 @@
     "amazon-detective-organizations-api-openapi.yml",
     "amazon-detective-tags-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
-    "apis.yml register: already-registered"
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "amazon-detective-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "superseded outputs removed: amazon-detective-data-sources-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 7 total)"
   ],
-  "skipped": []
+  "skipped": [
+    "amazon-detective-data-sources-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-detective-graph-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-detective-investigations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-detective-invitations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-detective-members-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-detective-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-detective-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Amazon Detective Datasources Graph API
+  title: Amazon Detective Graph API
   description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
   version: '2018-10-26'
   contact:
@@ -187,27 +187,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    CreateGraphRequest:
-      type: object
-      description: Request to create a new behavior graph
-      properties:
-        Tags:
-          type: object
-          description: The tags to assign to the new behavior graph
-          additionalProperties:
-            type: string
-    ListGraphsResponse:
-      type: object
-      description: Response from listing behavior graphs
-      properties:
-        GraphList:
-          type: array
-          description: A list of behavior graphs that the account is an administrator account of.
-          items:
-            $ref: '#/components/schemas/Graph'
-        NextToken:
-          type: string
-          description: If there are more behavior graphs remaining in the results, then this is the pagination token to use.
     ListGraphsRequest:
       type: object
       description: Request to list behavior graphs
@@ -220,14 +199,27 @@ components:
           type: integer
           description: The maximum number of graphs to return at a time.
           example: 100
-    CreateGraphResponse:
+    ErrorResponse:
       type: object
-      description: Response from creating a behavior graph
+      description: Standard error response from Amazon Detective
       properties:
-        GraphArn:
+        Message:
           type: string
-          description: The ARN of the new behavior graph
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+    CreateGraphRequest:
+      type: object
+      description: Request to create a new behavior graph
+      properties:
+        Tags:
+          type: object
+          description: The tags to assign to the new behavior graph
+          additionalProperties:
+            type: string
     Graph:
       type: object
       description: A behavior graph in Amazon Detective
@@ -241,18 +233,6 @@ components:
           format: date-time
           description: The date and time that the behavior graph was created.
           example: '2025-01-15T10:00:00Z'
-    ErrorResponse:
-      type: object
-      description: Standard error response from Amazon Detective
-      properties:
-        Message:
-          type: string
-          description: Human-readable error message
-          example: The request is invalid.
-        Code:
-          type: string
-          description: Error code
-          example: ValidationException
     DeleteGraphRequest:
       type: object
       required:
@@ -263,6 +243,26 @@ components:
           type: string
           description: The ARN of the behavior graph to disable
           example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    CreateGraphResponse:
+      type: object
+      description: Response from creating a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the new behavior graph
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    ListGraphsResponse:
+      type: object
+      description: Response from listing behavior graphs
+      properties:
+        GraphList:
+          type: array
+          description: A list of behavior graphs that the account is an administrator account of.
+          items:
+            $ref: '#/components/schemas/Graph'
+        NextToken:
+          type: string
+          description: If there are more behavior graphs remaining in the results, then this is the pagination token to use.
   securitySchemes:
     sigv4:
       type: apiKey

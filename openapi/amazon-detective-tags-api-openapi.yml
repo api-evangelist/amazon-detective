@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Amazon Detective Datasources Tags API
+  title: Amazon Detective Tags API
   description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
   version: '2018-10-26'
   contact:
@@ -193,17 +193,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    TagResourceRequest:
-      type: object
-      required:
-      - Tags
-      description: Request to apply tags to a behavior graph
-      properties:
-        Tags:
-          type: object
-          description: The tags to assign to the behavior graph.
-          additionalProperties:
-            type: string
     ListTagsForResourceResponse:
       type: object
       description: Response from listing tags for a resource
@@ -225,6 +214,17 @@ components:
           type: string
           description: Error code
           example: ValidationException
+    TagResourceRequest:
+      type: object
+      required:
+      - Tags
+      description: Request to apply tags to a behavior graph
+      properties:
+        Tags:
+          type: object
+          description: The tags to assign to the behavior graph.
+          additionalProperties:
+            type: string
   securitySchemes:
     sigv4:
       type: apiKey

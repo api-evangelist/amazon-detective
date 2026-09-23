@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Amazon Detective Datasources Investigations API
+  title: Amazon Detective Investigations API
   description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
   version: '2018-10-26'
   contact:
@@ -344,69 +344,6 @@ components:
           - ACTIVE
           - ARCHIVED
           example: ARCHIVED
-    GetInvestigationResponse:
-      type: object
-      description: Response from getting investigation details
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-        InvestigationId:
-          type: string
-          description: The investigation ID of the investigation report.
-          example: invest-abc123def456
-        EntityArn:
-          type: string
-          description: The unique Amazon Resource Name (ARN) of the IAM user and IAM role.
-          example: arn:aws:iam::123456789012:user/jsmith
-        EntityType:
-          type: string
-          description: Type of entity. For example, IAM_ROLE or IAM_USER.
-          enum:
-          - IAM_ROLE
-          - IAM_USER
-          example: IAM_ROLE
-        CreatedTime:
-          type: string
-          format: date-time
-          description: The creation time of the investigation report in UTC time stamp format.
-          example: '2025-01-15T10:00:00Z'
-        ScopeStartTime:
-          type: string
-          format: date-time
-          description: The start date and time used to set the scope time within which you want Detective to investigate.
-          example: '2025-01-01T00:00:00Z'
-        ScopeEndTime:
-          type: string
-          format: date-time
-          description: The end date and time used to set the scope time within which you want Detective to investigate.
-          example: '2025-01-15T23:59:59Z'
-        Status:
-          type: string
-          description: The status based on the completion status of the investigation.
-          enum:
-          - RUNNING
-          - FAILED
-          - SUCCESSFUL
-          example: RUNNING
-        Severity:
-          type: string
-          description: The severity assigned is based on the likelihood and impact of the indicators of compromise discovered in the investigation.
-          enum:
-          - INFORMATIONAL
-          - LOW
-          - MEDIUM
-          - HIGH
-          - CRITICAL
-          example: HIGH
-        State:
-          type: string
-          description: The current state of the investigation. An archived investigation indicates you have completed reviewing the investigation.
-          enum:
-          - ACTIVE
-          - ARCHIVED
-          example: ACTIVE
     ListInvestigationsResponse:
       type: object
       description: Response from listing investigations
@@ -419,6 +356,26 @@ components:
         NextToken:
           type: string
           description: Lists investigations for a behavior graph based on the maximum number of investigations in a page.
+    Indicator:
+      type: object
+      description: An indicator of compromise detected during an investigation
+      properties:
+        IndicatorType:
+          type: string
+          description: The type of indicator.
+          enum:
+          - TTP_OBSERVED
+          - IMPOSSIBLE_TRAVEL
+          - FLAGGED_IP_ADDRESS
+          - NEW_GEOLOCATION
+          - NEW_ASO
+          - NEW_USER_AGENT
+          - RELATED_FINDING
+          - RELATED_FINDING_GROUP
+          example: FLAGGED_IP_ADDRESS
+        IndicatorDetail:
+          type: object
+          description: Details about the indicator of compromise.
     ListIndicatorsRequest:
       type: object
       required:
@@ -482,17 +439,42 @@ components:
           format: date-time
           description: The data and time when the investigation ended.
           example: '2025-01-15T23:59:59Z'
-    GetInvestigationRequest:
+    ListIndicatorsResponse:
       type: object
-      required:
-      - GraphArn
-      - InvestigationId
-      description: Request to get investigation details
+      description: Response from listing indicators
       properties:
         GraphArn:
           type: string
           description: The ARN of the behavior graph.
           example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        InvestigationId:
+          type: string
+          description: The investigation ID of the investigation report.
+          example: invest-abc123def456
+        NextToken:
+          type: string
+          description: List if there are more results available.
+        Indicators:
+          type: array
+          description: Lists the indicators of compromise.
+          items:
+            $ref: '#/components/schemas/Indicator'
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+    StartInvestigationResponse:
+      type: object
+      description: Response from starting an investigation
+      properties:
         InvestigationId:
           type: string
           description: The investigation ID of the investigation report.
@@ -546,26 +528,6 @@ components:
           - IAM_ROLE
           - IAM_USER
           example: IAM_ROLE
-    Indicator:
-      type: object
-      description: An indicator of compromise detected during an investigation
-      properties:
-        IndicatorType:
-          type: string
-          description: The type of indicator.
-          enum:
-          - TTP_OBSERVED
-          - IMPOSSIBLE_TRAVEL
-          - FLAGGED_IP_ADDRESS
-          - NEW_GEOLOCATION
-          - NEW_ASO
-          - NEW_USER_AGENT
-          - RELATED_FINDING
-          - RELATED_FINDING_GROUP
-          example: FLAGGED_IP_ADDRESS
-        IndicatorDetail:
-          type: object
-          description: Details about the indicator of compromise.
     ListInvestigationsRequest:
       type: object
       required:
@@ -635,29 +597,12 @@ components:
               enum:
               - ASC
               - DESC
-    ErrorResponse:
+    GetInvestigationRequest:
       type: object
-      description: Standard error response from Amazon Detective
-      properties:
-        Message:
-          type: string
-          description: Human-readable error message
-          example: The request is invalid.
-        Code:
-          type: string
-          description: Error code
-          example: ValidationException
-    StartInvestigationResponse:
-      type: object
-      description: Response from starting an investigation
-      properties:
-        InvestigationId:
-          type: string
-          description: The investigation ID of the investigation report.
-          example: invest-abc123def456
-    ListIndicatorsResponse:
-      type: object
-      description: Response from listing indicators
+      required:
+      - GraphArn
+      - InvestigationId
+      description: Request to get investigation details
       properties:
         GraphArn:
           type: string
@@ -667,14 +612,69 @@ components:
           type: string
           description: The investigation ID of the investigation report.
           example: invest-abc123def456
-        NextToken:
+    GetInvestigationResponse:
+      type: object
+      description: Response from getting investigation details
+      properties:
+        GraphArn:
           type: string
-          description: List if there are more results available.
-        Indicators:
-          type: array
-          description: Lists the indicators of compromise.
-          items:
-            $ref: '#/components/schemas/Indicator'
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        InvestigationId:
+          type: string
+          description: The investigation ID of the investigation report.
+          example: invest-abc123def456
+        EntityArn:
+          type: string
+          description: The unique Amazon Resource Name (ARN) of the IAM user and IAM role.
+          example: arn:aws:iam::123456789012:user/jsmith
+        EntityType:
+          type: string
+          description: Type of entity. For example, IAM_ROLE or IAM_USER.
+          enum:
+          - IAM_ROLE
+          - IAM_USER
+          example: IAM_ROLE
+        CreatedTime:
+          type: string
+          format: date-time
+          description: The creation time of the investigation report in UTC time stamp format.
+          example: '2025-01-15T10:00:00Z'
+        ScopeStartTime:
+          type: string
+          format: date-time
+          description: The start date and time used to set the scope time within which you want Detective to investigate.
+          example: '2025-01-01T00:00:00Z'
+        ScopeEndTime:
+          type: string
+          format: date-time
+          description: The end date and time used to set the scope time within which you want Detective to investigate.
+          example: '2025-01-15T23:59:59Z'
+        Status:
+          type: string
+          description: The status based on the completion status of the investigation.
+          enum:
+          - RUNNING
+          - FAILED
+          - SUCCESSFUL
+          example: RUNNING
+        Severity:
+          type: string
+          description: The severity assigned is based on the likelihood and impact of the indicators of compromise discovered in the investigation.
+          enum:
+          - INFORMATIONAL
+          - LOW
+          - MEDIUM
+          - HIGH
+          - CRITICAL
+          example: HIGH
+        State:
+          type: string
+          description: The current state of the investigation. An archived investigation indicates you have completed reviewing the investigation.
+          enum:
+          - ACTIVE
+          - ARCHIVED
+          example: ACTIVE
   securitySchemes:
     sigv4:
       type: apiKey

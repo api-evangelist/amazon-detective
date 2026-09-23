@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Amazon Detective Datasources Invitations API
+  title: Amazon Detective Invitations API
   description: Amazon Detective makes it easy to analyze, investigate, and quickly identify the root cause of potential security issues or suspicious activities. It automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to build interactive visualizations that help you conduct faster and more efficient security investigations.
   version: '2018-10-26'
   contact:
@@ -221,16 +221,6 @@ components:
         NextToken:
           type: string
           description: If there are more invitations remaining in the results, then use this pagination token.
-    DisassociateMembershipRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to disassociate from a behavior graph
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph to remove the member account from.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
     ListInvitationsRequest:
       type: object
       description: Request to list invitations
@@ -252,6 +242,28 @@ components:
         GraphArn:
           type: string
           description: The ARN of the behavior graph that the member account is rejecting the invitation for.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+    DisassociateMembershipRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to disassociate from a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph to remove the member account from.
           example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
     MemberDetail:
       type: object
@@ -320,18 +332,6 @@ components:
           - INVITATION
           - ORGANIZATION
           example: INVITATION
-    ErrorResponse:
-      type: object
-      description: Standard error response from Amazon Detective
-      properties:
-        Message:
-          type: string
-          description: Human-readable error message
-          example: The request is invalid.
-        Code:
-          type: string
-          description: Error code
-          example: ValidationException
     AcceptInvitationRequest:
       type: object
       required:
