@@ -488,5 +488,5 @@ tags_raw:
   - Forensics
   - Investigation
   - Security
-x-parent: aws
+x-parent: amazon-web-services
 x-relationship: product

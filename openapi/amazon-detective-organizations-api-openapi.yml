@@ -245,6 +245,47 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    EnableOrganizationAdminAccountRequest:
+      type: object
+      required:
+      - AccountId
+      description: Request to enable an organization admin account for Detective
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the account to designate as the Detective administrator account for the organization.
+          example: '123456789012'
+    UpdateOrganizationConfigurationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to update organization configuration
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AutoEnable:
+          type: boolean
+          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
+          example: true
+    Administrator:
+      type: object
+      description: An organization admin account for Amazon Detective
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the Detective administrator account.
+          example: '123456789012'
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        DelegationTime:
+          type: string
+          format: date-time
+          description: The date and time when the Detective administrator account was enabled.
+          example: '2025-01-15T10:00:00Z'
     ListOrganizationAdminAccountsRequest:
       type: object
       description: Request to list organization admin accounts
@@ -257,18 +298,14 @@ components:
           type: integer
           description: The maximum number of results to return.
           example: 100
-    ErrorResponse:
+    DescribeOrganizationConfigurationResponse:
       type: object
-      description: Standard error response from Amazon Detective
+      description: Response from describing organization configuration
       properties:
-        Message:
-          type: string
-          description: Human-readable error message
-          example: The request is invalid.
-        Code:
-          type: string
-          description: Error code
-          example: ValidationException
+        AutoEnable:
+          type: boolean
+          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
+          example: true
     ListOrganizationAdminAccountsResponse:
       type: object
       description: Response from listing organization admin accounts
@@ -291,55 +328,18 @@ components:
           type: string
           description: The ARN of the organization behavior graph.
           example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    EnableOrganizationAdminAccountRequest:
+    ErrorResponse:
       type: object
-      required:
-      - AccountId
-      description: Request to enable an organization admin account for Detective
+      description: Standard error response from Amazon Detective
       properties:
-        AccountId:
+        Message:
           type: string
-          description: The AWS account identifier of the account to designate as the Detective administrator account for the organization.
-          example: '123456789012'
-    Administrator:
-      type: object
-      description: An organization admin account for Amazon Detective
-      properties:
-        AccountId:
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
           type: string
-          description: The AWS account identifier of the Detective administrator account.
-          example: '123456789012'
-        GraphArn:
-          type: string
-          description: The ARN of the organization behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-        DelegationTime:
-          type: string
-          format: date-time
-          description: The date and time when the Detective administrator account was enabled.
-          example: '2025-01-15T10:00:00Z'
-    DescribeOrganizationConfigurationResponse:
-      type: object
-      description: Response from describing organization configuration
-      properties:
-        AutoEnable:
-          type: boolean
-          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
-          example: true
-    UpdateOrganizationConfigurationRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to update organization configuration
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the organization behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-        AutoEnable:
-          type: boolean
-          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
-          example: true
+          description: Error code
+          example: ValidationException
   securitySchemes:
     sigv4:
       type: apiKey

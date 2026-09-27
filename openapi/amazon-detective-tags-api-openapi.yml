@@ -193,6 +193,17 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    TagResourceRequest:
+      type: object
+      required:
+      - Tags
+      description: Request to apply tags to a behavior graph
+      properties:
+        Tags:
+          type: object
+          description: The tags to assign to the behavior graph.
+          additionalProperties:
+            type: string
     ListTagsForResourceResponse:
       type: object
       description: Response from listing tags for a resource
@@ -214,17 +225,6 @@ components:
           type: string
           description: Error code
           example: ValidationException
-    TagResourceRequest:
-      type: object
-      required:
-      - Tags
-      description: Request to apply tags to a behavior graph
-      properties:
-        Tags:
-          type: object
-          description: The tags to assign to the behavior graph.
-          additionalProperties:
-            type: string
   securitySchemes:
     sigv4:
       type: apiKey
