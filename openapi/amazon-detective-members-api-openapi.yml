@@ -302,36 +302,18 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ListMembersResponse:
+    ErrorResponse:
       type: object
-      description: Response from listing member accounts
+      description: Standard error response from Amazon Detective
       properties:
-        MemberDetails:
-          type: array
-          description: The list of member accounts in the behavior graph.
-          items:
-            $ref: '#/components/schemas/MemberDetail'
-        NextToken:
+        Message:
           type: string
-          description: If there are more member accounts remaining in the results, then use this pagination token.
-    GetMembersRequest:
-      type: object
-      required:
-      - GraphArn
-      - AccountIds
-      description: Request to get member details
-      properties:
-        GraphArn:
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
           type: string
-          description: The ARN of the behavior graph to get member details for.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-        AccountIds:
-          type: array
-          description: The list of AWS account identifiers of the member accounts to get information on.
-          items:
-            type: string
-          example:
-          - '234567890123'
+          description: Error code
+          example: ValidationException
     ListMembersRequest:
       type: object
       required:
@@ -350,18 +332,80 @@ components:
           type: integer
           description: The maximum number of member accounts to include in the response.
           example: 100
-    ErrorResponse:
+    GetMembersRequest:
       type: object
-      description: Standard error response from Amazon Detective
+      required:
+      - GraphArn
+      - AccountIds
+      description: Request to get member details
       properties:
-        Message:
+        GraphArn:
           type: string
-          description: Human-readable error message
-          example: The request is invalid.
-        Code:
+          description: The ARN of the behavior graph to get member details for.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AccountIds:
+          type: array
+          description: The list of AWS account identifiers of the member accounts to get information on.
+          items:
+            type: string
+          example:
+          - '234567890123'
+    DeleteMembersResponse:
+      type: object
+      description: Response from deleting member accounts
+      properties:
+        AccountIds:
+          type: array
+          description: The list of AWS account identifiers of the member accounts that Detective successfully deleted.
+          items:
+            type: string
+        UnprocessedAccounts:
+          type: array
+          description: The list of member accounts that Detective was unable to delete.
+          items:
+            $ref: '#/components/schemas/UnprocessedAccount'
+    Account:
+      type: object
+      required:
+      - AccountId
+      - EmailAddress
+      description: An AWS account to invite to become a member account in a behavior graph
+      properties:
+        AccountId:
           type: string
-          description: Error code
-          example: ValidationException
+          description: The account identifier of the AWS account.
+          example: '234567890123'
+        EmailAddress:
+          type: string
+          description: The AWS account root user email address for the AWS account.
+          example: security@example.com
+    StartMonitoringMemberRequest:
+      type: object
+      required:
+      - GraphArn
+      - AccountId
+      description: Request to start monitoring a member account
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AccountId:
+          type: string
+          description: The account ID of the member account to try to enable.
+          example: '234567890123'
+    UnprocessedAccount:
+      type: object
+      description: A member account that could not be processed
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the member account that was not processed.
+          example: '234567890123'
+        Reason:
+          type: string
+          description: The reason that the member account request could not be processed.
+          example: Account not found
     MemberDetail:
       type: object
       description: Details about a member account in a behavior graph
@@ -447,20 +491,6 @@ components:
             type: string
           example:
           - '234567890123'
-    CreateMembersResponse:
-      type: object
-      description: Response from creating member accounts
-      properties:
-        Members:
-          type: array
-          description: The set of member account invitation or enablement requests.
-          items:
-            $ref: '#/components/schemas/MemberDetail'
-        UnprocessedAccounts:
-          type: array
-          description: The list of accounts for which Detective was unable to process the invitation.
-          items:
-            $ref: '#/components/schemas/UnprocessedAccount'
     CreateMembersRequest:
       type: object
       required:
@@ -485,6 +515,20 @@ components:
           description: The list of AWS accounts to invite to become member accounts.
           items:
             $ref: '#/components/schemas/Account'
+    CreateMembersResponse:
+      type: object
+      description: Response from creating member accounts
+      properties:
+        Members:
+          type: array
+          description: The set of member account invitation or enablement requests.
+          items:
+            $ref: '#/components/schemas/MemberDetail'
+        UnprocessedAccounts:
+          type: array
+          description: The list of accounts for which Detective was unable to process the invitation.
+          items:
+            $ref: '#/components/schemas/UnprocessedAccount'
     GetMembersResponse:
       type: object
       description: Response from getting member details
@@ -499,62 +543,18 @@ components:
           description: The requested member accounts for which Detective was unable to return member details.
           items:
             $ref: '#/components/schemas/UnprocessedAccount'
-    DeleteMembersResponse:
+    ListMembersResponse:
       type: object
-      description: Response from deleting member accounts
+      description: Response from listing member accounts
       properties:
-        AccountIds:
+        MemberDetails:
           type: array
-          description: The list of AWS account identifiers of the member accounts that Detective successfully deleted.
+          description: The list of member accounts in the behavior graph.
           items:
-            type: string
-        UnprocessedAccounts:
-          type: array
-          description: The list of member accounts that Detective was unable to delete.
-          items:
-            $ref: '#/components/schemas/UnprocessedAccount'
-    Account:
-      type: object
-      required:
-      - AccountId
-      - EmailAddress
-      description: An AWS account to invite to become a member account in a behavior graph
-      properties:
-        AccountId:
+            $ref: '#/components/schemas/MemberDetail'
+        NextToken:
           type: string
-          description: The account identifier of the AWS account.
-          example: '234567890123'
-        EmailAddress:
-          type: string
-          description: The AWS account root user email address for the AWS account.
-          example: security@example.com
-    StartMonitoringMemberRequest:
-      type: object
-      required:
-      - GraphArn
-      - AccountId
-      description: Request to start monitoring a member account
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-        AccountId:
-          type: string
-          description: The account ID of the member account to try to enable.
-          example: '234567890123'
-    UnprocessedAccount:
-      type: object
-      description: A member account that could not be processed
-      properties:
-        AccountId:
-          type: string
-          description: The AWS account identifier of the member account that was not processed.
-          example: '234567890123'
-        Reason:
-          type: string
-          description: The reason that the member account request could not be processed.
-          example: Account not found
+          description: If there are more member accounts remaining in the results, then use this pagination token.
   securitySchemes:
     sigv4:
       type: apiKey
