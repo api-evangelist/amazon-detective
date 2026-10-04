@@ -209,6 +209,48 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    AcceptInvitationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to accept an invitation to a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph that the member account is accepting the invitation for.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    DisassociateMembershipRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to disassociate from a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph to remove the member account from.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    ListInvitationsResponse:
+      type: object
+      description: Response from listing invitations
+      properties:
+        Invitations:
+          type: array
+          description: The list of behavior graphs for which the member account has open or accepted invitations.
+          items:
+            $ref: '#/components/schemas/MemberDetail'
+        NextToken:
+          type: string
+          description: If there are more invitations remaining in the results, then use this pagination token.
+    RejectInvitationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to reject a behavior graph invitation
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph that the member account is rejecting the invitation for.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
     ErrorResponse:
       type: object
       description: Standard error response from Amazon Detective
@@ -233,16 +275,6 @@ components:
           type: integer
           description: The maximum number of invitations to return.
           example: 100
-    DisassociateMembershipRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to disassociate from a behavior graph
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph to remove the member account from.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
     MemberDetail:
       type: object
       description: Details about a member account in a behavior graph
@@ -310,38 +342,6 @@ components:
           - INVITATION
           - ORGANIZATION
           example: INVITATION
-    AcceptInvitationRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to accept an invitation to a behavior graph
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph that the member account is accepting the invitation for.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    RejectInvitationRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to reject a behavior graph invitation
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph that the member account is rejecting the invitation for.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    ListInvitationsResponse:
-      type: object
-      description: Response from listing invitations
-      properties:
-        Invitations:
-          type: array
-          description: The list of behavior graphs for which the member account has open or accepted invitations.
-          items:
-            $ref: '#/components/schemas/MemberDetail'
-        NextToken:
-          type: string
-          description: If there are more invitations remaining in the results, then use this pagination token.
   securitySchemes:
     sigv4:
       type: apiKey

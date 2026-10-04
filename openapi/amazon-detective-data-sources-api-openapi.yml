@@ -238,63 +238,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    BatchGetGraphMemberDatasourcesResponse:
-      type: object
-      description: Response from getting datasource details for behavior graph members
-      properties:
-        MemberDatasources:
-          type: array
-          description: Details on the data source packages active in the behavior graph.
-          items:
-            $ref: '#/components/schemas/MembershipDatasources'
-        UnprocessedAccounts:
-          type: array
-          description: Accounts that data source package information could not be retrieved for.
-          items:
-            $ref: '#/components/schemas/UnprocessedAccount'
-    ErrorResponse:
-      type: object
-      description: Standard error response from Amazon Detective
-      properties:
-        Message:
-          type: string
-          description: Human-readable error message
-          example: The request is invalid.
-        Code:
-          type: string
-          description: Error code
-          example: ValidationException
-    BatchGetMembershipDatasourcesRequest:
-      type: object
-      required:
-      - GraphArns
-      description: Request to get datasource package history for accounts
-      properties:
-        GraphArns:
-          type: array
-          description: The ARN of the behavior graph.
-          items:
-            type: string
-          example:
-          - arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    ListDatasourcePackagesRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to list datasource packages
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-        NextToken:
-          type: string
-          description: For requests to get the next page of results.
-          example: abc123token
-        MaxResults:
-          type: integer
-          description: The total number of items to return.
-          example: 100
     BatchGetGraphMemberDatasourcesRequest:
       type: object
       required:
@@ -313,6 +256,36 @@ components:
             type: string
           example:
           - '234567890123'
+    ListDatasourcePackagesRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to list datasource packages
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        NextToken:
+          type: string
+          description: For requests to get the next page of results.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The total number of items to return.
+          example: 100
+    ListDatasourcePackagesResponse:
+      type: object
+      description: Response from listing datasource packages
+      properties:
+        DatasourcePackages:
+          type: object
+          description: Details on the data source packages active in the behavior graph.
+          additionalProperties:
+            $ref: '#/components/schemas/DatasourcePackageIngestDetail'
+        NextToken:
+          type: string
+          description: For requests to get the next page of results.
     BatchGetMembershipDatasourcesResponse:
       type: object
       description: Response from getting membership datasource history
@@ -327,6 +300,73 @@ components:
           description: Graphs that data source package information could not be retrieved for.
           items:
             $ref: '#/components/schemas/UnprocessedGraph'
+    BatchGetGraphMemberDatasourcesResponse:
+      type: object
+      description: Response from getting datasource details for behavior graph members
+      properties:
+        MemberDatasources:
+          type: array
+          description: Details on the data source packages active in the behavior graph.
+          items:
+            $ref: '#/components/schemas/MembershipDatasources'
+        UnprocessedAccounts:
+          type: array
+          description: Accounts that data source package information could not be retrieved for.
+          items:
+            $ref: '#/components/schemas/UnprocessedAccount'
+    UnprocessedGraph:
+      type: object
+      description: A behavior graph that could not be processed
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        Reason:
+          type: string
+          description: The reason data source package information could not be retrieved for the behavior graph.
+          example: Graph not found
+    UnprocessedAccount:
+      type: object
+      description: A member account that could not be processed
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the member account that was not processed.
+          example: '234567890123'
+        Reason:
+          type: string
+          description: The reason that the member account request could not be processed.
+          example: Account not found
+    MembershipDatasources:
+      type: object
+      description: Details on data source packages for a member account in a behavior graph
+      properties:
+        AccountId:
+          type: string
+          description: The account identifier of the AWS account.
+          example: '234567890123'
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        DatasourcePackageIngestHistory:
+          type: object
+          description: Details on when a data source package was added to a behavior graph.
+          additionalProperties:
+            type: object
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
     UpdateDatasourcePackagesRequest:
       type: object
       required:
@@ -349,6 +389,19 @@ components:
             - AD_AUDIT
           example:
           - EKS_AUDIT
+    BatchGetMembershipDatasourcesRequest:
+      type: object
+      required:
+      - GraphArns
+      description: Request to get datasource package history for accounts
+      properties:
+        GraphArns:
+          type: array
+          description: The ARN of the behavior graph.
+          items:
+            type: string
+          example:
+          - arn:aws:detective:us-east-1:123456789012:graph:abc123def456
     DatasourcePackageIngestDetail:
       type: object
       description: Details about the ingest state of a datasource package
@@ -374,59 +427,6 @@ components:
           format: date-time
           description: The data and time when data collection began for a source package.
           example: '2025-01-15T10:00:00Z'
-    MembershipDatasources:
-      type: object
-      description: Details on data source packages for a member account in a behavior graph
-      properties:
-        AccountId:
-          type: string
-          description: The account identifier of the AWS account.
-          example: '234567890123'
-        GraphArn:
-          type: string
-          description: The ARN of the organization behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-        DatasourcePackageIngestHistory:
-          type: object
-          description: Details on when a data source package was added to a behavior graph.
-          additionalProperties:
-            type: object
-    UnprocessedAccount:
-      type: object
-      description: A member account that could not be processed
-      properties:
-        AccountId:
-          type: string
-          description: The AWS account identifier of the member account that was not processed.
-          example: '234567890123'
-        Reason:
-          type: string
-          description: The reason that the member account request could not be processed.
-          example: Account not found
-    ListDatasourcePackagesResponse:
-      type: object
-      description: Response from listing datasource packages
-      properties:
-        DatasourcePackages:
-          type: object
-          description: Details on the data source packages active in the behavior graph.
-          additionalProperties:
-            $ref: '#/components/schemas/DatasourcePackageIngestDetail'
-        NextToken:
-          type: string
-          description: For requests to get the next page of results.
-    UnprocessedGraph:
-      type: object
-      description: A behavior graph that could not be processed
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the organization behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-        Reason:
-          type: string
-          description: The reason data source package information could not be retrieved for the behavior graph.
-          example: Graph not found
   securitySchemes:
     sigv4:
       type: apiKey

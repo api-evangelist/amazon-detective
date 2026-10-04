@@ -187,6 +187,69 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    CreateGraphResponse:
+      type: object
+      description: Response from creating a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the new behavior graph
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    ListGraphsResponse:
+      type: object
+      description: Response from listing behavior graphs
+      properties:
+        GraphList:
+          type: array
+          description: A list of behavior graphs that the account is an administrator account of.
+          items:
+            $ref: '#/components/schemas/Graph'
+        NextToken:
+          type: string
+          description: If there are more behavior graphs remaining in the results, then this is the pagination token to use.
+    ListGraphsRequest:
+      type: object
+      description: Request to list behavior graphs
+      properties:
+        NextToken:
+          type: string
+          description: For requests to get the next page of results. The pagination token from the previous request.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The maximum number of graphs to return at a time.
+          example: 100
+    DeleteGraphRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to delete a behavior graph
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the behavior graph to disable
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+    CreateGraphRequest:
+      type: object
+      description: Request to create a new behavior graph
+      properties:
+        Tags:
+          type: object
+          description: The tags to assign to the new behavior graph
+          additionalProperties:
+            type: string
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
     Graph:
       type: object
       description: A behavior graph in Amazon Detective
@@ -200,69 +263,6 @@ components:
           format: date-time
           description: The date and time that the behavior graph was created.
           example: '2025-01-15T10:00:00Z'
-    ErrorResponse:
-      type: object
-      description: Standard error response from Amazon Detective
-      properties:
-        Message:
-          type: string
-          description: Human-readable error message
-          example: The request is invalid.
-        Code:
-          type: string
-          description: Error code
-          example: ValidationException
-    ListGraphsRequest:
-      type: object
-      description: Request to list behavior graphs
-      properties:
-        NextToken:
-          type: string
-          description: For requests to get the next page of results. The pagination token from the previous request.
-          example: abc123token
-        MaxResults:
-          type: integer
-          description: The maximum number of graphs to return at a time.
-          example: 100
-    ListGraphsResponse:
-      type: object
-      description: Response from listing behavior graphs
-      properties:
-        GraphList:
-          type: array
-          description: A list of behavior graphs that the account is an administrator account of.
-          items:
-            $ref: '#/components/schemas/Graph'
-        NextToken:
-          type: string
-          description: If there are more behavior graphs remaining in the results, then this is the pagination token to use.
-    DeleteGraphRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to delete a behavior graph
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the behavior graph to disable
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    CreateGraphResponse:
-      type: object
-      description: Response from creating a behavior graph
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the new behavior graph
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    CreateGraphRequest:
-      type: object
-      description: Request to create a new behavior graph
-      properties:
-        Tags:
-          type: object
-          description: The tags to assign to the new behavior graph
-          additionalProperties:
-            type: string
   securitySchemes:
     sigv4:
       type: apiKey

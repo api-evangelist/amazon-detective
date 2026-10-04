@@ -245,6 +245,50 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    ListOrganizationAdminAccountsRequest:
+      type: object
+      description: Request to list organization admin accounts
+      properties:
+        NextToken:
+          type: string
+          description: The pagination token for the next page of results.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The maximum number of results to return.
+          example: 100
+    EnableOrganizationAdminAccountRequest:
+      type: object
+      required:
+      - AccountId
+      description: Request to enable an organization admin account for Detective
+      properties:
+        AccountId:
+          type: string
+          description: The AWS account identifier of the account to designate as the Detective administrator account for the organization.
+          example: '123456789012'
+    UpdateOrganizationConfigurationRequest:
+      type: object
+      required:
+      - GraphArn
+      description: Request to update organization configuration
+      properties:
+        GraphArn:
+          type: string
+          description: The ARN of the organization behavior graph.
+          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
+        AutoEnable:
+          type: boolean
+          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
+          example: true
+    DescribeOrganizationConfigurationResponse:
+      type: object
+      description: Response from describing organization configuration
+      properties:
+        AutoEnable:
+          type: boolean
+          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
+          example: true
     ErrorResponse:
       type: object
       description: Standard error response from Amazon Detective
@@ -274,28 +318,6 @@ components:
           format: date-time
           description: The date and time when the Detective administrator account was enabled.
           example: '2025-01-15T10:00:00Z'
-    DescribeOrganizationConfigurationResponse:
-      type: object
-      description: Response from describing organization configuration
-      properties:
-        AutoEnable:
-          type: boolean
-          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
-          example: true
-    UpdateOrganizationConfigurationRequest:
-      type: object
-      required:
-      - GraphArn
-      description: Request to update organization configuration
-      properties:
-        GraphArn:
-          type: string
-          description: The ARN of the organization behavior graph.
-          example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-        AutoEnable:
-          type: boolean
-          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
-          example: true
     DescribeOrganizationConfigurationRequest:
       type: object
       required:
@@ -306,28 +328,6 @@ components:
           type: string
           description: The ARN of the organization behavior graph.
           example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    EnableOrganizationAdminAccountRequest:
-      type: object
-      required:
-      - AccountId
-      description: Request to enable an organization admin account for Detective
-      properties:
-        AccountId:
-          type: string
-          description: The AWS account identifier of the account to designate as the Detective administrator account for the organization.
-          example: '123456789012'
-    ListOrganizationAdminAccountsRequest:
-      type: object
-      description: Request to list organization admin accounts
-      properties:
-        NextToken:
-          type: string
-          description: The pagination token for the next page of results.
-          example: abc123token
-        MaxResults:
-          type: integer
-          description: The maximum number of results to return.
-          example: 100
     ListOrganizationAdminAccountsResponse:
       type: object
       description: Response from listing organization admin accounts

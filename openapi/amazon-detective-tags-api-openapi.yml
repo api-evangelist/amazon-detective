@@ -205,15 +205,6 @@ components:
           type: string
           description: Error code
           example: ValidationException
-    ListTagsForResourceResponse:
-      type: object
-      description: Response from listing tags for a resource
-      properties:
-        Tags:
-          type: object
-          description: The tag values that are assigned to the behavior graph.
-          additionalProperties:
-            type: string
     TagResourceRequest:
       type: object
       required:
@@ -223,6 +214,15 @@ components:
         Tags:
           type: object
           description: The tags to assign to the behavior graph.
+          additionalProperties:
+            type: string
+    ListTagsForResourceResponse:
+      type: object
+      description: Response from listing tags for a resource
+      properties:
+        Tags:
+          type: object
+          description: The tag values that are assigned to the behavior graph.
           additionalProperties:
             type: string
   securitySchemes:
