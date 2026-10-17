@@ -245,18 +245,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ListOrganizationAdminAccountsRequest:
-      type: object
-      description: Request to list organization admin accounts
-      properties:
-        NextToken:
-          type: string
-          description: The pagination token for the next page of results.
-          example: abc123token
-        MaxResults:
-          type: integer
-          description: The maximum number of results to return.
-          example: 100
     EnableOrganizationAdminAccountRequest:
       type: object
       required:
@@ -267,6 +255,30 @@ components:
           type: string
           description: The AWS account identifier of the account to designate as the Detective administrator account for the organization.
           example: '123456789012'
+    ErrorResponse:
+      type: object
+      description: Standard error response from Amazon Detective
+      properties:
+        Message:
+          type: string
+          description: Human-readable error message
+          example: The request is invalid.
+        Code:
+          type: string
+          description: Error code
+          example: ValidationException
+    ListOrganizationAdminAccountsResponse:
+      type: object
+      description: Response from listing organization admin accounts
+      properties:
+        Administrators:
+          type: array
+          description: The list of delegated administrator accounts.
+          items:
+            $ref: '#/components/schemas/Administrator'
+        NextToken:
+          type: string
+          description: If there are more accounts remaining in the results, then this is the pagination token.
     UpdateOrganizationConfigurationRequest:
       type: object
       required:
@@ -281,26 +293,18 @@ components:
           type: boolean
           description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
           example: true
-    DescribeOrganizationConfigurationResponse:
+    ListOrganizationAdminAccountsRequest:
       type: object
-      description: Response from describing organization configuration
+      description: Request to list organization admin accounts
       properties:
-        AutoEnable:
-          type: boolean
-          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
-          example: true
-    ErrorResponse:
-      type: object
-      description: Standard error response from Amazon Detective
-      properties:
-        Message:
+        NextToken:
           type: string
-          description: Human-readable error message
-          example: The request is invalid.
-        Code:
-          type: string
-          description: Error code
-          example: ValidationException
+          description: The pagination token for the next page of results.
+          example: abc123token
+        MaxResults:
+          type: integer
+          description: The maximum number of results to return.
+          example: 100
     Administrator:
       type: object
       description: An organization admin account for Amazon Detective
@@ -328,18 +332,14 @@ components:
           type: string
           description: The ARN of the organization behavior graph.
           example: arn:aws:detective:us-east-1:123456789012:graph:abc123def456
-    ListOrganizationAdminAccountsResponse:
+    DescribeOrganizationConfigurationResponse:
       type: object
-      description: Response from listing organization admin accounts
+      description: Response from describing organization configuration
       properties:
-        Administrators:
-          type: array
-          description: The list of delegated administrator accounts.
-          items:
-            $ref: '#/components/schemas/Administrator'
-        NextToken:
-          type: string
-          description: If there are more accounts remaining in the results, then this is the pagination token.
+        AutoEnable:
+          type: boolean
+          description: Indicates whether to automatically enable new organization accounts as member accounts in the organization behavior graph.
+          example: true
   securitySchemes:
     sigv4:
       type: apiKey
