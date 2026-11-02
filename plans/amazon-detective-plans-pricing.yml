@@ -1,0 +1,99 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://aws.amazon.com/detective/pricing/
+sources:
+- https://aws.amazon.com/detective/pricing/
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T161713
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: usage-other
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-28'
+published: true
+note: Pricing table values are unrendered template tokens; the per-GB tier rates were taken from the US
+  East (N. Virginia) pricing examples on the page. Charges are per GB ingested per account/Region/month.
+plan_count: 5
+currency: USD
+plans:
+- name: First 1,000 GB/account/Region/month
+  price_text: $2.00
+  price: 2.0
+  currency: USD
+  period: month
+  unit: per GB
+- name: Next 4,000 GB/account/Region/month
+  price_text: $1.00
+  price: 1.0
+  currency: USD
+  period: month
+  unit: per GB
+- name: Next 5,000 GB/account/Region/month
+  price_text: $0.50
+  price: 0.5
+  currency: USD
+  period: month
+  unit: per GB
+- name: Over 10,000 GB/account/Region/month
+  price_text: $0.25
+  price: 0.25
+  currency: USD
+  period: month
+  unit: per GB
+- name: Free Trial
+  price_text: 30-day free trial
+  price: 30
+  period: none
+  included_quota: full Amazon Detective feature set over the 30-day period
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - hybrid
+  - subscription
+  units:
+  - data
+  plans:
+  - name: First 1,000 GB/account/Region/month
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: Next 4,000 GB/account/Region/month
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: Next 5,000 GB/account/Region/month
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: Over 10,000 GB/account/Region/month
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: Free Trial
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - none
