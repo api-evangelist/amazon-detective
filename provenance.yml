@@ -5,6 +5,9 @@ artifacts:
   agentic-access/amazon-detective-agentic-access.yml:
     method: generated
     evidence: declared in the artifact
+  ai-preferences/amazon-detective-ai-preferences.yml:
+    method: harvested
+    evidence: declared in the artifact
   arazzo/amazon-detective-archive-resolved-investigation-workflow.yml:
     method: derived
     evidence: Arazzo whose sourceDescriptions are our split specs (../openapi/)
@@ -29,6 +32,12 @@ artifacts:
   authentication/amazon-detective-authentication.yml:
     method: derived
     evidence: declared in the artifact
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
+    method: unknown
+    evidence: no authorship recorded
   collections/amazon-detective-datasources-api.opencollection.json:
     method: unknown
     evidence: no authorship recorded
@@ -77,6 +86,24 @@ artifacts:
   collections/amazon-detective.postman_collection.json:
     method: derived
     evidence: openapi/amazon-detective
+  compliance/amazon-detective-compliance.yml:
+    method: harvested
+    evidence: declared in the artifact
+  conformance/amazon-detective-conformance.yml:
+    method: derived
+    evidence: declared in the artifact
+  conventions/amazon-detective-conventions.yml:
+    method: derived
+    evidence: declared in the artifact
+  data-model/amazon-detective-data-model.yml:
+    method: derived
+    evidence: declared in the artifact
+  eligibility/amazon-detective-eligibility.yml:
+    method: harvested
+    evidence: declared in the artifact
+  errors/amazon-detective-problem-types.yml:
+    method: derived
+    evidence: declared in the artifact
   examples/amazon-detective-accept-invitation-request-example.json:
     method: unknown
     evidence: no authorship recorded
@@ -245,6 +272,9 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
+  hosts/amazon-detective-hosts.yml:
+    method: derived
+    evidence: declared in the artifact
   integrations/_index.yml:
     method: generated
     evidence: carries an API Evangelist house phrase
@@ -581,7 +611,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -650,6 +680,18 @@ artifacts:
   kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  llms/amazon-detective-llms-provenance.yml:
+    method: unknown
+    evidence: no authorship recorded
+  llms/amazon-detective-llms.txt:
+    method: unknown
+    evidence: no authorship recorded
+  mcp/amazon-detective-mcp.yml:
+    method: derived
+    evidence: declared in the artifact
   openapi/amazon-detective-data-sources-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
@@ -671,6 +713,12 @@ artifacts:
   openapi/amazon-detective-tags-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  packages/amazon-detective-packages.yml:
+    method: unknown
+    evidence: no authorship recorded
+  patterns/amazon-detective-patterns.yml:
+    method: derived
+    evidence: declared in the artifact
   plans/amazon-detective-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
@@ -684,6 +732,9 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   rules/amazon-detective-jsonschema-spectral-rules.yml:
+    method: generated
+    evidence: declared in the artifact
+  rules/amazon-detective-rules.yml:
     method: generated
     evidence: declared in the artifact
   rules/amazon-detective-spectral-rules.yml:
@@ -702,8 +753,27 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   smithy/detective-2018-10-26.json:
+    method: harvested
+    evidence: byte-identical to https://raw.githubusercontent.com/aws/api-models-aws/3cd98287b471c106254abd89279cc87308d38bfd/models/detective/service/2018-10-26/detective-2018-10-26.json
+      (sha256 8a7a814603e5, fetched 2026-11-11T21:08:20+00:00)
+  terms/amazon-detective-terms-of-service.yml:
+    method: harvested
+    evidence: declared in the artifact
+  vendors/amazon-detective-vendors.yml:
     method: unknown
     evidence: no authorship recorded
   vocabulary/amazon-detective-vocabulary.yaml:
+    method: unknown
+    evidence: no authorship recorded
+  vocabulary/amazon-detective-vocabulary.yml:
+    method: derived
+    evidence: declared in the artifact
+  well-known/amazon-detective-midway-auth-openid-configuration.json:
+    method: unknown
+    evidence: no authorship recorded
+  well-known/amazon-detective-security.txt:
+    method: unknown
+    evidence: no authorship recorded
+  well-known/amazon-detective-well-known.yml:
     method: unknown
     evidence: no authorship recorded
